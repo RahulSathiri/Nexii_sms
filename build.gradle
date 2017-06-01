@@ -1,0 +1,48 @@
+buildscript {
+	repositories{
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.3.RELEASE")
+	}
+}
+
+
+apply plugin: "java"
+apply plugin: "maven"
+apply plugin: "org.springframework.boot"
+
+jar {
+	baseName = 'sms-api'
+	version = '0.0.1-SNAPSHOT'
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+sourceSets {
+    api
+    impl
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web:1.5.3.RELEASE")
+    compile 'com.dieselpoint:norm:0.8.1'
+    compile 'mysql:mysql-connector-java:6.0.6'
+    compile "org.flywaydb:flyway-core:4.2.0"
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
+    
+    
+    //compile "com.wix:wix-embedded-mysql:2.1.4"
+    
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+bootRepackage {
+    mainClass = 'com.omniwyse.sms.Application'
+}
