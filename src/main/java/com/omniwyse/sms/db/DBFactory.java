@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dieselpoint.norm.Database;
-import com.omniwyse.sms.models.Tenant;
+import com.omniwyse.sms.models.Tenants;
 
 @Service
 public class DBFactory {
@@ -26,7 +26,7 @@ public class DBFactory {
         smsDB = new Database();
     }
 
-    public Database db(Tenant tenant) {
+    public Database db(Tenants tenant) {
         if (!dbByTenants.containsKey(tenant.getDbname())) {
             System.setProperty("norm.jdbcUrl", dbUrl(tenant.getDbname()));
             dbByTenants.put(tenant.getDbname(), new Database());
@@ -34,11 +34,13 @@ public class DBFactory {
         return dbByTenants.get(tenant.getDbname());
     }
 
-    public Database getSmsDB() {
+    public Database getSchoolDb() {
         return smsDB;
     }
 
     private String dbUrl(String schema) {
         return "jdbc:mysql://" + dbProperties.host() + ":" + dbProperties.port() + "/" + schema + "?useSSL=false";
     }
+
+
 }

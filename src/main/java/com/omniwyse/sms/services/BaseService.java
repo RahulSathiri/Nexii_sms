@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dieselpoint.norm.Database;
 import com.omniwyse.sms.db.DBFactory;
-import com.omniwyse.sms.models.Tenant;
+import com.omniwyse.sms.models.Tenants;
 
 public class BaseService {
 
@@ -12,14 +12,14 @@ public class BaseService {
     private DBFactory dbFactory;
 
     protected Database getSmsDB() {
-        return dbFactory.getSmsDB();
+        return dbFactory.getSchoolDb();
     }
 
-    protected Database db(Tenant tenant) {
+    protected Database db(Tenants tenant) {
         return dbFactory.db(tenant);
     }
 
-    public <T> T getById(long id, Tenant tenant, Class<T> clazz) {
+    public <T> T getById(long id, Tenants tenant, Class<T> clazz) {
         return db(tenant).where("id=?", id).first(clazz);
     }
 

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.omniwyse.sms.db.DBConnectionProperties;
 import com.omniwyse.sms.db.DBFactory;
-import com.omniwyse.sms.models.Tenant;
+import com.omniwyse.sms.models.Tenants;
 
 @Service
 public class FlywayRunner {
@@ -32,10 +32,10 @@ public class FlywayRunner {
 
     public void migrate() {
         migrate("sms");
-        dbFactory.getSmsDB().results(Tenant.class).forEach(this::migrate);
+        dbFactory.getSchoolDb().results(Tenants.class).forEach(this::migrate);
     }
 
-    private void migrate(Tenant tenant) {
+    private void migrate(Tenants tenant) {
         LOGGER.info("Migrating schema {} for tenant {}", tenant.getDbname(), tenant.getCode());
         Flyway flyway = new Flyway();
         flyway.setLocations("db/migration/tenants/common", "db/migration/tenants/" + tenant.getCode().toLowerCase());
