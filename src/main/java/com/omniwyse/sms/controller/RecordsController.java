@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.omniwyse.sms.models.ClassRoom;
+import com.omniwyse.sms.models.Grades;
 import com.omniwyse.sms.models.Subjects;
 import com.omniwyse.sms.models.Syllabus;
 import com.omniwyse.sms.models.Teachers;
@@ -58,4 +59,16 @@ public class RecordsController {
 		return recordservice.getAllSyllabus();
 
 	}
+
+    @RequestMapping("/classroomsyllabustypes")
+    public List<Grades> distinctSyllabusType() {
+
+        return recordservice.getAllClassRoomSyllabusTypes();
+    }
+
+    @RequestMapping("/classroomacademicyears")
+    public List<ClassRoom> getAcademicYears() {
+        return recordservice.getAcademicYears();
+
+    }
 }

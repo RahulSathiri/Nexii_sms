@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dieselpoint.norm.Database;
+import com.omniwyse.sms.models.ClassRoom;
+import com.omniwyse.sms.models.Grades;
 import com.omniwyse.sms.models.Subjects;
 import com.omniwyse.sms.models.Syllabus;
 import com.omniwyse.sms.models.Teachers;
@@ -65,5 +67,17 @@ public class RecordsService {
 		List<Syllabus> syllabus = db.sql("select * from syllabus").results(Syllabus.class);
 		return syllabus;
 	}
+
+    public List<Grades> getAllClassRoomSyllabusTypes() {
+        db = retrive.getDatabase(1);
+        List<Grades> syllabus = db.sql("select distinct syllabustype from grades").results(Grades.class);
+        return syllabus;
+    }
+
+    public List<ClassRoom> getAcademicYears() {
+        db = retrive.getDatabase(1);
+        return db.sql("select distinct academicyear from classrooms").results(ClassRoom.class);
+
+    }
 
 }
