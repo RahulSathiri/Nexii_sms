@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.omniwyse.sms.models.AcademicYears;
 import com.omniwyse.sms.models.ClassRoom;
 import com.omniwyse.sms.services.ClassService;
 import com.omniwyse.sms.utils.ClassSectionTransferObject;
@@ -82,6 +83,13 @@ public class ClassController {
 	public List<ClassSectionTransferObject> getClassRooms() {
 
 		return service.getClassRooms();
+
+	}
+
+	@RequestMapping("/academicyear")
+	public List<AcademicYears> getacademicyear() {
+
+		return service.getAcademicYears();
 
 	}
 
