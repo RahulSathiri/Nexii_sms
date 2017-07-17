@@ -327,3 +327,18 @@ dateofattendance DATE NOT NULL,
 attendancestatus INT NOT NULL,
 FOREIGN KEY(studentid) REFERENCES students(id),
 FOREIGN KEY(classroomid) REFERENCES classrooms(id)); 
+
+
+--**************************ACADEMIC YEARS TABLES*******************************************************
+
+CREATE TABLE academicyears(
+id bigint(8) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+academicyear bigint(8) not null,
+yearfromto VARCHAR(20) not null,
+active INT
+);
+
+
+
+
+

@@ -1,11 +1,17 @@
 package com.omniwyse.sms.services;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dieselpoint.norm.Database;
+import com.omniwyse.sms.db.DatabaseRetrieval;
+import com.omniwyse.sms.models.AcademicYears;
 import com.omniwyse.sms.models.ClassRoom;
 import com.omniwyse.sms.models.GradeSubjects;
 import com.omniwyse.sms.models.Grades;
@@ -13,37 +19,41 @@ import com.omniwyse.sms.models.SubjectTeacherClass;
 import com.omniwyse.sms.models.Teachers;
 import com.omniwyse.sms.utils.ClassSectionTransferObject;
 
+@SuppressWarnings("unused")
 @Service
 public class ClassService {
 
 	@Autowired
-    private com.omniwyse.sms.db.DatabaseRetrieval retrieve;
+	private DatabaseRetrieval retrieve;
 
-private SubjectTeacherClass stc;
+	private SubjectTeacherClass stc;
 	private Database db;
 	private long academicyear;
 	private String sectionname;
 	private String teachername;
 	private long teacherid;
 	private String gradename;
-	private String  syllabustype;
+	private String syllabustype;
+	private String yearfromto;
 	private long gradeid;
+	private AcademicYears academicyears;
 
 	public int createClass(ClassSectionTransferObject createclass) {
+		academicyears = new AcademicYears();
 		academicyear = createclass.getAcademicyear();
 		sectionname = createclass.getSectionname();
 		teachername = createclass.getTeachername();
-		gradename=createclass.getGradename();
-		syllabustype=createclass.getSyllabustype();
-		
+		gradename = createclass.getGradename();
+		syllabustype = createclass.getSyllabustype();
 		db = retrieve.getDatabase(1);
-		List<Grades> record = db.where("gradename=? and syllabustype=?", gradename,syllabustype).results(Grades.class);
+		List<Grades> record = db.where("gradename=? and syllabustype=?", gradename, syllabustype).results(Grades.class);
 		if (record.isEmpty()) {
 			return -5;
 		}
-		gradeid=record.get(0).getId();
+		gradeid = record.get(0).getId();
 		ClassRoom classes = new ClassRoom();
 		classes.setAcademicyear(academicyear);
+
 		classes.setSectionname(sectionname);
 		classes.setGradeid(gradeid);
 
@@ -54,16 +64,25 @@ private SubjectTeacherClass stc;
 			if (isValidTeachername(teachername)) {
 
 				classes.setClassteacherid(teacherid);
-			 db.insert(classes).getRowsAffected();
-			 long classid=classes.getId();
-			 stc= new SubjectTeacherClass();
-				List<GradeSubjects> subjectids=db.where("gradeid=?",gradeid).results(GradeSubjects.class);
-				for(GradeSubjects subjectid:subjectids)
-				{
-			stc.setClassid(classid);
-			stc.setSubjectid(subjectid.getSubjectid());
-			db.insert(stc);
-					
+				yearfromto = String.valueOf(academicyear - 1) + "-" + String.valueOf(academicyear);
+				
+				db.insert(classes).getRowsAffected();
+				List<AcademicYears> list = db.where("academicyear=?", academicyear).results(AcademicYears.class);
+
+				if (list.isEmpty()) {
+					academicyears.setAcademicyear(academicyear);
+					academicyears.setYearfromto(yearfromto);
+					db.insert(academicyears);
+				}
+
+				long classid = classes.getId();
+				stc = new SubjectTeacherClass();
+				List<GradeSubjects> subjectids = db.where("gradeid=?", gradeid).results(GradeSubjects.class);
+				for (GradeSubjects subjectid : subjectids) {
+					stc.setClassid(classid);
+					stc.setSubjectid(subjectid.getSubjectid());
+					db.insert(stc);
+
 				}
 				return 1;
 			} else {
@@ -115,21 +134,26 @@ private SubjectTeacherClass stc;
 		return 1;
 
 	}
+
 	public List<ClassSectionTransferObject> getClassRoomsByYearAndSyllabustype(long academicyear, String syllabustype) {
 		db = retrieve.getDatabase(1);
+
 		return db
 				.sql("select classrooms.id,classrooms.academicyear,classrooms.gradeid,grades.gradenumber,grades.gradename,classrooms.sectionname,grades.syllabustype,teachers.teachername from classrooms inner join grades on classrooms.academicyear=? and grades.syllabustype=? INNER JOIN teachers ON classrooms.classteacherid = teachers.id where classrooms.gradeid=grades.id",
 						academicyear, syllabustype)
 				.results(ClassSectionTransferObject.class);
 
 	}
-	
+
 	public List<ClassSectionTransferObject> getClassRooms() {
 		db = retrieve.getDatabase(1);
-	return	db.sql("select classrooms.id,classrooms.academicyear,classrooms.gradeid,grades.gradenumber,grades.gradename,classrooms.sectionname,grades.syllabustype,teachers.teachername from classrooms inner join grades INNER JOIN teachers ON classrooms.classteacherid = teachers.id where classrooms.gradeid=grades.id").results(ClassSectionTransferObject.class);
-		
+
+		return db
+				.sql("select classrooms.id,classrooms.academicyear,classrooms.gradeid,grades.gradenumber,grades.gradename,classrooms.sectionname,grades.syllabustype,teachers.teachername from classrooms inner join grades INNER JOIN teachers ON classrooms.classteacherid = teachers.id where classrooms.gradeid=grades.id")
+				.results(ClassSectionTransferObject.class);
+
 	}
-	
+
 	public List<ClassSectionTransferObject> getClassRoomsByYear(long academicyear) {
 
 		db = retrieve.getDatabase(1);
@@ -139,6 +163,25 @@ private SubjectTeacherClass stc;
 				.results(ClassSectionTransferObject.class);
 
 		return classes;
+	}
+
+	public List<AcademicYears> getAcademicYears() {
+		db = retrieve.getDatabase(1);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+		int currentyear = Integer.parseInt(sdf.format(new Date()));
+		List<AcademicYears> academicyears = db.sql("select * from academicyears").results(AcademicYears.class);
+		for (AcademicYears academicyear : academicyears) {
+			if (academicyear.getAcademicyear() == currentyear) {
+				academicyear.setActive(1);
+			} else {
+				academicyear.setActive(0);
+			}
+			db.update(academicyear);
+
+		}
+
+		return db.sql("select * from academicyears")
+				.results(AcademicYears.class);
 	}
 
 }
