@@ -55,8 +55,7 @@ CREATE TABLE clientaddress(
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 
-CREATE TABLE stat
-us(
+CREATE TABLE status(
   id bigint(8) NOT NULL,
   description varchar(150) NOT NULL,
   createdOn timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
