@@ -83,20 +83,6 @@ CREATE TABLE classrooms(
 insert into classrooms(gradeid,academicyear,sectionname,classteacherid)
 	values(1,2017,'A',1),(2,2017,'A',2),(2,2017,'B',3);
 
-CREATE TABLE labs(
-	id bigint(8) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	description VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE labsmaintain(
-	id bigint(8) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	roomid bigint(8) NOT  NULL,
-	labid bigint(8) NOT  NULL,
-	teacherid bigint(8) NOT NULL,
-	FOREIGN KEY(labid) references labs(id),
-	FOREIGN KEY(teacherid) references teachers(id)
-);
-
 -- ********** STUDENTS TABLES ******************************
 
 CREATE TABLE students(
@@ -122,7 +108,7 @@ insert into students(gradeid,name,fathername,mothername,contactnumber,address,da
 	(2,'srinadh','suresh','devi','8977690734','hno:5-203,kr nagar, mancheryal,Telangana-504203','21-08-2002','01-06-2006','male','srinadh@gmail.com','10111'),
 	(1,'yamini','kamal','vimala','9955544499','plot no:12-5-50,anakapally,vizag-500085','01-01-2007','16-06-2012','female','yamini@gmail.com','50111');
 
-CREATE TABLE class_students(
+CREATE TABLE classroom_students(
 	id bigint(8) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	classid bigint(8) NOT NULL,
 	studentid bigint(8) NOT NULL,
