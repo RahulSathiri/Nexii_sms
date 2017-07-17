@@ -3,7 +3,7 @@ package com.omniwyse.sms.models;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-@Table(name="assign_classroom_student")
+@Table(name="classroom_students")
 public class StudentClassroom {
 	private long id;
 	private long studentid;
