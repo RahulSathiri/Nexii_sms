@@ -3,7 +3,6 @@ package com.omniwyse.sms.services;
 import java.io.IOException;
 import java.util.List;
 
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
