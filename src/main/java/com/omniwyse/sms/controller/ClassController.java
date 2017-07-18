@@ -92,6 +92,33 @@ public class ClassController {
 		return service.getAcademicYears();
 
 	}
+	@RequestMapping("/addacademicyear")
+	public ResponseEntity<Response> addacademicyear(@RequestBody AcademicYears academicyears) {
+
+		int rowEffected=service.addAcademicYears(academicyears);
+
+		if (rowEffected > 0) {
+			response.setStatus(200);
+			response.setMessage("added success fully");
+			response.setDescription("added successfuly");
+			return new ResponseEntity<Response>(response, HttpStatus.OK);
+		} else {
+			response.setStatus(400);
+			response.setMessage("already assigned");
+			response.setDescription("already exist");
+			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+		}
+
+	}
+	@RequestMapping("/updateacademicyear")
+	public ResponseEntity<Response> updateacademicyear(@RequestBody AcademicYears academicYears) {
+
+		service.updateAcademicYear(academicYears);
+			response.setStatus(200);
+			response.setMessage("updated success fully");
+			response.setDescription("updated successfuly");
+			return new ResponseEntity<Response>(response, HttpStatus.OK);
+		 }
 
 	@RequestMapping("/classrooms/yearandsyllabustype")
 	public List<ClassSectionTransferObject> listSubjectTeac(

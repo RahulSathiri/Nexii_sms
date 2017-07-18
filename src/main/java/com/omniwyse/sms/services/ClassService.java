@@ -36,10 +36,8 @@ public class ClassService {
 	private String syllabustype;
 	private String yearfromto;
 	private long gradeid;
-	private AcademicYears academicyears;
 
 	public int createClass(ClassSectionTransferObject createclass) {
-		academicyears = new AcademicYears();
 		academicyear = createclass.getAcademicyear();
 		sectionname = createclass.getSectionname();
 		teachername = createclass.getTeachername();
@@ -64,16 +62,8 @@ public class ClassService {
 			if (isValidTeachername(teachername)) {
 
 				classes.setClassteacherid(teacherid);
-				yearfromto = String.valueOf(academicyear - 1) + "-" + String.valueOf(academicyear);
-				
-				db.insert(classes).getRowsAffected();
-				List<AcademicYears> list = db.where("academicyear=?", academicyear).results(AcademicYears.class);
 
-				if (list.isEmpty()) {
-					academicyears.setAcademicyear(academicyear);
-					academicyears.setYearfromto(yearfromto);
-					db.insert(academicyears);
-				}
+				db.insert(classes).getRowsAffected();
 
 				long classid = classes.getId();
 				stc = new SubjectTeacherClass();
@@ -167,21 +157,24 @@ public class ClassService {
 
 	public List<AcademicYears> getAcademicYears() {
 		db = retrieve.getDatabase(1);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
-		int currentyear = Integer.parseInt(sdf.format(new Date()));
-		List<AcademicYears> academicyears = db.sql("select * from academicyears").results(AcademicYears.class);
-		for (AcademicYears academicyear : academicyears) {
-			if (academicyear.getAcademicyear() == currentyear) {
-				academicyear.setActive(1);
-			} else {
-				academicyear.setActive(0);
-			}
-			db.update(academicyear);
+		return db.sql("select * from academicyears").results(AcademicYears.class);
+	}
 
+	public int addAcademicYears(AcademicYears academicyears) {
+		db = retrieve.getDatabase(1);
+		long academicyear = academicyears.getAcademicyear();
+		List<AcademicYears> list = db.where("academicyear=?", academicyear).results(AcademicYears.class);
+		if (list.isEmpty()) {
+			return db.insert(academicyears).getRowsAffected();
+		} else {
+			return 0;
 		}
+	}
 
-		return db.sql("select * from academicyears")
-				.results(AcademicYears.class);
+	public void updateAcademicYear(AcademicYears academicyears) {
+		db = retrieve.getDatabase(1);
+		db.update(academicyears).getRowsAffected();
+
 	}
 
 }
