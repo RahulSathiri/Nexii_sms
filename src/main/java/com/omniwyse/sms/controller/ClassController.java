@@ -32,7 +32,7 @@ public class ClassController {
 
 		if (rowEffected > 0) {
 			response.setStatus(201);
-			response.setMessage("ClassRoom created");
+			response.setMessage(" ClassRoom created");
 			response.setDescription("ClassRoom created");
 			return new ResponseEntity<Response>(response, HttpStatus.CREATED);
 		} else if (rowEffected == 0) {
