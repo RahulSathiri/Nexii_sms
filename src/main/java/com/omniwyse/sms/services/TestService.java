@@ -93,7 +93,7 @@ public class TestService {
 				.results(TestTransferObject.class);
 	}
 
-	public List<TestTransferObject> getListOfTests(TestTransferObject testtransferobject) throws IOException, JSONException {
+	public List<TestTransferObject> getListOfTests(TestTransferObject testtransferobject) throws IOException {
 
 		db = retrieve.getDatabase(1);
 		long gradeid = testtransferobject.getId();

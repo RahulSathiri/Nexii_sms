@@ -81,7 +81,7 @@ public class TestController {
 	}
 
 	@RequestMapping(value = "/listtests", method = RequestMethod.POST, produces = "application/json")
-	public List<TestTransferObject> getListOfTests(@RequestBody TestTransferObject testcreate) throws IOException, JSONException {
+	public List<TestTransferObject> getListOfTests(@RequestBody TestTransferObject testcreate) throws IOException {
 		List<TestTransferObject> tests= service.getListOfTests(testcreate);
 		if(tests.isEmpty())
 		{
