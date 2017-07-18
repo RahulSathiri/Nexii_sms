@@ -34,8 +34,8 @@ public class ResultsService {
         String testtype = resultstransferobject.getTesttype();
         long testid = db.where("testtype=?", testtype).results(TestType.class).get(0).getId();
 
-        List<Students> studentsidlist = db.sql("select students.id from students inner join assign_classroom_student on assign_classroom_student.classid=?"
-                        + " and assign_classroom_student.studentid=students.id", classid).results(Students.class);
+        List<Students> studentsidlist = db.sql("select students.id from students inner join classroom_students on classroom_students.classid=?"
+                        + " and classroom_students.studentid=students.id", classid).results(Students.class);
 
         List<GradeSubjects> listsubjects = db.sql("select subjectid from grade_subjects where gradeid=?", gradeid)
                 .results(GradeSubjects.class);

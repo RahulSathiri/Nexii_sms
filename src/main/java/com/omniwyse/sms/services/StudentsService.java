@@ -78,7 +78,7 @@ public class StudentsService {
 	public List<ClassRoomStudents> getStudentsOfClassRoom(long classid) {
 		db = retrive.getDatabase(1);
 		return db
-				.sql("select students.name,students.id,students.fathername,students.admissionnumber from students inner join assign_classroom_student on assign_classroom_student.classid=? and assign_classroom_student.studentid=students.id",
+				.sql("select students.name,students.id,students.fathername,students.admissionnumber from students inner join classroom_students on classroom_students.classid=? and classroom_students.studentid=students.id",
 						classid)
 				.results(ClassRoomStudents.class);
 

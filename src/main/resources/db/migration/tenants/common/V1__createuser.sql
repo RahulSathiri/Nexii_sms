@@ -246,6 +246,11 @@ fromdate VARCHAR(30) NOT NULL,
 todate VARCHAR(30) NOT NULL
 );
 
+
+insert into holidays (occassion,fromdate,todate) values('Ramzan','26-06-2017','27-06-2017'),('Dussera','04-09-2017','12-09-2017'),('Diwali','10-10-2017','11-10-2017'), 
+                                                        ('Christmas','25-12-2017','25-12-2017'),('Pongal','09-01-2018','16-01-2018'); 
+                                                         
+
 --******************** EVENTS TABLES ************************************************************
 
 CREATE TABLE events(
@@ -256,6 +261,13 @@ chiefguest VARCHAR(50) NOT NULL,
 description VARCHAR(100) NOT NULL
 );
 
+insert into events(eventdate,eventname,chiefguest,description) values('15-08-2017','Independence Day','Former tamilnadu governor K.Rosaiah','flag hosting Ceremony at 8:30 A.M by chief guest and Prize distribution'), 
+                                                                    ('14-11-2017','Childrens Day','Sri Prashanthi, IAS Joint Collector,Hyderabad','Cycles distribution'), 
+                                                                    ('26-01-2018','Republic Day','Indian Navy Admiral Sunil Lanba','flag hosting Ceremony at 8:30 A.M and speech by chief admiral at 9:00 A.M'), 
+                                                                    ('28-02-2018','Science Day','ISRO Chief A.S Kiran Kumar','Prize distribution by chief guest at 10:00 A.M'), 
+                                                                    ('03/03/2018','School Anniversary','Super Star Mahesh babu','Speech by guest at 5:30 P.M and then culturel activities'); 
+ 
+
 --******************** NEWS TABLES ************************************************************
 
 CREATE TABLE newsfeed(
@@ -264,6 +276,10 @@ headline VARCHAR(50) NOT NULL,
 releasedate VARCHAR(30) NOT NULL,
 description VARCHAR(150) NOT NULL
 );
+
+
+insert into newsfeed (headline,releasedate,description) values('Dinesh and Raju selected for Distric Kabaddi team','20-06-2017','From the Kabaddi team sent to School Zonals these two are selected for Distric team'), 
+                                                             ('Sheela got 2nd Prize in Science exhibition','03-06-2017','Sheela who is studying 8th class got 2nd prize in district level Science exhibition held in Bhashyam Schools'); 
 
 --******************** TIMETABLE TABLES ************************************************************
 
@@ -324,7 +340,7 @@ yearfromto VARCHAR(20) not null,
 active INT
 );
 
-
+INSERT INTO academicyears(academicyear,yearfromto,active) values(2017,'2016-2017',1);
 
 
 
