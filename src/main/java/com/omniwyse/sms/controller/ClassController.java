@@ -1,5 +1,6 @@
 package com.omniwyse.sms.controller;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.omniwyse.sms.models.AcademicYears;
 import com.omniwyse.sms.models.ClassRoom;
 import com.omniwyse.sms.services.ClassService;
+import com.omniwyse.sms.utils.AcademicYearsDTO;
 import com.omniwyse.sms.utils.ClassSectionTransferObject;
 import com.omniwyse.sms.utils.Response;
 
@@ -87,15 +89,16 @@ public class ClassController {
 	}
 
 	@RequestMapping("/academicyear")
-	public List<AcademicYears> getacademicyear() {
+	public List<AcademicYearsDTO> getacademicyear() throws ParseException {
 
 		return service.getAcademicYears();
 
 	}
-	@RequestMapping("/addacademicyear")
-	public ResponseEntity<Response> addacademicyear(@RequestBody AcademicYears academicyears) {
 
-		int rowEffected=service.addAcademicYears(academicyears);
+	@RequestMapping("/addacademicyear")
+	public ResponseEntity<Response> addacademicyear(@RequestBody AcademicYearsDTO academicyears) {
+
+		int rowEffected = service.addAcademicYears(academicyears);
 
 		if (rowEffected > 0) {
 			response.setStatus(200);
@@ -104,21 +107,29 @@ public class ClassController {
 			return new ResponseEntity<Response>(response, HttpStatus.OK);
 		} else {
 			response.setStatus(400);
-			response.setMessage("already assigned");
+			response.setMessage("already added");
 			response.setDescription("already exist");
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		}
 
 	}
+
 	@RequestMapping("/updateacademicyear")
 	public ResponseEntity<Response> updateacademicyear(@RequestBody AcademicYears academicYears) {
 
-		service.updateAcademicYear(academicYears);
+		int rowseffected = service.updateAcademicYear(academicYears);
+		if (rowseffected > 0) {
 			response.setStatus(200);
 			response.setMessage("updated success fully");
 			response.setDescription("updated successfuly");
 			return new ResponseEntity<Response>(response, HttpStatus.OK);
-		 }
+		} else {
+			response.setStatus(400);
+			response.setMessage("try again");
+			response.setDescription("try again");
+			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+		}
+	}
 
 	@RequestMapping("/classrooms/yearandsyllabustype")
 	public List<ClassSectionTransferObject> listSubjectTeac(

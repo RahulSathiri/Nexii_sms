@@ -1,6 +1,10 @@
 package com.omniwyse.sms.services;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +21,7 @@ import com.omniwyse.sms.models.GradeSubjects;
 import com.omniwyse.sms.models.Grades;
 import com.omniwyse.sms.models.SubjectTeacherClass;
 import com.omniwyse.sms.models.Teachers;
+import com.omniwyse.sms.utils.AcademicYearsDTO;
 import com.omniwyse.sms.utils.ClassSectionTransferObject;
 
 @SuppressWarnings("unused")
@@ -34,7 +39,6 @@ public class ClassService {
 	private long teacherid;
 	private String gradename;
 	private String syllabustype;
-	private String yearfromto;
 	private long gradeid;
 
 	public int createClass(ClassSectionTransferObject createclass) {
@@ -155,15 +159,33 @@ public class ClassService {
 		return classes;
 	}
 
-	public List<AcademicYears> getAcademicYears() {
+	public List<AcademicYearsDTO> getAcademicYears() throws ParseException {
 		db = retrieve.getDatabase(1);
-		return db.sql("select * from academicyears").results(AcademicYears.class);
+		List<AcademicYears> records = db.sql("select * from academicyears").results(AcademicYears.class);
+		List<AcademicYearsDTO> dtorecords = new ArrayList<AcademicYearsDTO>();
+		for (AcademicYears academicyear : records) {
+			AcademicYearsDTO academicyearsdto = new AcademicYearsDTO();
+			academicyearsdto.setId(academicyear.getId());
+			academicyearsdto.setPassingyear(academicyear.getPassingyear());
+			academicyearsdto.setAcademicyearstarting(academicyear.getAcademicyearstarting());
+			academicyearsdto.setAcademicyearending(academicyear.getAcademicyearending());
+			academicyearsdto.setActive(academicyear.getActive());
+			dtorecords.add(academicyearsdto);
+		}
+		return dtorecords;
 	}
 
-	public int addAcademicYears(AcademicYears academicyears) {
+	public int addAcademicYears(AcademicYearsDTO academicyearsdto) {
+		AcademicYears academicyears = new AcademicYears();
 		db = retrieve.getDatabase(1);
-		long academicyear = academicyears.getAcademicyear();
-		List<AcademicYears> list = db.where("academicyear=?", academicyear).results(AcademicYears.class);
+		java.sql.Date passingyear = convertJavaDateToSqlDate(academicyearsdto.getPassingyear());
+		academicyears.setPassingyear(passingyear);
+
+		java.sql.Date academicyearstarting = convertJavaDateToSqlDate(academicyearsdto.getAcademicyearstarting());
+		academicyears.setAcademicyearstarting(academicyearstarting);
+		java.sql.Date academicyearending = convertJavaDateToSqlDate(academicyearsdto.getAcademicyearending());
+		academicyears.setAcademicyearending(academicyearending);
+		List<AcademicYears> list = db.where("passingyear=?", passingyear).results(AcademicYears.class);
 		if (list.isEmpty()) {
 			return db.insert(academicyears).getRowsAffected();
 		} else {
@@ -171,9 +193,15 @@ public class ClassService {
 		}
 	}
 
-	public void updateAcademicYear(AcademicYears academicyears) {
+	public java.sql.Date convertJavaDateToSqlDate(Date date) {
+		return new java.sql.Date(date.getTime());
+	}
+
+	public int updateAcademicYear(AcademicYears academicyears) {
+		
 		db = retrieve.getDatabase(1);
-		db.update(academicyears).getRowsAffected();
+		return db.sql("update academicyears set active=? and passingyear=? where id=? ", academicyears.getActive(),
+				academicyears.getPassingyear(), academicyears.getId()).execute().getRowsAffected();
 
 	}
 
