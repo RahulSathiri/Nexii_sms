@@ -3,7 +3,6 @@ package com.omniwyse.sms.controller;
 import java.io.IOException;
 import java.util.List;
 
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -81,7 +80,7 @@ public class TestController {
 	}
 
 	@RequestMapping(value = "/listtests", method = RequestMethod.POST, produces = "application/json")
-	public List<TestTransferObject> getListOfTests(@RequestBody TestTransferObject testcreate) throws IOException, JSONException {
+	public List<TestTransferObject> getListOfTests(@RequestBody TestTransferObject testcreate) throws IOException {
 		List<TestTransferObject> tests= service.getListOfTests(testcreate);
 		if(tests.isEmpty())
 		{
