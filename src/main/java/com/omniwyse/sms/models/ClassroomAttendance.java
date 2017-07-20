@@ -13,9 +13,7 @@ public class ClassroomAttendance {
 	private long classroomid;
 	private Date dateofattendance;
 	private long attendancestatus;
-
 	
-
 	public long getAttendancestatus() {
 		return attendancestatus;
 	}
