@@ -159,20 +159,10 @@ public class ClassService {
 		return classes;
 	}
 
-	public List<AcademicYearsDTO> getAcademicYears() throws ParseException {
+	public List<AcademicYears> getAcademicYears() throws ParseException {
 		db = retrieve.getDatabase(1);
-		List<AcademicYears> records = db.sql("select * from academicyears").results(AcademicYears.class);
-		List<AcademicYearsDTO> dtorecords = new ArrayList<AcademicYearsDTO>();
-		for (AcademicYears academicyear : records) {
-			AcademicYearsDTO academicyearsdto = new AcademicYearsDTO();
-			academicyearsdto.setId(academicyear.getId());
-			academicyearsdto.setPassingyear(academicyear.getPassingyear());
-			academicyearsdto.setAcademicyearstarting(academicyear.getAcademicyearstarting());
-			academicyearsdto.setAcademicyearending(academicyear.getAcademicyearending());
-			academicyearsdto.setActive(academicyear.getActive());
-			dtorecords.add(academicyearsdto);
-		}
-		return dtorecords;
+		return db.sql("select * from academicyears").results(AcademicYears.class);
+		
 	}
 
 	public int addAcademicYears(AcademicYearsDTO academicyearsdto) {

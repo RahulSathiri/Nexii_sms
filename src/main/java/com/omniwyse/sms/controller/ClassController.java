@@ -89,7 +89,7 @@ public class ClassController {
 	}
 
 	@RequestMapping("/academicyear")
-	public List<AcademicYearsDTO> getacademicyear() throws ParseException {
+	public List<AcademicYears> getacademicyear() throws ParseException {
 
 		return service.getAcademicYears();
 
