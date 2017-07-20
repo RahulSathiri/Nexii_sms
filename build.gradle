@@ -43,6 +43,14 @@ dependencies {
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
+jar{
+	manifest{
+		attributes(
+			'mainClass' : 'com.omniwyse.sms.Application'
+		)
+	}
+}
+
 bootRepackage {
     mainClass = 'com.omniwyse.sms.Application'
 }
