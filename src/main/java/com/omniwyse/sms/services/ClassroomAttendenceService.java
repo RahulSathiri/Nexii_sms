@@ -1,4 +1,5 @@
 package com.omniwyse.sms.services;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,9 +8,9 @@ import org.springframework.stereotype.Service;
 import com.dieselpoint.norm.Database;
 import com.dieselpoint.norm.Transaction;
 import com.omniwyse.sms.db.DatabaseRetrieval;
+import com.omniwyse.sms.models.ClassRoom;
 import com.omniwyse.sms.models.ClassroomAttendance;
 import com.omniwyse.sms.models.Students;
-import com.omniwyse.sms.utils.AttendanceDTO;
 import com.omniwyse.sms.utils.ClassAttendenceTransferObject;
 
 @Service
@@ -18,60 +19,106 @@ public class ClassroomAttendenceService {
 	@Autowired
 	private DatabaseRetrieval retrive;
 
+	@Autowired
+	private StudentsService studentService;
+
 	private Database db;
 
-	public int addingAttendanceStatus(List<ClassAttendenceTransferObject> classattendancetransferobject) {
-		int rowEffected = 0;
+	// list of students for the classroom attendance
+
+	public ClassAttendenceTransferObject studentsList(ClassAttendenceTransferObject classattendancetransferobject) {
+
 		db = retrive.getDatabase(1);
-		ClassroomAttendance classroomattendance = new ClassroomAttendance();
+		long gradeid = classattendancetransferobject.getGradeid();
+		String sectionname = classattendancetransferobject.getSectionname();
+		long classid = db.where("gradeid=? and sectionname=?", gradeid, sectionname).results(ClassRoom.class).get(0)
+				.getId();
 
-		Transaction transact = db.startTransaction();
-		try {
+		classattendancetransferobject.setStudentsOfClassRoom(studentService.getStudentsOfClassRoom(classid));
 
-			for (ClassAttendenceTransferObject studentobj : classattendancetransferobject) {
-				String studentname = studentobj.getName();
-				long classid = studentobj.getId();
-				long studentid = db.where("name=?", studentname).results(Students.class).get(0).getId();
-				classroomattendance.setDateofattendance(studentobj.getDateofattendance());
-				classroomattendance.setAttendancestatus(studentobj.getAttendancestatus());
-				classroomattendance.setClassroomid(classid);
-				classroomattendance.setStudentid(studentid);
-				rowEffected = db.transaction(transact).insert(classroomattendance).getRowsAffected();
-			}
-			transact.commit();
-
-		} catch (Exception e) {
-			transact.rollback();
-
-		}
-
-		return rowEffected;
+		return classattendancetransferobject;
 	}
 
-	public List<ClassAttendenceTransferObject> recordsOfAttendance(
-			ClassAttendenceTransferObject classattendancetransferobject) {
+	// Record students attendance
 
-		List<ClassAttendenceTransferObject> classATO;
+	public int addingAttendanceStatus(List<ClassAttendenceTransferObject> classattendancetransferobject) {
 
 		db = retrive.getDatabase(1);
+		Transaction transact = db.startTransaction();
 
-		long classid = classattendancetransferobject.getId();
+		ClassAttendenceTransferObject classattendance = classattendancetransferobject.get(0);
 
-		classATO = db.sql("select students.id as studentid,students.name,(SELECT DATE_FORMAT(classroom_attendance.dateofattendance,'%M %Y')) AS showdate from students "
-						+ "JOIN classroom_attendance ON  students.id = classroom_attendance.studentid "
-						+ " JOIN classroom_students ON students.id = classroom_students.studentid "
-						+ "where classid =?  group by students.id", classid)
-				.results(ClassAttendenceTransferObject.class);
-		
-		for (ClassAttendenceTransferObject presentclassATO : classATO) {
-			presentclassATO.setStudentattendance(db.sql("select students.id, classroom_attendance.dateofattendance, classroom_attendance.attendancestatus,"
-							+ "day(classroom_attendance.dateofattendance) as day"
-							+   " from students JOIN classroom_attendance ON  students.id = classroom_attendance.studentid"
-							+ " JOIN classroom_students ON students.id = classroom_students.studentid where classid =?  and students.id=?",
-					classid, presentclassATO.getId()).results(AttendanceDTO.class));
+		try {
+			long classroomid = db.where("gradeid=? and sectionname=?", classattendance.getGradeid(),
+					classattendance.getSectionname()).results(ClassRoom.class).get(0).getId();
+
+			for (ClassAttendenceTransferObject attendencerecords : classattendancetransferobject) {
+
+				ClassroomAttendance classroomAttendance = new ClassroomAttendance();
+				classroomAttendance.setClassroomid(classroomid);
+				classroomAttendance.setStudentid(attendencerecords.getId());
+				classroomAttendance.setDateofattendance(attendencerecords.getDateofattendance());
+				classroomAttendance.setAttendancestatus(attendencerecords.getAttendancestatus());
+
+				db.transaction(transact).insert(classroomAttendance);
+			}
+			transact.commit();
+		} catch (Throwable tr) {
+			transact.rollback();
+			tr.printStackTrace();
 		}
 
-		return classATO;
+		return 1;
+	}
+
+	// dates list
+
+	public List<ClassroomAttendance> getdates() {
+
+		db = retrive.getDatabase(1);
+		return db.sql("select distinct dateofattendance from classroom_attendance").results(ClassroomAttendance.class);
+	}
+
+	// view attendance
+
+	public ClassAttendenceTransferObject getAttendance(ClassAttendenceTransferObject classattendancetransferobject) {
+		ClassAttendenceTransferObject attendancereport = new ClassAttendenceTransferObject();
+		db = retrive.getDatabase(1);
+
+		long classroomid = db.where("gradeid=? and sectionname=?", classattendancetransferobject.getGradeid(),
+				classattendancetransferobject.getSectionname()).results(ClassRoom.class).get(0).getId();
+
+		attendancereport.setDateofattendance(classattendancetransferobject.getDateofattendance());
+
+		Long studentscount = db
+				.sql("select count(*) as count from classroom_attendance where classroomid=? and dateofattendance=?",
+						classroomid, classattendancetransferobject.getDateofattendance())
+				.first(Long.class);
+
+		attendancereport.setNoofstudents(studentscount);
+
+		long status = 0;
+		Long absentiescount = db
+				.sql("select count(*) as count from classroom_attendance where classroomid=? and dateofattendance=? and attendancestatus=?",
+						classroomid, classattendancetransferobject.getDateofattendance(), status)
+				.first(Long.class);
+		attendancereport.setNoofabsents(absentiescount);
+
+		List<Students> absentiesnames = db.sql(
+				"select students.id,students.name,students.contactnumber from classroom_attendance join students on classroom_attendance.classroomid=? and "
+			+ "classroom_attendance.attendancestatus=? and classroom_attendance.dateofattendance=? "
+			+ "and classroom_attendance.studentid=students.id ",
+				classroomid, status, classattendancetransferobject.getDateofattendance()).results(Students.class);
+
+		attendancereport.setStudents(absentiesnames);
+		status = 1;
+		Long presentiescount = db
+				.sql("select count(*) as count from classroom_attendance where classroomid=? and dateofattendance=? and attendancestatus=?",
+						classroomid, classattendancetransferobject.getDateofattendance(), status)
+				.first(Long.class);
+
+		attendancereport.setNoofpresents(presentiescount);
+		return attendancereport;
 	}
 
 }
