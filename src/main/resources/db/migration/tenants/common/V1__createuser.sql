@@ -1,5 +1,50 @@
+-- **************** USER ROLES TABLES ************************************
 
--- ********** GRADES TABLES ***************************
+CREATE TABLE roles(
+  id bigint(8) NOT NULL AUTO_INCREMENT,
+  role varchar(255) NOT NULL, 
+  description varchar(255) NOT NULL,
+  createdOn timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  modifiedOn timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+  PRIMARY KEY (id),
+  UNIQUE KEY name_UNIQUE (role)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+ INSERT INTO roles(role,description)
+ 				 VALUES("SUPERADMIN","School owner"),
+ 				 	   ("ADMIN","School admin"),
+ 				 	   ("TEACHER","School teacher"),
+ 				 	   ("PARENT","Father or gardian of student"),
+ 				 	   ("STUDENT","student");
+ 				 	   
+ CREATE TABLE userstatus(
+  id bigint(8) NOT NULL AUTO_INCREMENT,
+  description varchar(150) NOT NULL,
+  createdOn timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  modifiedOn timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+  PRIMARY KEY (id),
+  UNIQUE KEY name_UNIQUE (description)
+ )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+INSERT INTO userstatus(description)
+			VALUES("Active"),
+				  ("InActive"),
+			 	  ("Pending");
+
+CREATE TABLE usercredentials(
+  id bigint(8) NOT NULL AUTO_INCREMENT,
+  mail varchar(255) NOT NULL,
+  password varchar(255) NOT NULL,
+  roleid bigint(8) NOT NULL,
+  statusid bigint(8)NOT NULL,
+  createdOn timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  modifiedOn timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+  PRIMARY KEY (id),
+  FOREIGN KEY (roleid) REFERENCES usersroles (id),
+  FOREIGN KEY (statusid) REFERENCES userstatus (id)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+-- ********** GRADES TABLES **********************************************
 
 CREATE TABLE grades(
 	id bigint(8) NOT NULL AUTO_INCREMENT,
