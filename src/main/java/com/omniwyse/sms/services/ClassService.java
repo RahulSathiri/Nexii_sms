@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dieselpoint.norm.Database;
+import com.omniwyse.sms.Application;
 import com.omniwyse.sms.db.DatabaseRetrieval;
 import com.omniwyse.sms.models.AcademicYears;
 import com.omniwyse.sms.models.ClassRoom;
@@ -27,7 +28,7 @@ import com.omniwyse.sms.utils.ClassSectionTransferObject;
 @SuppressWarnings("unused")
 @Service
 public class ClassService {
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 	@Autowired
 	private DatabaseRetrieval retrieve;
 
@@ -64,11 +65,8 @@ public class ClassService {
 				.results(ClassRoom.class);
 		if (records.isEmpty()) {
 			if (isValidTeachername(teachername)) {
-
 				classes.setClassteacherid(teacherid);
-
 				db.insert(classes).getRowsAffected();
-
 				long classid = classes.getId();
 				stc = new SubjectTeacherClass();
 				List<GradeSubjects> subjectids = db.where("gradeid=?", gradeid).results(GradeSubjects.class);
@@ -162,15 +160,16 @@ public class ClassService {
 	public List<AcademicYears> getAcademicYears() throws ParseException {
 		db = retrieve.getDatabase(1);
 		return db.sql("select * from academicyears").results(AcademicYears.class);
-		
+
 	}
 
 	public int addAcademicYears(AcademicYearsDTO academicyearsdto) {
 		AcademicYears academicyears = new AcademicYears();
 		db = retrieve.getDatabase(1);
 		java.sql.Date passingyear = convertJavaDateToSqlDate(academicyearsdto.getPassingyear());
-		academicyears.setPassingyear(passingyear);
 
+		academicyears.setPassingyear(passingyear);
+		academicyears.setActive(academicyearsdto.getActive());
 		java.sql.Date academicyearstarting = convertJavaDateToSqlDate(academicyearsdto.getAcademicyearstarting());
 		academicyears.setAcademicyearstarting(academicyearstarting);
 		java.sql.Date academicyearending = convertJavaDateToSqlDate(academicyearsdto.getAcademicyearending());
@@ -188,7 +187,7 @@ public class ClassService {
 	}
 
 	public int updateAcademicYear(AcademicYears academicyears) {
-		
+
 		db = retrieve.getDatabase(1);
 		return db.sql("update academicyears set active=? and passingyear=? where id=? ", academicyears.getActive(),
 				academicyears.getPassingyear(), academicyears.getId()).execute().getRowsAffected();
