@@ -105,10 +105,11 @@ public class ClassroomAttendenceService {
 		attendancereport.setNoofabsents(absentiescount);
 
 		List<Students> absentiesnames = db.sql(
-				"select students.id,students.name,students.contactnumber from classroom_attendance join students on classroom_attendance.classroomid=? and "
-			+ "classroom_attendance.attendancestatus=? and classroom_attendance.dateofattendance=? "
-			+ "and classroom_attendance.studentid=students.id ",
-				classroomid, status, classattendancetransferobject.getDateofattendance()).results(Students.class);
+					"select students.id,students.name,students.contactnumber from classroom_attendance " 
+					+"join students on classroom_attendance.studentid=students.id "
+					+ "and classroom_attendance.classroomid=? and  classroom_attendance.dateofattendance=? "
+					+ "and classroom_attendance.attendancestatus=?",
+				classroomid,classattendancetransferobject.getDateofattendance(),status).results(Students.class);
 
 		attendancereport.setStudents(absentiesnames);
 		status = 1;
