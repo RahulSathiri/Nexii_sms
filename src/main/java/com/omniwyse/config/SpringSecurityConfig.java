@@ -10,15 +10,15 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 
 import com.omniwyse.sms.services.MyUserDetailsService;
 
-@Configuration
 @EnableWebSecurity
+@Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private AccessDeniedHandler accesshandler;
     
     @Autowired
-    MyUserDetailsService userDetailsService;
+    MyUserDetailsService myuserDetailsService;
 
     @Override
     protected void configure(HttpSecurity httpsecurity) {
@@ -28,7 +28,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/superadmin/**").hasAnyRole("SUPERADMIN").antMatchers("/admin/**")
                     .hasAnyRole("ADMIN").antMatchers("/teacher/**").hasAnyRole("TEACHER")
                     .antMatchers("/parent/**").hasAnyRole("PARENT").antMatchers("student/**").hasAnyRole("STUDENT")
-                    .anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll().and().logout()
+                    .anyRequest().authenticated().and().formLogin().permitAll().and().logout()
                     .permitAll().and().exceptionHandling().accessDeniedHandler(accesshandler);
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -39,7 +39,17 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
+        auth.userDetailsService(myuserDetailsService);
+//        .passwordEncoder(new PasswordEncoder() {
+//            @Override
+//            public String encode(CharSequence charSequence){
+//                return charSequence.toString();
+//            }
+//            @Override
+//            public boolean matches(CharSequence charSequence,String s){
+//                return true;
+//            }
+//        });
     }
-
+    
 }

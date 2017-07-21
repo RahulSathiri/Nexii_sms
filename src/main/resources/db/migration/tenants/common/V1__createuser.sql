@@ -40,7 +40,7 @@ CREATE TABLE usercredentials(
   createdOn timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
   modifiedOn timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   PRIMARY KEY (id),
-  FOREIGN KEY (roleid) REFERENCES usersroles (id),
+  FOREIGN KEY (roleid) REFERENCES roles (id),
   FOREIGN KEY (statusid) REFERENCES userstatus (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 

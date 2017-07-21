@@ -5,10 +5,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Table(name = "roles")
-public class Roles {
+public class UserRoles {
     private long id;
     private String role;
     private String description;
+
+    public UserRoles() {
+
+    }
 
     @Id
     @GeneratedValue

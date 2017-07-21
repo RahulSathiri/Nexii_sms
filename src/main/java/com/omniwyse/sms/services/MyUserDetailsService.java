@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import com.dieselpoint.norm.Database;
 import com.omniwyse.sms.db.DatabaseRetrieval;
 import com.omniwyse.sms.models.UserCredentials;
-import com.omniwyse.sms.models.Roles;
+import com.omniwyse.sms.models.UserRoles;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
@@ -41,12 +41,11 @@ public class MyUserDetailsService implements UserDetailsService {
     // }
 
     @Override
-    // @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         db = retrive.getDatabase(1);
         UserCredentials user = (UserCredentials) db.where("mail=?", username).results(UserCredentials.class);
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        for (Roles role : user.getUserRole()) {
+        for (UserRoles role : user.getUserRoles()) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole()));
         }
         return new org.springframework.security.core.userdetails.User(user.getMail(), user.getPassword(), grantedAuthorities);

@@ -13,7 +13,11 @@ public class UserCredentials {
     private long statusid;
     private String mail;
     private String password;
-    private Set<Roles> userRole = new HashSet<Roles>(0);
+    private Set<UserRoles> userRoles = new HashSet<UserRoles>(0);
+
+    public UserCredentials() {
+
+    }
 
     @Id
     @GeneratedValue
@@ -49,12 +53,13 @@ public class UserCredentials {
         this.password = password;
     }
 
-    public Set<Roles> getUserRole() {
-        return userRole;
+    public Set<UserRoles> getUserRoles() {
+        return userRoles;
     }
 
-    public void setUserRole(Set<Roles> userRole) {
-        this.userRole = userRole;
+    public void setUserRoles(Set<UserRoles> userRoles) {
+        this.userRoles = userRoles;
     }
+
 
 }

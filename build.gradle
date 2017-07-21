@@ -37,7 +37,6 @@ dependencies {
     compile "org.flywaydb:flyway-core:4.2.0"
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
     compile 'org.springframework.boot:spring-boot-starter-security:1.4.0.RELEASE'
-    compile 'org.springframework:spring-tx:3.0.5.RELEASE'
     //compile "com.wix:wix-embedded-mysql:2.1.4"
     
     testCompile('org.springframework.boot:spring-boot-starter-test')
