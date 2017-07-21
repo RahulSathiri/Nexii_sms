@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dieselpoint.norm.Database;
+import com.dieselpoint.norm.Transaction;
 import com.omniwyse.sms.Application;
 import com.omniwyse.sms.db.DBFactory;
 import com.omniwyse.sms.models.Clients;
@@ -47,22 +48,27 @@ public class RegistrationService {
 		tenant.setCode(code);
 		tenant.setDbname(users.getSchoolcode());
 		tenant.setDateofestablishment(users.getDateofestablishment());
+		tenant.setUrl("iSchool"+users.getSchoolname());
 		client.setFname(users.getContactname());
 		client.setContactnumber(users.getContactnumber());
 		client.setEmailid(users.getEmailid()); 
 		client.setPassword(users.getPassword());
 		db = database.getSchoolDb();
+		Transaction transact = db.startTransaction();
+		try{
 		if (isValidCode()) {
 			if (isValidEmailId()) {
-				db = database.getSchoolDb();
-				a = db.insert(tenant).getRowsAffected();
+				a = db.transaction(transact).insert(tenant).getRowsAffected();
 				client.setSchoolid(tenant.getId());
-				b = db.insert(client).getRowsAffected();
-
+				b = db.transaction(transact).insert(client).getRowsAffected();
+				transact.commit();
 			} else
 				return -1;
 		} else
 			return -1;
+		}catch (Exception e) {
+			transact.rollback();
+		}
 		return b;
 
 	}
