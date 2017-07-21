@@ -167,7 +167,6 @@ public class ClassService {
 		AcademicYears academicyears = new AcademicYears();
 		db = retrieve.getDatabase(1);
 		java.sql.Date passingyear = convertJavaDateToSqlDate(academicyearsdto.getPassingyear());
-
 		academicyears.setPassingyear(passingyear);
 		academicyears.setActive(academicyearsdto.getActive());
 		java.sql.Date academicyearstarting = convertJavaDateToSqlDate(academicyearsdto.getAcademicyearstarting());
@@ -189,9 +188,8 @@ public class ClassService {
 	public int updateAcademicYear(AcademicYears academicyears) {
 
 		db = retrieve.getDatabase(1);
-		return db.sql("update academicyears set active=? and passingyear=? where id=? ", academicyears.getActive(),
-				academicyears.getPassingyear(), academicyears.getId()).execute().getRowsAffected();
-
+		return db.update(academicyears).getRowsAffected();
+		
 	}
 
 }
