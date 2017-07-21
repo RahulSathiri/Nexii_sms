@@ -59,9 +59,17 @@ public class ClassroomAttendenceService {
 				classroomAttendance.setStudentid(attendencerecords.getId());
 				classroomAttendance.setDateofattendance(attendencerecords.getDateofattendance());
 				classroomAttendance.setAttendancestatus(attendencerecords.getAttendancestatus());
-
+				List<ClassroomAttendance> attendance=db.sql("select * from classroom_attendance where classroomid=? and dateofattendance=? and studentid=?",
+						classroomid,attendencerecords.getDateofattendance(),attendencerecords.getId()).results(ClassroomAttendance.class);
+				if(attendance.isEmpty()){
 				db.transaction(transact).insert(classroomAttendance);
+			
+			}else
+			{
+				return -1;
 			}
+			}
+		
 			transact.commit();
 		} catch (Throwable tr) {
 			transact.rollback();

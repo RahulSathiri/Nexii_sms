@@ -58,7 +58,7 @@ public class ClassroomAttendenceController {
 			} 
 			else {
 				response.setStatus(400);
-				response.setMessage("duplicate attandance Record");
+				response.setMessage(" attandance already taken");
 				response.setDescription("attandance Record already exist");
 				return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		
