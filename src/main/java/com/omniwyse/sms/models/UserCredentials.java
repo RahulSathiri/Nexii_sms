@@ -1,8 +1,5 @@
 package com.omniwyse.sms.models;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -13,10 +10,19 @@ public class UserCredentials {
     private long statusid;
     private String mail;
     private String password;
-    private Set<UserRoles> userRoles = new HashSet<UserRoles>(0);
+
+    // private Set<UserRoles> userRoles = new HashSet<UserRoles>(0);
 
     public UserCredentials() {
 
+    }
+
+    public UserCredentials(UserCredentials user) {
+        this.id = user.getId();
+        this.statusid = user.getStatusid();
+        this.mail = user.getMail();
+        this.password = user.getPassword();
+        // this.userRoles = user.getUserRoles();
     }
 
     @Id
@@ -53,13 +59,13 @@ public class UserCredentials {
         this.password = password;
     }
 
-    public Set<UserRoles> getUserRoles() {
-        return userRoles;
-    }
-
-    public void setUserRoles(Set<UserRoles> userRoles) {
-        this.userRoles = userRoles;
-    }
+    // public Set<UserRoles> getUserRoles() {
+    // return userRoles;
+    // }
+    //
+    // public void setUserRoles(Set<UserRoles> userRoles) {
+    // this.userRoles = userRoles;
+    // }
 
 
 }
