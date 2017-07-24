@@ -1,13 +1,15 @@
 package com.omniwyse.sms.utils;
 
+import java.util.Date;
+
 public class StudentTransferObject {
 	private String name;
 	private String fathername;
 	private String mothername;
 	private String contactnumber;
 	private String address;
-	private String dateofbirth;
-	private String dateofjoining;
+	private Date dateofbirth;
+	private Date dateofjoining;
 	private String gender;
 	private String gradename;
 	private String Syllabustype;
@@ -44,16 +46,17 @@ public class StudentTransferObject {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public String getDateofbirth() {
+	
+	public Date getDateofbirth() {
 		return dateofbirth;
 	}
-	public void setDateofbirth(String dateofbirth) {
+	public void setDateofbirth(Date dateofbirth) {
 		this.dateofbirth = dateofbirth;
 	}
-	public String getDateofjoining() {
+	public Date getDateofjoining() {
 		return dateofjoining;
 	}
-	public void setDateofjoining(String dateofjoining) {
+	public void setDateofjoining(Date dateofjoining) {
 		this.dateofjoining = dateofjoining;
 	}
 	public String getGender() {
