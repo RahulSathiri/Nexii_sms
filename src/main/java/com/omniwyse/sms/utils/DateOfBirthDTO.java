@@ -37,6 +37,7 @@ public class DateOfBirthDTO {
 	public void setGradename(String gradename) {
 		this.gradename = gradename;
 	}
+	
 	public String getSectionname() {
 		return sectionname;
 	}

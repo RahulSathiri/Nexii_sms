@@ -15,6 +15,12 @@ public class Students {
 	private String contactnumber;
 	private String address;
 	private Date dateofbirth;
+	private Date dateofjoining;
+	private String gender;
+	private long gradeid;
+	private String admissionnumber;
+	private String emailid;
+	private long id;
 	public Date getDateofbirth() {
 		return dateofbirth;
 	}
@@ -30,16 +36,6 @@ public class Students {
 	public void setDateofjoining(Date dateofjoining) {
 		this.dateofjoining = dateofjoining;
 	}
-
-
-
-	private Date dateofjoining;
-	private String gender;
-	private long gradeid;
-	private String admissionnumber;
-	private String emailid;
-	private long id;
-	
 
 	public long getGradeid() {
 		return gradeid;

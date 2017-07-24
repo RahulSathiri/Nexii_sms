@@ -33,6 +33,7 @@ public class StudentsDateOfBirthController {
 		return studentsDateOfBirthService.getStudentsBirthDays();
 
 	}
+	
 	@RequestMapping("birthday/myclassstudents")
 	public List<DateOfBirthDTO> getBirthDaysOfMyClassStudents(@RequestBody ClassRoom classRoom) {
 		return studentsDateOfBirthService.getBirthDaysOfMyClassStudents(classRoom);

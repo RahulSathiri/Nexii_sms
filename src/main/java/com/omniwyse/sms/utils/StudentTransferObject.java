@@ -46,7 +46,6 @@ public class StudentTransferObject {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
 	public Date getDateofbirth() {
 		return dateofbirth;
 	}
