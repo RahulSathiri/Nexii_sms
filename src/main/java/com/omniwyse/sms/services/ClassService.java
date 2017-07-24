@@ -1,6 +1,10 @@
 package com.omniwyse.sms.services;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dieselpoint.norm.Database;
+import com.omniwyse.sms.Application;
 import com.omniwyse.sms.db.DatabaseRetrieval;
 import com.omniwyse.sms.models.AcademicYears;
 import com.omniwyse.sms.models.ClassRoom;
@@ -17,12 +22,13 @@ import com.omniwyse.sms.models.GradeSubjects;
 import com.omniwyse.sms.models.Grades;
 import com.omniwyse.sms.models.SubjectTeacherClass;
 import com.omniwyse.sms.models.Teachers;
+import com.omniwyse.sms.utils.AcademicYearsDTO;
 import com.omniwyse.sms.utils.ClassSectionTransferObject;
 
 @SuppressWarnings("unused")
 @Service
 public class ClassService {
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 	@Autowired
 	private DatabaseRetrieval retrieve;
 
@@ -34,12 +40,9 @@ public class ClassService {
 	private long teacherid;
 	private String gradename;
 	private String syllabustype;
-	private String yearfromto;
 	private long gradeid;
-	private AcademicYears academicyears;
 
 	public int createClass(ClassSectionTransferObject createclass) {
-		academicyears = new AcademicYears();
 		academicyear = createclass.getAcademicyear();
 		sectionname = createclass.getSectionname();
 		teachername = createclass.getTeachername();
@@ -62,19 +65,8 @@ public class ClassService {
 				.results(ClassRoom.class);
 		if (records.isEmpty()) {
 			if (isValidTeachername(teachername)) {
-
 				classes.setClassteacherid(teacherid);
-				yearfromto = String.valueOf(academicyear - 1) + "-" + String.valueOf(academicyear);
-				
 				db.insert(classes).getRowsAffected();
-				List<AcademicYears> list = db.where("academicyear=?", academicyear).results(AcademicYears.class);
-
-				if (list.isEmpty()) {
-					academicyears.setAcademicyear(academicyear);
-					academicyears.setYearfromto(yearfromto);
-					db.insert(academicyears);
-				}
-
 				long classid = classes.getId();
 				stc = new SubjectTeacherClass();
 				List<GradeSubjects> subjectids = db.where("gradeid=?", gradeid).results(GradeSubjects.class);
@@ -165,23 +157,39 @@ public class ClassService {
 		return classes;
 	}
 
-	public List<AcademicYears> getAcademicYears() {
+	public List<AcademicYears> getAcademicYears() throws ParseException {
 		db = retrieve.getDatabase(1);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
-		int currentyear = Integer.parseInt(sdf.format(new Date()));
-		List<AcademicYears> academicyears = db.sql("select * from academicyears").results(AcademicYears.class);
-		for (AcademicYears academicyear : academicyears) {
-			if (academicyear.getAcademicyear() == currentyear) {
-				academicyear.setActive(1);
-			} else {
-				academicyear.setActive(0);
-			}
-			db.update(academicyear);
+		return db.sql("select * from academicyears").results(AcademicYears.class);
 
+	}
+
+	public int addAcademicYears(AcademicYearsDTO academicyearsdto) {
+		AcademicYears academicyears = new AcademicYears();
+		db = retrieve.getDatabase(1);
+		java.sql.Date passingyear = convertJavaDateToSqlDate(academicyearsdto.getPassingyear());
+		academicyears.setPassingyear(passingyear);
+		academicyears.setActive(academicyearsdto.getActive());
+		java.sql.Date academicyearstarting = convertJavaDateToSqlDate(academicyearsdto.getAcademicyearstarting());
+		academicyears.setAcademicyearstarting(academicyearstarting);
+		java.sql.Date academicyearending = convertJavaDateToSqlDate(academicyearsdto.getAcademicyearending());
+		academicyears.setAcademicyearending(academicyearending);
+		List<AcademicYears> list = db.where("passingyear=?", passingyear).results(AcademicYears.class);
+		if (list.isEmpty()) {
+			return db.insert(academicyears).getRowsAffected();
+		} else {
+			return 0;
 		}
+	}
 
-		return db.sql("select * from academicyears")
-				.results(AcademicYears.class);
+	public java.sql.Date convertJavaDateToSqlDate(Date date) {
+		return new java.sql.Date(date.getTime());
+	}
+
+	public int updateAcademicYear(AcademicYears academicyears) {
+
+		db = retrieve.getDatabase(1);
+		return db.update(academicyears).getRowsAffected();
+		
 	}
 
 }

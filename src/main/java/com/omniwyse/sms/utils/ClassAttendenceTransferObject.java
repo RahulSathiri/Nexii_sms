@@ -2,34 +2,90 @@ package com.omniwyse.sms.utils;
 import java.sql.Date;
 import java.util.List;
 
+import com.omniwyse.sms.models.ClassroomAttendance;
+import com.omniwyse.sms.models.Students;
+
 public class ClassAttendenceTransferObject {
 
 	private long id;
 	private String name;
-	private String syllabustype;
-	private long academicyear;
 	private Date dateofattendance;
 	private long attendancestatus;
-	private String today;
-	private String showdate;
-	private long days;
-	private List<AttendanceDTO> studentattendance;
+	private long gradeid;
+	private String sectionname;
+	private long noofstudents;
+	private long noofpresents;
+	private long noofabsents;
+	private List<Students> students;
+	private List<ClassroomAttendance> studentattendance;
+	private List<ClassRoomStudents> studentsOfClassRoom;
+	
+	public long getNoofstudents() {
+		return noofstudents;
+	}
 
-	public List<AttendanceDTO> getStudentattendance() {
+	public void setNoofstudents(long noofstudents) {
+		this.noofstudents = noofstudents;
+	}
+
+	public long getNoofpresents() {
+		return noofpresents;
+	}
+
+	public void setNoofpresents(long noofpresents) {
+		this.noofpresents = noofpresents;
+	}
+
+	public long getNoofabsents() {
+		return noofabsents;
+	}
+
+	public void setNoofabsents(long noofabsents) {
+		this.noofabsents = noofabsents;
+	}
+
+	public List<Students> getStudents() {
+		return students;
+	}
+
+	public void setStudents(List<Students> students) {
+		this.students = students;
+	}
+
+	public long getGradeid() {
+		return gradeid;
+	}
+
+	public void setGradeid(long gradeid) {
+		this.gradeid = gradeid;
+	}
+
+	public String getSectionname() {
+		return sectionname;
+	}
+
+	public void setSectionname(String sectionname) {
+		this.sectionname = sectionname;
+	}
+
+
+	public List<ClassRoomStudents> getStudentsOfClassRoom() {
+		return studentsOfClassRoom;
+	}
+
+	public void setStudentsOfClassRoom(List<ClassRoomStudents> studentsOfClassRoom) {
+		this.studentsOfClassRoom = studentsOfClassRoom;
+	}
+
+	
+	public List<ClassroomAttendance> getStudentattendance() {
 		return studentattendance;
 	}
 
-	public void setStudentattendance(List<AttendanceDTO> studentattendance) {
+	public void setStudentattendance(List<ClassroomAttendance> studentattendance) {
 		this.studentattendance = studentattendance;
 	}
 
-	public String getToday() {
-		return today;
-	}
-
-	public void setToday(String today) {
-		this.today = today;
-	}
 	
 	public String getName() {
 		return name;
@@ -39,21 +95,7 @@ public class ClassAttendenceTransferObject {
 		this.name = name;
 	}
 
-	public String getShowdate() {
-		return showdate;
-	}
-
-	public void setShowdate(String showdate) {
-		this.showdate = showdate;
-	}
-
-	public long getDays() {
-		return days;
-	}
-
-	public void setDays(long days) {
-		this.days = days;
-	}
+	
 
 	public long getAttendancestatus() {
 		return attendancestatus;
@@ -63,23 +105,7 @@ public class ClassAttendenceTransferObject {
 		this.attendancestatus = attendancestatus;
 	}
 
-	public String getSyllabustype() {
-		return syllabustype;
-	}
-
-	public void setSyllabustype(String syllabustype) {
-		this.syllabustype = syllabustype;
-	}
-
-	public long getAcademicyear() {
-		return academicyear;
-	}
-
-	public void setAcademicyear(long academicyear) {
-		this.academicyear = academicyear;
-	}
-
-
+	
 	public long getId() {
 		return id;
 	}

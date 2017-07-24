@@ -1,12 +1,12 @@
-package com.omniwyse.sms.models;
+package com.omniwyse.sms.utils;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 @Table(name="academicyears")
-public class AcademicYears {
+public class AcademicYearsDTO {
 	private long id;
 	private Date passingyear;
 	private Date academicyearstarting;
