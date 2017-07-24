@@ -5,7 +5,7 @@ id bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
 lessonname VARCHAR(50) NOT NULL,
 subjectid bigint NOT NULL,
 classroomid bigint NOT NULL,
-FOREIGN KEY(classroomid) REFERENCES classrooms(id)
+FOREIGN KEY(classroomid) REFERENCES classrooms(id),
 FOREIGN KEY(subjectid) REFERENCES grade_subjects(id)
 );
 
@@ -22,7 +22,7 @@ FOREIGN KEY(subjectid) REFERENCES grade_subjects(id)
 
 CREATE TABLE classroom_worksheets(
 id bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
-worksheetid bigint NOT NULL,
+worksheetsid bigint NOT NULL,
 dateofassigned date,
 duedate date,
 classroomid bigint NOT NULL,
