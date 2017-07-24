@@ -1,4 +1,5 @@
 
+
 package com.omniwyse.sms.db;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,4 +41,3 @@ public class DBConnectionProperties {
         return password;
     }
 }
-

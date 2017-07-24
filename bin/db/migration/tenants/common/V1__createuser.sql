@@ -129,11 +129,12 @@ CREATE TABLE classroom_students(
 CREATE TABLE subjects(
 	id bigint(8) NOT NULL AUTO_INCREMENT PRIMARY KEY, 
 	subjectname VARCHAR(150) NOT NULL,
+	subjectid bigint(8),
 	istestable VARCHAR(30) NOT NULL
 );
 
-insert into subjects(subjectname,istestable) 
-values('Telugu','true'),('Hindi','true'),('English','true'),('Maths','true'),('Biology','true');
+insert into subjects(subjectname,subjectid,istestable) 
+values('Telugu',1,'true'),('Hindi',2,'true'),('English',3,'true'),('Physics',4,'true'),('Maths',5,'true'),('Biology',6,'true');
 
 CREATE TABLE class_subjects(
 	id bigint(8) NOT NULL AUTO_INCREMENT PRIMARY KEY, 
