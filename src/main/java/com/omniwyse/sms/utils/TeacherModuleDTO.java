@@ -2,11 +2,18 @@ package com.omniwyse.sms.utils;
 
 public class TeacherModuleDTO {
 
+	private long id;
 	private String subjectname;
 	private long gradeid;
 	private String sectionname;
 	
 	
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
 	public String getSubjectname() {
 		return subjectname;
 	}
