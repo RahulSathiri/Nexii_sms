@@ -10,15 +10,6 @@ public class Subjects  {
 	private long id;
 	private String subjectname;
 	private String istestable;
-	private long subjectid;
-
-	public long getSubjectid() {
-		return subjectid;
-	}
-
-	public void setSubjectid(long subjectid) {
-		this.subjectid = subjectid;
-	}
 
 	public String getIstestable() {
 		return istestable;

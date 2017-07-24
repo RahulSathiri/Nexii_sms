@@ -13,7 +13,7 @@ public class DBConnectionProperties {
         host = System.getenv().getOrDefault("sms_db_host", "localhost");
         port = System.getenv().getOrDefault("sms_db_port", "3306");
         user = System.getenv().getOrDefault("sms_db_user", "root");
-        password = System.getenv().getOrDefault("sms_db_password", "admin");
+        password = System.getenv().getOrDefault("sms_db_password", "root");
     }
 
     public String host() {
