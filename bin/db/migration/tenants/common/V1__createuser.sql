@@ -103,9 +103,9 @@ CREATE TABLE students(
 );
 
 insert into students(gradeid,name,fathername,mothername,contactnumber,address,dateofbirth,dateofjoining,gender,emailid,admissionnumber)
-	values (1,'vikram','srinivas','sunitha','8977646503','hno:5-2-203, Janagaon,Telangana,508203','2005-07-24','2010-06-10','male','vikram@gmail.com','7011'),
-	(2,'kalpana','koteshwar rao','padma','9977765623','plot no:12-14-97,patancheruvu,Hyd -500045','2003-07-24','2008-01-01','female','kalpana@gmail.com','90111'),
-	(2,'srinadh','suresh','devi','8977690734','hno:5-203,kr nagar, mancheryal,Telangana-504203','2002-07-24','2006-06-06','male','srinadh@gmail.com','10111'),
+	values (1,'vikram','srinivas','sunitha','8977646503','hno:5-2-203, Janagaon,Telangana,508203','2005-07-26','2010-06-10','male','vikram@gmail.com','7011'),
+	(2,'kalpana','koteshwar rao','padma','9977765623','plot no:12-14-97,patancheruvu,Hyd -500045','2003-07-25','2008-01-01','female','kalpana@gmail.com','90111'),
+	(2,'srinadh','suresh','devi','8977690734','hno:5-203,kr nagar, mancheryal,Telangana-504203','2002-07-25','2006-06-06','male','srinadh@gmail.com','10111'),
 	(1,'yamini','kamal','vimala','9955544499','plot no:12-5-50,anakapally,vizag-500085','2007-01-01','2012-06-19','female','yamini@gmail.com','50111');
 
 CREATE TABLE classroom_students(

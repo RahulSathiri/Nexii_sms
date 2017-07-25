@@ -34,9 +34,14 @@ public class StudentsDateOfBirthController {
 
 	}
 	
-	@RequestMapping("birthday/myclassstudents")
+	@RequestMapping("/birthday/myclassstudentstoday")
 	public List<DateOfBirthDTO> getBirthDaysOfMyClassStudents(@RequestBody ClassRoom classRoom) {
 		return studentsDateOfBirthService.getBirthDaysOfMyClassStudents(classRoom);
+
+	}
+	@RequestMapping("/birthday/myclassstudentstomorrow")
+	public List<DateOfBirthDTO> getTomorrowBirthDaysOfMyClassStudents(@RequestBody ClassRoom classRoom) {
+		return studentsDateOfBirthService.getTomorrowBirthDaysOfMyClassStudents(classRoom);
 
 	}
 }
