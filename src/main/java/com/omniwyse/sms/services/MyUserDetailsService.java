@@ -7,6 +7,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,7 +19,7 @@ import com.omniwyse.sms.models.UserCredentials;
 import com.omniwyse.sms.models.UserRoleMaintain;
 import com.omniwyse.sms.models.UserRoles;
 
-@Service
+@Service("userDetailsService")
 public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
@@ -26,7 +27,6 @@ public class MyUserDetailsService implements UserDetailsService {
 
     private Database db;
 
-    @SuppressWarnings("unused")
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         db = retrive.getDatabase(1);
@@ -37,20 +37,16 @@ public class MyUserDetailsService implements UserDetailsService {
             mainuser = user;
             roles = db.where("userid=?", user.getId()).results(UserRoleMaintain.class);
         }
-        if (userlist == null) {
-            throw new UsernameNotFoundException("User not found/exist");
-        } else {
-            Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-            for (UserRoleMaintain role : roles) {
-                List<UserRoles> assignedroleslist = db.where("id=?", role.getRoleid()).results(UserRoles.class);
-                String assignedrole = null;
-                for (UserRoles assignedroles : assignedroleslist) {
-                    assignedrole = assignedroles.getRole();
-                    grantedAuthorities.add(new SimpleGrantedAuthority(assignedrole));
-                }
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+        for (UserRoleMaintain role : roles) {
+            List<UserRoles> assignedroleslist = db.where("id=?", role.getRoleid()).results(UserRoles.class);
+            String assignedrole = null;
+            for (UserRoles assignedroles : assignedroleslist) {
+                assignedrole = assignedroles.getRole();
+                grantedAuthorities.add(new SimpleGrantedAuthority(assignedrole));
             }
-            return new org.springframework.security.core.userdetails.User(mainuser.getMail(), mainuser.getPassword(),grantedAuthorities);
         }
-
+        UserDetails userdetails = new User(mainuser.getMail(), mainuser.getPassword(), true, true, true, true, grantedAuthorities);
+        return userdetails;
     }
 }
