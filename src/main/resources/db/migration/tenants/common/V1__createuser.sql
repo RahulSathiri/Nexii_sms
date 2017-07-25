@@ -135,8 +135,7 @@ CREATE TABLE subjects(
 
 insert into subjects(subjectname,subjectid,istestable) 
 values('Telugu',1,'true'),('Hindi',2,'true'),('English',3,'true'),('Physics',4,'true'),('Maths',5,'true'),('Biology',6,'true');
-	istestable VARCHAR(30) NOT NULL
-);
+	
 
 
 CREATE TABLE class_subjects(
