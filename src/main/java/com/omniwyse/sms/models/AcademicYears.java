@@ -8,7 +8,7 @@ import javax.persistence.Table;
 @Table(name="academicyears")
 public class AcademicYears {
 	private long id;
-	private Date passingyear;
+	private long passingyear;
 	private Date academicyearstarting;
 	private Date academicyearending;
 	private long active;
@@ -22,10 +22,11 @@ public class AcademicYears {
 		this.id = id;
 	}
 	
-	public Date getPassingyear() {
+	
+	public long getPassingyear() {
 		return passingyear;
 	}
-	public void setPassingyear(Date passingyear) {
+	public void setPassingyear(long passingyear) {
 		this.passingyear = passingyear;
 	}
 	public Date getAcademicyearstarting() {

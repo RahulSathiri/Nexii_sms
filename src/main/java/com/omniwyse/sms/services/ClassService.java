@@ -166,7 +166,7 @@ public class ClassService {
 	public int addAcademicYears(AcademicYearsDTO academicyearsdto) {
 		AcademicYears academicyears = new AcademicYears();
 		db = retrieve.getDatabase(1);
-		java.sql.Date passingyear = convertJavaDateToSqlDate(academicyearsdto.getPassingyear());
+		long passingyear = academicyearsdto.getPassingyear();
 		academicyears.setPassingyear(passingyear);
 		academicyears.setActive(academicyearsdto.getActive());
 		java.sql.Date academicyearstarting = convertJavaDateToSqlDate(academicyearsdto.getAcademicyearstarting());
