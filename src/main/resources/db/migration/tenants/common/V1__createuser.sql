@@ -339,13 +339,13 @@ FOREIGN KEY(classroomid) REFERENCES classrooms(id));
 
 CREATE TABLE academicyears(
 id bigint(8) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-passingyear date NOT NULL,
+passingyear bigint(8) NOT NULL,
 academicyearstarting date NOT NULL,
 academicyearending date NOT NULL,
 active INT NOT NULL
 );
 
-INSERT INTO academicyears(passingyear,academicyearstarting,academicyearending,active) values('2017-03-04','2016-03-04','2016-03-04',1);
+INSERT INTO academicyears(passingyear,academicyearstarting,academicyearending,active) values(2018,'2017-03-04','2018-03-04',1);
 
 
 
