@@ -4,6 +4,24 @@ public class DateOfBirthDTO {
 	private long teacherid;
 	private String name;
 	private String gradename;
+<<<<<<< HEAD
+=======
+	private long id;
+	private String admissionnumber;
+	
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public String getAdmissionnumber() {
+		return admissionnumber;
+	}
+	public void setAdmissionnumber(String admissionnumber) {
+		this.admissionnumber = admissionnumber;
+	}
+>>>>>>> feature/studentbirthdays
 	public long getTeacherid() {
 		return teacherid;
 	}
@@ -22,6 +40,10 @@ public class DateOfBirthDTO {
 	public void setGradename(String gradename) {
 		this.gradename = gradename;
 	}
+<<<<<<< HEAD
+=======
+	
+>>>>>>> feature/studentbirthdays
 	public String getSectionname() {
 		return sectionname;
 	}
@@ -30,4 +52,8 @@ public class DateOfBirthDTO {
 	}
 	private String sectionname;
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> feature/studentbirthdays

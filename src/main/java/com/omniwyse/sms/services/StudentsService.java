@@ -1,5 +1,6 @@
 package com.omniwyse.sms.services;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,8 @@ public class StudentsService {
 		students.setAddress(addStudent.getAddress());
 		students.setAdmissionnumber(addStudent.getAdmissionnumber());
 		students.setContactnumber(addStudent.getContactnumber());
-		students.setDateofbirth(addStudent.getDateofbirth());
-		students.setDateofjoining(addStudent.getDateofjoining());
+		students.setDateofbirth(convertJavaDateToSqlDate(addStudent.getDateofbirth()));
+		students.setDateofjoining(convertJavaDateToSqlDate(addStudent.getDateofjoining()));
 		students.setEmailid(addStudent.getEmailid());
 		students.setFathername(addStudent.getFathername());
 		students.setGender(addStudent.getGender());
@@ -52,6 +53,10 @@ public class StudentsService {
 		} else
 			return 0;
 	}
+	public java.sql.Date convertJavaDateToSqlDate(Date date) {
+		return new java.sql.Date(date.getTime());
+	}
+
 
 	private boolean isValidStudent(String name) {
 		List<Students> students = db.where("name=?", name).results(Students.class);
