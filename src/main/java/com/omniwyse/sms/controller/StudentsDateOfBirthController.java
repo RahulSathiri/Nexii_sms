@@ -6,11 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-<<<<<<< HEAD
-=======
 
 import com.omniwyse.sms.models.ClassRoom;
->>>>>>> feature/studentbirthdays
 import com.omniwyse.sms.services.StudentsDateOfBirthService;
 import com.omniwyse.sms.utils.DateOfBirthDTO;
 
@@ -36,9 +33,6 @@ public class StudentsDateOfBirthController {
 		return studentsDateOfBirthService.getStudentsBirthDays();
 
 	}
-<<<<<<< HEAD
-}
-=======
 	
 	@RequestMapping("/birthday/myclassstudentstoday")
 	public List<DateOfBirthDTO> getBirthDaysOfMyClassStudents(@RequestBody ClassRoom classRoom) {
@@ -51,4 +45,3 @@ public class StudentsDateOfBirthController {
 
 	}
 }
->>>>>>> feature/studentbirthdays
