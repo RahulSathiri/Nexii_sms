@@ -7,8 +7,27 @@ public class TestTransferObject {
 
 	private String testtype;
 	private long id;
+	private String syllabus;
+	private long subjectid;
+	public String getSyllabus() {
+		return syllabus;
+	}
 
-	List<TestSubjectsDisplay> subjects;
+	public long getSubjectid() {
+		return subjectid;
+	}
+
+
+	public void setSubjectid(long subjectid) {
+		this.subjectid = subjectid;
+	}
+
+
+	public void setSyllabus(String syllabus) {
+		this.syllabus = syllabus;
+	}
+
+	private List<TestSubjectsDisplay> subjects;
 
 	private Date startdate;
 	private Date enddate;
@@ -74,15 +93,6 @@ public class TestTransferObject {
 	public void setSubjects(List<TestSubjectsDisplay> subjects) {
 		this.subjects = subjects;
 	}
-	
-	
-
-//	@Override
-//	public String toString() {
-//		return "TestTransferObject [testtype=" + testtype + ", id=" + id + ", startdate=" + startdate + ", enddate="
-//				+ enddate + ", testmode=" + testmode + ", maxmarks=" + maxmarks + "]";
-//	}
-	
 	
 
 }

@@ -1,6 +1,5 @@
 package com.omniwyse.sms.services;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +16,6 @@ import com.omniwyse.sms.utils.ClassRoomDetails;
 import com.omniwyse.sms.utils.ClassSectionTransferObject;
 import com.omniwyse.sms.utils.TeacherModuleDTO;
 import com.omniwyse.sms.utils.TeacherScheduleDTO;
-import com.omniwyse.sms.utils.TestSubjectsDisplay;
 import com.omniwyse.sms.utils.TestTransferObject;
 
 
@@ -119,26 +117,18 @@ public class TeacherModuleService {
 		return classroom;
 	}
 //tests list
-	public List<TestTransferObject> getListOfsubjectTests(long id, String subjectname) throws IOException {
+	public List<TestTransferObject> getListOfsubjectTests(long id, String subjectname) {
 
 		db = retrive.getDatabase(1);
 		long gradeid=db.where("id=?", id).results(ClassRoom.class).get(0).getGradeid();
-		List<TestTransferObject> testsdetails = db
-			.sql("select test_type.id,test_type.testtype,test_mode.testmode,test_create.startdate,"
-					+ "test_create.enddate,test_create.maxmarks from test_create inner join test_mode on"
-					+ " test_create.gradeid=? and  test_create.modeid=test_mode.id inner join test_type on"
-					+ " test_create.testtypeid=test_type.id",gradeid).results(TestTransferObject.class);
-		long testid;
 		long subjectid=db.where("subjectname=?",subjectname).results(Subjects.class).get(0).getId();
-		for (TestTransferObject test : testsdetails) {
-		testid = test.getId();
-		List<TestSubjectsDisplay> subjecttestsyllabus = db
-				.sql("select test_syllabus.id,test_syllabus.maxmarks,test_syllabus.testid,test_syllabus.subjectid,"
-						+"test_syllabus.syllabus,subjects.subjectname from test_syllabus  inner join "
-						+"subjects on test_syllabus.testid=? and test_syllabus.subjectid=subjects.id and test_syllabus.subjectid=?",
-						testid,subjectid).results(TestSubjectsDisplay.class);
-		test.setSubjects(subjecttestsyllabus);
-	}
+		List<TestTransferObject> testsdetails = db
+			.sql("select test_type.testtype,test_syllabus.syllabus,test_mode.testmode, test_create.id,test_create.startdate,"
+					+ "test_syllabus.subjectid, test_create.enddate,test_create.maxmarks from test_create"
+					+ " JOIN test_mode ON test_mode.id = test_create.modeid JOIN test_type ON test_type.id = test_create.testtypeid"
+					+ " JOIN test_syllabus ON test_syllabus.subjectid = ? and test_create.gradeid = ? "
+					+ "and test_syllabus.testid = test_create.id;" , subjectid,gradeid).results(TestTransferObject.class);
+	
 	return testsdetails;
 
 }

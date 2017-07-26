@@ -1,13 +1,11 @@
 package com.omniwyse.sms.controller;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.omniwyse.sms.models.Teachers;
@@ -44,12 +42,8 @@ public class TeacherModuleController {
 	}
 	
 	@RequestMapping("/subjectstests/{id}/{subjectname}")
-	public List<TestTransferObject> getListOfTests(@PathVariable ("id") long id, @PathVariable ("subjectname") String subjectname) throws IOException {
+	public List<TestTransferObject> getListOfTests(@PathVariable ("id") long id, @PathVariable ("subjectname") String subjectname) {
 		List<TestTransferObject> tests= service.getListOfsubjectTests(id,subjectname);
-		if(tests.isEmpty())
-		{
-		return null;	
-		}
 		return tests; 
 
 	}
