@@ -88,7 +88,7 @@ public class TeacherModuleService {
 		return list;
 
 	}
-	public  ClassRoomDetails teacherModuleList(long id, String subjectname) {
+	public  ClassRoomDetails  teacherModuleList(long id, String subjectname) {
 		
 		db = retrive.getDatabase(1);
 		ClassRoomDetails classroom=new ClassRoomDetails();
@@ -106,6 +106,34 @@ public class TeacherModuleService {
 		classroom.setTests(listTetss);
 		
 		return classroom;
+	}
+		
+//students list of subject 
+	public  ClassRoomDetails teacherModulestudentsList(long id, String subjectname) {
+	
+		db = retrive.getDatabase(1);
+		ClassRoomDetails classroom=new ClassRoomDetails();
+		classroom.setStudentsOfClassRoom(studentService.getStudentsOfClassRoom(id));
+		return classroom;
+	}
+//tests list
+	public List<TestTransferObject> getListOfsubjectTests(long id, String subjectname) {
+
+		db = retrive.getDatabase(1);
+		long gradeid = db.where("id=?", id).results(ClassRoom.class).get(0).getGradeid();
+		long subjectid = db.where("subjectname=?", subjectname).results(Subjects.class).get(0).getId();
+		List<TestTransferObject> testsdetails = db
+				.sql("SELECT  test_create.id,test_type.testtype,test_mode.testmode,test_create.startdate,test_create.enddate,"
+						+ "test_syllabus.subjectid,test_create.maxmarks,test_syllabus.syllabus " 
+						+ "FROM test_create "
+						+ "JOIN test_mode on test_create.modeid = test_mode.id "
+						+ "JOIN test_type on test_create.testtypeid = test_type.id "
+						+ "JOIN test_syllabus on test_syllabus.testid = test_create.id "
+						+ "WHERE test_syllabus.subjectid = ? AND test_create.gradeid = ?", subjectid, gradeid)
+				.results(TestTransferObject.class);
+
+		return testsdetails;
+
 	}
 
 }
