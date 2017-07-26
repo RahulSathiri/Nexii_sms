@@ -123,12 +123,11 @@ public class TeacherModuleService {
 		long gradeid=db.where("id=?", id).results(ClassRoom.class).get(0).getGradeid();
 		long subjectid=db.where("subjectname=?",subjectname).results(Subjects.class).get(0).getId();
 		List<TestTransferObject> testsdetails = db
-			.sql("select test_type.testtype,test_syllabus.syllabus,test_mode.testmode, test_create.id,test_create.startdate,"
-					+ "test_syllabus.subjectid, test_create.enddate,test_create.maxmarks from test_create"
-					+ " JOIN test_mode ON test_mode.id = test_create.modeid JOIN test_type ON test_type.id = test_create.testtypeid"
-					+ " JOIN test_syllabus ON test_syllabus.subjectid = ? and test_create.gradeid = ? "
-					+ "and test_syllabus.testid = test_create.id;" , subjectid,gradeid).results(TestTransferObject.class);
-	
+			.sql("SELECT  test_create.id,test_type.testtype,test_mode.testmode,test_create.startdate,test_create.enddate,"
+					+"test_syllabus.subjectid,test_create.maxmarks,test_syllabus.syllabus FROM test_create JOIN test_mode "
+					+"JOIN test_type JOIN test_syllabus WHERE test_mode.id = test_create.modeid AND test_type.id = test_create.testtypeid " 
+					+"AND  test_syllabus.testid = test_create.id AND test_syllabus.subjectid = ? AND test_create.gradeid = ?", subjectid,gradeid).results(TestTransferObject.class);
+		
 	return testsdetails;
 
 }
