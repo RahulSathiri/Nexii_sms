@@ -185,6 +185,7 @@ insert into test_mode(testmode) values('online'),
 CREATE TABLE test_create(
 	id bigint(8) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	gradeid bigint(8) NOT NULL,
+	academicyear bigint(8) NOT NULL, 
 	testtypeid bigint(8) NOT NULL,
 	startdate DATE NOT NULL,
 	enddate DATE NOT NULL,

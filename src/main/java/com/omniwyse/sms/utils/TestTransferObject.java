@@ -7,6 +7,15 @@ public class TestTransferObject {
 
 	private String testtype;
 	private long id;
+	private long academicyear;
+
+	public long getAcademicyear() {
+		return academicyear;
+	}
+
+	public void setAcademicyear(long academicyear) {
+		this.academicyear = academicyear;
+	}
 
 	List<TestSubjectsDisplay> subjects;
 
