@@ -13,6 +13,7 @@ import com.omniwyse.sms.services.TeacherModuleService;
 import com.omniwyse.sms.utils.ClassRoomDetails;
 import com.omniwyse.sms.utils.ClassSectionTransferObject;
 import com.omniwyse.sms.utils.TeacherModuleDTO;
+import com.omniwyse.sms.utils.TestTransferObject;
 
 
 @RestController
@@ -31,6 +32,20 @@ public class TeacherModuleController {
 		
 		return service.teacherModuleList(id,subjectname);
 		
+	}
+	
+	@RequestMapping("/mysubjectsstudents/{id}/{subjectname}")
+	public ClassRoomDetails listStudents(@PathVariable ("id") long id, @PathVariable ("subjectname") String subjectname){
+		
+		return service.teacherModulestudentsList(id,subjectname);
+		
+	}
+	
+	@RequestMapping("/subjectstests/{id}/{subjectname}")
+	public List<TestTransferObject> getListOfTests(@PathVariable ("id") long id, @PathVariable ("subjectname") String subjectname) {
+		List<TestTransferObject> tests= service.getListOfsubjectTests(id,subjectname);
+		return tests; 
+
 	}
 
 	@RequestMapping("/myclassroom")
