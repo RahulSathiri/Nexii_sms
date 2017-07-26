@@ -120,16 +120,20 @@ public class TeacherModuleService {
 	public List<TestTransferObject> getListOfsubjectTests(long id, String subjectname) {
 
 		db = retrive.getDatabase(1);
-		long gradeid=db.where("id=?", id).results(ClassRoom.class).get(0).getGradeid();
-		long subjectid=db.where("subjectname=?",subjectname).results(Subjects.class).get(0).getId();
+		long gradeid = db.where("id=?", id).results(ClassRoom.class).get(0).getGradeid();
+		long subjectid = db.where("subjectname=?", subjectname).results(Subjects.class).get(0).getId();
 		List<TestTransferObject> testsdetails = db
-			.sql("SELECT  test_create.id,test_type.testtype,test_mode.testmode,test_create.startdate,test_create.enddate,"
-					+"test_syllabus.subjectid,test_create.maxmarks,test_syllabus.syllabus FROM test_create JOIN test_mode "
-					+"JOIN test_type JOIN test_syllabus WHERE test_mode.id = test_create.modeid AND test_type.id = test_create.testtypeid " 
-					+"AND  test_syllabus.testid = test_create.id AND test_syllabus.subjectid = ? AND test_create.gradeid = ?", subjectid,gradeid).results(TestTransferObject.class);
-		
-	return testsdetails;
+				.sql("SELECT  test_create.id,test_type.testtype,test_mode.testmode,test_create.startdate,test_create.enddate,"
+						+ "test_syllabus.subjectid,test_create.maxmarks,test_syllabus.syllabus " 
+						+ "FROM test_create "
+						+ "JOIN test_mode on test_create.modeid = test_mode.id "
+						+ "JOIN test_type on test_create.testtypeid = test_type.id "
+						+ "JOIN test_syllabus on test_syllabus.testid = test_create.id "
+						+ "WHERE test_syllabus.subjectid = ? AND test_create.gradeid = ?", subjectid, gradeid)
+				.results(TestTransferObject.class);
 
-}
+		return testsdetails;
+
+	}
 
 }
