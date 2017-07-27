@@ -12,9 +12,10 @@ public class Assignments {
 	private long id;
 	private String assignmentname;
 	private Date dateofassigned;
-	private Date duedate;
+	private Date assignmentduedate;
 	private long classroomid;
 	private long subjectid;
+	private long lessonsid;
 	
 	@Id
 	@GeneratedValue
@@ -23,6 +24,13 @@ public class Assignments {
 	}
 	public void setId(long id) {
 		this.id = id;
+	}
+	
+	public long getLessonsid() {
+		return lessonsid;
+	}
+	public void setLessonsid(long lessonsid) {
+		this.lessonsid = lessonsid;
 	}
 	public String getAssignmentname() {
 		return assignmentname;
@@ -36,11 +44,11 @@ public class Assignments {
 	public void setDateofassigned(Date dateofassigned) {
 		this.dateofassigned = dateofassigned;
 	}
-	public Date getDuedate() {
-		return duedate;
+	public Date getAssignmentduedate() {
+		return assignmentduedate;
 	}
-	public void setDuedate(Date duedate) {
-		this.duedate = duedate;
+	public void setAssignmentduedate(Date assignmentduedate) {
+		this.assignmentduedate = assignmentduedate;
 	}
 	public long getClassroomid() {
 		return classroomid;
