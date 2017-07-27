@@ -1,3 +1,5 @@
+
+
 package com.omniwyse.sms.db;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +12,17 @@ public class DBConnectionProperties {
 
     @Autowired
     public DBConnectionProperties() {
-        host = System.getenv().getOrDefault("sms_db_host", "localhost");
-        port = System.getenv().getOrDefault("sms_db_port", "3306");
-        user = System.getenv().getOrDefault("sms_db_user", "root");
-        password = System.getenv().getOrDefault("sms_db_password", "admin");
+        if (System.getenv("ischool_db_host") != null) {
+            host = System.getenv().getOrDefault("sms_db_host", System.getenv("ischool_db_host"));
+            port = System.getenv().getOrDefault("sms_db_port", System.getenv("ischool_db_port"));
+            user = System.getenv().getOrDefault("sms_db_user", System.getenv("ischool_db_user"));
+            password = System.getenv().getOrDefault("sms_db_password", System.getenv("ischool_db_password"));
+        } else {
+            host = System.getenv().getOrDefault("sms_db_host", "localhost");
+            port = System.getenv().getOrDefault("sms_db_port", "3306");
+            user = System.getenv().getOrDefault("sms_db_user", "root");
+            password = System.getenv().getOrDefault("sms_db_password", "admin");
+        }
     }
 
     public String host() {

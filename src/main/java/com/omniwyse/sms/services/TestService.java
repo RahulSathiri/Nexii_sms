@@ -42,8 +42,9 @@ public class TestService {
 		String testmode = testTransferObject.getTestmode();
 		db = retrieve.getDatabase(1);
 		long gradeid = testTransferObject.getId();
+		long academicyear=testTransferObject.getAcademicyear();
 		long testtypeid = db.where("testtype=?", testtypename).results(TestType.class).get(0).getId();
-		List<TestCreate> records = db.where("gradeid=? and testtypeid=?", gradeid, testtypeid)
+		List<TestCreate> records = db.where("academicyear=? and gradeid=? and testtypeid=?",academicyear, gradeid, testtypeid)
 				.results(TestCreate.class);
 		if (records.isEmpty()) {
 			long testmodeid = db.where("testmode=?", testmode).results(Testmode.class).get(0).getId();
@@ -54,6 +55,7 @@ public class TestService {
 			testcreate.setStartdate(testTransferObject.getStartdate());
 			testcreate.setEnddate(testTransferObject.getEnddate());
 			testcreate.setMaxmarks(testTransferObject.getMaxmarks());
+			testcreate.setAcademicyear(academicyear);
 			db.insert(testcreate).getRowsAffected();
 			long testid = testcreate.getId();
 			testsyllubus = new TestSyllabus();

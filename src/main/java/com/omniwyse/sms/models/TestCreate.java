@@ -15,6 +15,15 @@ public class TestCreate {
 	private Date enddate;
 	private long modeid;
 	private long maxmarks;
+	private long academicyear;
+
+	public long getAcademicyear() {
+		return academicyear;
+	}
+
+	public void setAcademicyear(long academicyear) {
+		this.academicyear = academicyear;
+	}
 
 	@Id
 	@GeneratedValue

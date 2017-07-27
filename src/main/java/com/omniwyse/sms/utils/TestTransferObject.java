@@ -7,11 +7,22 @@ public class TestTransferObject {
 
 	private String testtype;
 	private long id;
-
+	private long academicyear;
+	private String testmode;
+	private long maxmarks;
 	List<TestSubjectsDisplay> subjects;
-
 	private Date startdate;
 	private Date enddate;
+
+	public long getAcademicyear() {
+		return academicyear;
+	}
+
+	public void setAcademicyear(long academicyear) {
+		this.academicyear = academicyear;
+	}
+
+	
 	public Date getStartdate() {
 		return startdate;
 	}
@@ -27,11 +38,6 @@ public class TestTransferObject {
 	public void setEnddate(Date enddate) {
 		this.enddate = enddate;
 	}
-
-	private String testmode;
-	private long maxmarks;
-
-	
 
 	public long getId() {
 		return id;
@@ -57,8 +63,6 @@ public class TestTransferObject {
 		this.id = id;
 	}
 
-	
-
 	public long getMaxmarks() {
 		return maxmarks;
 	}
@@ -75,14 +79,5 @@ public class TestTransferObject {
 		this.subjects = subjects;
 	}
 	
-	
-
-//	@Override
-//	public String toString() {
-//		return "TestTransferObject [testtype=" + testtype + ", id=" + id + ", startdate=" + startdate + ", enddate="
-//				+ enddate + ", testmode=" + testmode + ", maxmarks=" + maxmarks + "]";
-//	}
-	
-	
-
 }
+

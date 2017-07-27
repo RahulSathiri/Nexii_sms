@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.omniwyse.sms.models.Students;
 import com.omniwyse.sms.models.Subjects;
-import com.omniwyse.sms.models.TestType;
 
 
 
@@ -14,14 +13,15 @@ public class ClassRoomDetails {
 	private List<ClassRoomStudents> studentsOfClassRoom;
 	private List<Students> studentsoOfGrade;
 	private List<TableView> timetable;
-	private List<TestType> tests; 
+	private List<TestTransferObject> tests; 
 	
 	
-	public List<TestType> getTests() {
+
+	public List<TestTransferObject> getTests() {
 		return tests;
 	}
 
-	public void setTests(List<TestType> tests) {
+	public void setTests(List<TestTransferObject> tests) {
 		this.tests = tests;
 	}
 
