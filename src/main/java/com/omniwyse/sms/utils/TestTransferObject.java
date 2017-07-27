@@ -10,9 +10,36 @@ public class TestTransferObject {
 	private long academicyear;
 	private String testmode;
 	private long maxmarks;
-	List<TestSubjectsDisplay> subjects;
+	private List<TestSubjectsDisplay> subjects;
 	private Date startdate;
 	private Date enddate;
+	private long testid;
+	private String syllabus;
+	private long subjectid;
+	
+	public long getSubjectid() {
+		return subjectid;
+	}
+
+	public void setSubjectid(long subjectid) {
+		this.subjectid = subjectid;
+	}
+
+	public String getSyllabus() {
+		return syllabus;
+	}
+
+	public void setSyllabus(String syllabus) {
+		this.syllabus = syllabus;
+	}
+
+	public long getTestid() {
+		return testid;
+	}
+
+	public void setTestid(long testid) {
+		this.testid = testid;
+	}
 
 	public long getAcademicyear() {
 		return academicyear;
