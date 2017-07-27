@@ -46,7 +46,8 @@ public class MyUserDetailsService implements UserDetailsService {
                 grantedAuthorities.add(new SimpleGrantedAuthority(assignedrole));
             }
         }
-        UserDetails userdetails = new User(mainuser.getMail(), mainuser.getPassword(), true, true, true, true, grantedAuthorities);
+        UserDetails userdetails = new User(mainuser.getMail(), mainuser.getPassword(), true, true, true, true,
+                grantedAuthorities);
         return userdetails;
     }
 }
