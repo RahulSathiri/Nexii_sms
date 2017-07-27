@@ -18,6 +18,7 @@ import com.omniwyse.sms.models.Subjects;
 import com.omniwyse.sms.models.Teachers;
 import com.omniwyse.sms.models.Worksheets;
 import com.omniwyse.sms.utils.AssignmentDTO;
+import com.omniwyse.sms.models.TestSyllabus;
 import com.omniwyse.sms.utils.ClassRoomDetails;
 import com.omniwyse.sms.utils.ClassSectionTransferObject;
 import com.omniwyse.sms.utils.TeacherModuleDTO;
@@ -121,7 +122,6 @@ public class TeacherModuleService {
 		return classroom;
 	}
 		
-//students list of subject 
 	public  ClassRoomDetails teacherModulestudentsList(long tenantId,long id, String subjectname) {
 	
 		db = retrive.getDatabase(tenantId);
@@ -129,16 +129,15 @@ public class TeacherModuleService {
 		classroom.setStudentsOfClassRoom(studentService.getStudentsOfClassRoom(id, tenantId));
 		return classroom;
 	}
-//tests list
-	public List<TestTransferObject> getListOfsubjectTests(long tenantId,long id, String subjectname) {
+
+	public List<TestTransferObject> getListOfsubjectTests(long tenantId, long id, String subjectname) {
 
 		db = retrive.getDatabase(tenantId);
 		long gradeid = db.where("id=?", id).results(ClassRoom.class).get(0).getGradeid();
 		long subjectid = db.where("subjectname=?", subjectname).results(Subjects.class).get(0).getId();
 		List<TestTransferObject> testsdetails = db
-				.sql("SELECT  test_create.id,test_type.testtype,test_mode.testmode,test_create.startdate,test_create.enddate,"
-						+ "test_syllabus.subjectid,test_create.maxmarks,test_syllabus.syllabus " 
-						+ "FROM test_create "
+				.sql("SELECT  test_syllabus.id,test_syllabus.testid,test_type.testtype,test_mode.testmode,test_create.startdate,test_create.enddate,"
+						+ "test_syllabus.subjectid,test_create.maxmarks,test_syllabus.syllabus " + "FROM test_create "
 						+ "JOIN test_mode on test_create.modeid = test_mode.id "
 						+ "JOIN test_type on test_create.testtypeid = test_type.id "
 						+ "JOIN test_syllabus on test_syllabus.testid = test_create.id "
@@ -149,7 +148,7 @@ public class TeacherModuleService {
 
 	}
 
-	public List<TimelineDTO> viewTimeline(long tenantId,TimelineDTO data) {
+	public List<TimelineDTO> viewTimeline(long tenantId, TimelineDTO data) {
 
 		db = retrive.getDatabase(tenantId);
 
