@@ -1,5 +1,7 @@
 package com.omniwyse.sms.utils;
 
+import java.sql.Date;
+
 public class WorkSheetsDTO {
 
 	private long id;
@@ -12,6 +14,33 @@ public class WorkSheetsDTO {
 	private String worksheetpath;
 	private byte[] worksheet;
 	private String createdby;
+	private Date dateofassigned;
+	private Date duedate;
+	private String lessonname;
+	
+	public String getLessonname() {
+		return lessonname;
+	}
+
+	public void setLessonname(String lessonname) {
+		this.lessonname = lessonname;
+	}
+
+	public Date getDateofassigned() {
+		return dateofassigned;
+	}
+
+	public void setDateofassigned(Date dateofassigned) {
+		this.dateofassigned = dateofassigned;
+	}
+
+	public Date getDuedate() {
+		return duedate;
+	}
+
+	public void setDuedate(Date duedate) {
+		this.duedate = duedate;
+	}
 
 	public long getId() {
 		return id;

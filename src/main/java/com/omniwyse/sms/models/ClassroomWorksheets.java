@@ -10,12 +10,12 @@ import javax.persistence.Table;
 public class ClassroomWorksheets {
 
 	private long id;
-	private long worksheetid;
+	private long worksheetsid;
 	private Date dateofassigned;
-	private Date duedate;
+	private Date worksheetduedate;
 	private long subjectid;
 	private long classroomid;
-	private long teacherid;
+	private long lessonsid;
 	
 	@Id
 	@GeneratedValue
@@ -25,11 +25,12 @@ public class ClassroomWorksheets {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public long getWorksheetid() {
-		return worksheetid;
+	
+	public long getLessonsid() {
+		return lessonsid;
 	}
-	public void setWorksheetid(long worksheetid) {
-		this.worksheetid = worksheetid;
+	public void setLessonsid(long lessonsid) {
+		this.lessonsid = lessonsid;
 	}
 	public Date getDateofassigned() {
 		return dateofassigned;
@@ -37,11 +38,20 @@ public class ClassroomWorksheets {
 	public void setDateofassigned(Date dateofassigned) {
 		this.dateofassigned = dateofassigned;
 	}
-	public Date getDuedate() {
-		return duedate;
+	
+	
+	public long getWorksheetsid() {
+		return worksheetsid;
 	}
-	public void setDuedate(Date duedate) {
-		this.duedate = duedate;
+	public void setWorksheetsid(long worksheetsid) {
+		this.worksheetsid = worksheetsid;
+	}
+	
+	public Date getWorksheetduedate() {
+		return worksheetduedate;
+	}
+	public void setWorksheetduedate(Date worksheetduedate) {
+		this.worksheetduedate = worksheetduedate;
 	}
 	public long getSubjectid() {
 		return subjectid;
@@ -54,12 +64,6 @@ public class ClassroomWorksheets {
 	}
 	public void setClassroomid(long classroomid) {
 		this.classroomid = classroomid;
-	}
-	public long getTeacherid() {
-		return teacherid;
-	}
-	public void setTeacherid(long teacherid) {
-		this.teacherid = teacherid;
 	}
 	
 }

@@ -7,17 +7,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dieselpoint.norm.Database;
+import com.dieselpoint.norm.Transaction;
 import com.omniwyse.sms.db.DatabaseRetrieval;
+import com.omniwyse.sms.models.Assignments;
 import com.omniwyse.sms.models.ClassRoom;
+import com.omniwyse.sms.models.ClassroomWorksheets;
+import com.omniwyse.sms.models.Lessons;
 import com.omniwyse.sms.models.SubjectTeacherClass;
 import com.omniwyse.sms.models.Subjects;
 import com.omniwyse.sms.models.Teachers;
+import com.omniwyse.sms.models.Worksheets;
+import com.omniwyse.sms.utils.AssignmentDTO;
 import com.omniwyse.sms.models.TestSyllabus;
 import com.omniwyse.sms.utils.ClassRoomDetails;
 import com.omniwyse.sms.utils.ClassSectionTransferObject;
 import com.omniwyse.sms.utils.TeacherModuleDTO;
 import com.omniwyse.sms.utils.TeacherScheduleDTO;
 import com.omniwyse.sms.utils.TestTransferObject;
+import com.omniwyse.sms.utils.TimelineDTO;
+import com.omniwyse.sms.utils.WorkSheetsDTO;
 
 
 @Service
@@ -28,6 +36,9 @@ public class TeacherModuleService {
 	@Autowired
 	private StudentsService studentService;
 
+	@Autowired
+	private WorksheetService workSheetService;
+	
 	private Database db;
 
 	public List<TeacherModuleDTO> listAllSubjectsAlongWithClassRooms(ClassSectionTransferObject moduleDTO) {
@@ -60,7 +71,6 @@ public class TeacherModuleService {
 		return teacher;
 
 	}
-
 	@SuppressWarnings("deprecation")
 	public List<TeacherScheduleDTO> getSchedule(ClassSectionTransferObject dataObject, String date) {
 
@@ -135,6 +145,106 @@ public class TeacherModuleService {
 
 		return testsdetails;
 
+	}
+
+	public List<TimelineDTO> viewTimeline(TimelineDTO data) {
+
+		db = retrive.getDatabase(1);
+
+		long classroomid = data.getId();
+		long subjectid = db.where("subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId();
+
+		List<TimelineDTO> list = db
+				.sql("select lessons.lessonstartdate, lessons.lessonname, lessons.tags, classroom_worksheets.worksheetduedate,"
+						+ "assignments.assignmentduedate, worksheets.worksheetname, assignments.assignmentname from lessons LEFT OUTER JOIN assignments "
+						+ "ON assignments.lessonsid = lessons.id LEFT OUTER JOIN classroom_worksheets  ON "
+						+ "classroom_worksheets.lessonsid = lessons.id LEFT OUTER JOIN worksheets ON "
+						+ "classroom_worksheets.worksheetsid = worksheets.id where"
+						+ " lessons.subjectid = ? and lessons.classroomid = ?;", subjectid, classroomid)
+				.results(TimelineDTO.class);
+		return list;
+	}
+
+	public int addingLesson(TimelineDTO data) {
+
+		int rowEffected = 0;
+		db = retrive.getDatabase(1);
+		Lessons lesson = new Lessons();
+
+		Transaction transact = db.startTransaction();
+		try {
+			lesson.setClassroomid(data.getId());
+			lesson.setLessonname(data.getLessonname());
+			lesson.setLessonstartdate(data.getLessonstartdate());
+			lesson.setSubjectid(
+					db.where("subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId());
+			lesson.setTags(data.getTags());
+			lesson.setStatus(data.getStatus());
+
+			rowEffected = db.transaction(transact).insert(lesson).getRowsAffected();
+			transact.commit();
+		} catch (Exception e) {
+
+			transact.rollback();
+			return rowEffected;
+		}
+		return rowEffected;
+	}
+
+	public List<WorkSheetsDTO> listWorkSheetsbasedOn(WorkSheetsDTO data) {
+
+		long gradeid = db.where("id = ?", data.getId()).results(ClassRoom.class).get(0).getGradeid();
+		data.setGradeid(gradeid);
+		List<WorkSheetsDTO> list = workSheetService.listingWorksheetsOfTenant(data);
+		return list;
+	}
+
+	public int assignAssignment(AssignmentDTO assigning) {
+
+		db = retrive.getDatabase(1);
+
+		long lessonid = db.where("lessonname = ?", assigning.getLessonname()).results(Lessons.class).get(0).getId();
+		Assignments assignment = new Assignments();
+
+		assignment.setClassroomid(assigning.getId());
+		assignment.setAssignmentname(assigning.getAssignmentname());
+		assignment.setDateofassigned(assigning.getDateofassigned());
+		assignment.setAssignmentduedate(assigning.getDuedate());
+		assignment.setSubjectid(
+				db.where("subjectname = ?", assigning.getSubjectname()).results(Subjects.class).get(0).getId());
+		assignment.setLessonsid(lessonid);
+
+		return db.insert(assignment).getRowsAffected();
+	}
+
+	public int worksheetAssign(WorkSheetsDTO data) {
+
+		db = retrive.getDatabase(1);
+
+		long lessonid = db.where("lessonname = ?", data.getLessonname()).results(Lessons.class).get(0).getId();
+
+		ClassroomWorksheets worksheet = new ClassroomWorksheets();
+
+		worksheet.setClassroomid(data.getId());
+		worksheet.setWorksheetsid(
+				db.where("worksheetname = ?", data.getWorksheetname()).results(Worksheets.class).get(0).getId());
+		worksheet.setDateofassigned(data.getDateofassigned());
+		worksheet.setWorksheetduedate(data.getDateofassigned());
+		worksheet.setSubjectid(
+				db.where("subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId());
+		worksheet.setLessonsid(lessonid);
+
+		return db.insert(worksheet).getRowsAffected();
+
+	}
+
+	public List<Lessons> lessonsList(TimelineDTO data) {
+
+		db = retrive.getDatabase(1);
+
+		long subjectid = db.where("subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId();
+
+		return db.where("classroomid = ? and subjectid = ?", data.getId(), subjectid).results(Lessons.class);
 	}
 
 }
