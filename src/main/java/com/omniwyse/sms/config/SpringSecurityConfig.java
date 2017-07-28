@@ -26,17 +26,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpsecurity) {
-//        try {
-//        httpsecurity.csrf().disable();
-//        httpsecurity.authorizeRequests()
-//            .antMatchers("/admin**").authenticated()
-//            .anyRequest().permitAll()
-//            .and()
-//            .formLogin().permitAll();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        //
+        try {
+            httpsecurity.csrf().disable();
+            httpsecurity.authorizeRequests().antMatchers("/admin**").authenticated().anyRequest().permitAll().and()
+                    .formLogin().permitAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         // try {
         // httpsecurity.authorizeRequests().antMatchers("/", "/home", "/about",
         // "/superadmin").permitAll()

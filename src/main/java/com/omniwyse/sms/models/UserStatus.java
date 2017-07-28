@@ -8,7 +8,7 @@ import javax.persistence.Table;
 public class UserStatus {
 
     private long id;
-    private String description;
+    private String status;
 
     @Id
     @GeneratedValue
@@ -20,11 +20,12 @@ public class UserStatus {
         this.id = id;
     }
 
-    public String getDescription() {
-        return description;
+    public String getStatus() {
+        return status;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setStatus(String status) {
+        this.status = status;
     }
+
 }

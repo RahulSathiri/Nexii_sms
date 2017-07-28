@@ -19,14 +19,14 @@ CREATE TABLE roles(
  				 	   
  CREATE TABLE userstatus(
   id bigint(8) NOT NULL AUTO_INCREMENT,
-  description varchar(150) NOT NULL,
+  status varchar(150) NOT NULL,
   createdOn timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
   modifiedOn timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   PRIMARY KEY (id),
-  UNIQUE KEY name_UNIQUE (description)
+  UNIQUE KEY name_UNIQUE (status)
  )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-INSERT INTO userstatus(description)
+INSERT INTO userstatus(status)
 			VALUES("Active"),
 				  ("InActive"),
 			 	  ("Pending");
