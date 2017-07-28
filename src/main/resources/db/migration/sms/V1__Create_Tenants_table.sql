@@ -6,8 +6,8 @@ CREATE TABLE schools(
   dateofestablishment date NOT NULL,
   timezone varchar(64) NOT NULL,
   dbname varchar(15) NOT NULL,
-  createdOn timestamp(3) DEFAULT CURRENT_TIMESTAMP(3),
-  modifiedOn timestamp(3) DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+  createdOn datetime not null DEFAULT now(),
+  modifiedOn datetime DEFAULT now() ON UPDATE now(),
   statusid smallint(6),
   url varchar(50) NOT NULL,
   PRIMARY KEY (id),
@@ -17,8 +17,8 @@ CREATE TABLE schools(
 
 INSERT INTO schools(code, sname,dateofestablishment, timezone, dbname, statusid,url)
 			VALUES("oakridge","Oakridge High School","2017-06-15","Asia/Calcutta","oakridge",1,"ischool.akrantha"),
-				  ("DPS","Delhi Public High School","2017-06-15","Asia/Calcutta","dps",1,"dps.akrantha");
-
+				  ("DPS","Delhi Public High School","2017-06-15","Asia/Calcutta","dps",1,"dps.akrantha");		  
+				  
 CREATE TABLE clients(
   id bigint(8) NOT NULL AUTO_INCREMENT,
   schoolid bigint(8) NOT NULL,
