@@ -34,26 +34,25 @@ public class LoginService {
 
     public ResponseEntity<LoginResponse> userLogin(UserCredentials clients, long tenantId) {
         emailid = clients.getMail();
-		password = clients.getPassword();
+        password = clients.getPassword();
         db = retrive.getDatabase(tenantId);
-        List<UserCredentials> result = db.where("emailid=? and password=?", emailid, password).results(UserCredentials.class);
+        List<UserCredentials> result = db.where("mail=? and password=?", emailid, password).results(
+                UserCredentials.class);
 
-		if (result.isEmpty()) {
-			response.setStatus(400);
-			response.setId(0);
-			response.setDescription("failed");
-
-			return new ResponseEntity<LoginResponse>(response, HttpStatus.BAD_REQUEST);
-
-		} else {
+        if (result.isEmpty()) {
+            response.setStatus(400);
+            response.setId(0);
+            response.setDescription("failed");
+            return new ResponseEntity<LoginResponse>(response, HttpStatus.BAD_REQUEST);
+        } else {
             // id = result.get(0).getSchoolid();
             id = tenantId;
-			sname = db.where("id=?", id).results(Tenants.class).get(0).getSname();
-			response.setStatus(200);
-			response.setId(id);
-			response.setDescription("success");
-			response.setSchoolname(sname);
-			return new ResponseEntity<LoginResponse>(response, HttpStatus.OK);
-		}
-	}
+            sname = database.getSchoolDb().where("id=?", id).results(Tenants.class).get(0).getSname();
+            response.setStatus(200);
+            response.setId(id);
+            response.setDescription("success");
+            response.setSchoolname(sname);
+            return new ResponseEntity<LoginResponse>(response, HttpStatus.OK);
+        }
+    }
 }
