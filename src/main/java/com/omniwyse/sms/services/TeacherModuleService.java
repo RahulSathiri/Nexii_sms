@@ -18,6 +18,7 @@ import com.omniwyse.sms.models.Subjects;
 import com.omniwyse.sms.models.Teachers;
 import com.omniwyse.sms.models.Worksheets;
 import com.omniwyse.sms.utils.AssignmentDTO;
+import com.omniwyse.sms.models.TestSyllabus;
 import com.omniwyse.sms.utils.ClassRoomDetails;
 import com.omniwyse.sms.utils.ClassSectionTransferObject;
 import com.omniwyse.sms.utils.TeacherModuleDTO;
@@ -133,7 +134,7 @@ public class TeacherModuleService {
 		long gradeid = db.where("id=?", id).results(ClassRoom.class).get(0).getGradeid();
 		long subjectid = db.where("subjectname=?", subjectname).results(Subjects.class).get(0).getId();
 		List<TestTransferObject> testsdetails = db
-				.sql("SELECT  test_create.id,test_type.testtype,test_mode.testmode,test_create.startdate,test_create.enddate,"
+				.sql("SELECT  test_syllabus.id,test_syllabus.testid,test_type.testtype,test_mode.testmode,test_create.startdate,test_create.enddate,"
 						+ "test_syllabus.subjectid,test_create.maxmarks,test_syllabus.syllabus " 
 						+ "FROM test_create "
 						+ "JOIN test_mode on test_create.modeid = test_mode.id "
