@@ -2,9 +2,13 @@ package com.omniwyse.sms.controller;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.omniwyse.sms.models.NewsFeed;
 import com.omniwyse.sms.services.NewsService;
 import com.omniwyse.sms.utils.Response;
+import com.omniwyse.sms.utils.UserAndRoles;
 
 @RestController
 public class NewsController {
@@ -22,10 +27,12 @@ public class NewsController {
 	@Autowired
 	private Response response;
 
-	@RequestMapping(value = "/postnews", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Response> postNews(@RequestBody NewsFeed news) {
+    @RolesAllowed("hasAuthority('SUPERADMIN','ADMIN')")
+    @RequestMapping(value = "/{tenantId}/postnews", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity<Response> postNews(@PathVariable("tenantId") long tenantId, @RequestBody UserAndRoles user,
+            @RequestBody NewsFeed news) {
 
-		int rowEffected = service.postNews(news);
+        int rowEffected = service.postNews(tenantId, user, news);
 		if (rowEffected > 0) {
 			response.setStatus(202);
 			response.setMessage("news posted");
@@ -50,6 +57,7 @@ public class NewsController {
 
 	}
 
+    @PreAuthorize("hasRole('SUPERADMIN','ADMIN')")
 	@RequestMapping("/editnews")
 	public ResponseEntity<Response> editNews(@RequestBody NewsFeed newsfeed) {
 
@@ -61,6 +69,7 @@ public class NewsController {
 
 	}
 
+    @PreAuthorize("hasRole('SUPERADMIN','ADMIN')")
 	@RequestMapping("/deletenews")
 	public ResponseEntity<Response> deleteNews(@RequestBody NewsFeed newsfeed) {
 

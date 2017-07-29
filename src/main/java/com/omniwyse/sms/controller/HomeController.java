@@ -1,10 +1,15 @@
 package com.omniwyse.sms.controller;
 
-import org.springframework.security.access.annotation.Secured;
+import javax.annotation.security.RolesAllowed;
+
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.omniwyse.sms.utils.UserAndRoles;
 
 //@RequestMapping(value = "/home")
 @RestController
@@ -22,9 +27,9 @@ public class HomeController {
         return "privatepage";
     }
 
-    @Secured(value = { "SUPERADMIN" })
-    @RequestMapping(value = "/superadmin**", method = RequestMethod.GET)
-    public String superprivatepage() {
+    @RolesAllowed("hasAuthority('SUPERADMIN')")
+    @RequestMapping(value = "/{tenantId}/superadmin**", method = RequestMethod.POST, produces = "application/json")
+    public String superprivatepage(@PathVariable("tenantId") long tenantId, @RequestBody UserAndRoles user) {
         return "superprivatepage";
     }
 }

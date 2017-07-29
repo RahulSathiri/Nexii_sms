@@ -2,27 +2,47 @@ package com.omniwyse.sms.utils;
 
 import java.util.Set;
 
-import com.omniwyse.sms.models.UserCredentials;
-import com.omniwyse.sms.models.UserRoles;
+import org.springframework.security.core.GrantedAuthority;
 
 public class UserAndRoles {
 
-    private UserCredentials user;
-    private Set<UserRoles> roles;
+    private long userid;
+    private String username;
+    private long userstatus;
+    private Set<GrantedAuthority> roles;
 
-    public UserCredentials getUser() {
-        return user;
+
+
+    public long getUserid() {
+        return userid;
     }
 
-    public void setUser(UserCredentials user) {
-        this.user = user;
+    public void setUserid(long userid) {
+        this.userid = userid;
     }
 
-    public Set<UserRoles> getRoles() {
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public long getUserstatus() {
+        return userstatus;
+    }
+
+    public void setUserstatus(long userstatus) {
+        this.userstatus = userstatus;
+    }
+
+    public Set<GrantedAuthority> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<UserRoles> roles) {
+    public void setRoles(Set<GrantedAuthority> roles) {
         this.roles = roles;
     }
+
 }
