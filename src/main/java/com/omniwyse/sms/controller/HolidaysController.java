@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,10 +25,10 @@ public class HolidaysController {
 	private Response response;
 
     @PreAuthorize("hasRole('SUPERADMIN','ADMIN')")
-	@RequestMapping(value = "/postholiday", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Response> postHoliday(@RequestBody Holidays holiday) {
+	@RequestMapping(value = "/{tenantId}/postholiday", method = RequestMethod.POST, produces = "application/json")
+	public ResponseEntity<Response> postHoliday(@PathVariable("tenantId") long tenantId,@RequestBody Holidays holiday) {
 
-		int rowEffected = service.postHoliday(holiday);
+		int rowEffected = service.postHoliday(holiday,tenantId);
 		if (rowEffected > 0) {
 			response.setStatus(200);
 			response.setMessage("posted");
@@ -43,20 +44,20 @@ public class HolidaysController {
 
 	}
 
-	@RequestMapping("/holidays")
-	public List<Holidays> listOfHolidays() {
+	@RequestMapping("/{tenantId}/holidays")
+	public List<Holidays> listOfHolidays(@PathVariable("tenantId") long tenantId) {
 
-		List<Holidays> list = service.listOfHolidays();
+		List<Holidays> list = service.listOfHolidays(tenantId);
 
 		return list;
 
 	}
 
     @PreAuthorize("hasRole('SUPERADMIN','ADMIN')")
-	@RequestMapping("/editholiday")
-	public ResponseEntity<Response> editHoliday(@RequestBody Holidays holiday) {
+	@RequestMapping("/{tenantId}/editholiday")
+	public ResponseEntity<Response> editHoliday(@PathVariable("tenantId") long tenantId,@RequestBody Holidays holiday) {
 
-		service.editHoliday(holiday);
+		service.editHoliday(holiday,tenantId);
 		response.setStatus(200);
 		response.setMessage("updated");
 		response.setDescription("updated successfuly");
@@ -65,10 +66,10 @@ public class HolidaysController {
 	}
 
     @PreAuthorize("hasRole('SUPERADMIN','ADMIN')")
-	@RequestMapping("/deleteholiday")
-	public ResponseEntity<Response> deleteHoliday(@RequestBody Holidays holiday) {
+	@RequestMapping("/{tenantId}/deleteholiday")
+	public ResponseEntity<Response> deleteHoliday(@PathVariable("tenantId") long tenantId,@RequestBody Holidays holiday) {
 
-		service.deleteHoliday(holiday);
+		service.deleteHoliday(holiday,tenantId);
 
 		response.setStatus(200);
 		response.setMessage("deleted");

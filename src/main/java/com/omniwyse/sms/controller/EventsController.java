@@ -42,26 +42,26 @@ public class EventsController {
 
 	}
 
-	@RequestMapping("/events")
-	public List<Events> listOfEvents() {
+	@RequestMapping("/{tenantId}/events")
+	public List<Events> listOfEvents(@PathVariable("tenantId") long tenantId) {
 
-		List<Events> list = service.listEvents();
+		List<Events> list = service.listEvents(tenantId);
 		return list;
 
 	}
 
-	@RequestMapping("/editevent")
-	public ResponseEntity<Response> editEvent(@RequestBody Events event) {
-		service.editEvent(event);
+	@RequestMapping("/{tenantId}/editevent")
+	public ResponseEntity<Response> editEvent(@PathVariable("tenantId") long tenantId,@RequestBody Events event) {
+		service.editEvent(event,tenantId);
 		response.setStatus(200);
 		response.setMessage("event updated");
 		response.setDescription("event updated successfuly");
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 
-	@RequestMapping("/deleteevent")
-	public ResponseEntity<Response> listOfEvents(@RequestBody Events event) {
-		service.deleteEvent(event);
+	@RequestMapping("/{tenantId}/deleteevent")
+	public ResponseEntity<Response> listOfEvents(@PathVariable("tenantId") long tenantId,@RequestBody Events event) {
+		service.deleteEvent(event,tenantId);
 		response.setStatus(200);
 		response.setMessage("event deleted");
 		response.setDescription("event deleted successfuly");
