@@ -36,9 +36,9 @@ public class SubjectTeacherClassService {
 		}
 	}
 
-	public List<ClassSectionTransferObject> listOfSubjectsTeachers(long classid) {
+	public List<ClassSectionTransferObject> listOfSubjectsTeachers(long classid,long tenantId) {
 
-		db = database.getDatabase(1);
+		db = database.getDatabase(tenantId);
 
 		List<ClassSectionTransferObject> list = db
 				.sql("select subjects.subjectname, teachers.teachername from subjects left JOIN class_subject_teacher  ON class_subject_teacher.subjectid = subjects.id left JOIN teachers ON class_subject_teacher.teacherid=teachers.id where class_subject_teacher.classid=?",
@@ -47,8 +47,8 @@ public class SubjectTeacherClassService {
 		return list;
 	}
 
-	public List<Subjects> getListOfSubjects(long gradeid) {
-		db = database.getDatabase(1);
+	public List<Subjects> getListOfSubjects(long gradeid,long tenantId) {
+		db = database.getDatabase(tenantId);
 		return db
 				.sql("select subjects.subjectname from subjects inner join grade_subjects on grade_subjects.subjectid=subjects.id and grade_subjects.gradeid=?",
 						gradeid)

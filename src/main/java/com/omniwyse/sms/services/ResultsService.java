@@ -25,8 +25,8 @@ public class ResultsService {
     private DatabaseRetrieval retrieve;
     private Database db;
 
-    public MainResultsTransferObject viewResults(ResultsTransferObject resultstransferobject) {
-        db = retrieve.getDatabase(1);
+    public MainResultsTransferObject viewResults(ResultsTransferObject resultstransferobject,long tenantId) {
+        db = retrieve.getDatabase(tenantId);
 
         long classid = resultstransferobject.getId();
         long gradeid = db.where("id=?", classid).results(ClassRoom.class).get(0).getGradeid();
@@ -88,9 +88,9 @@ public class ResultsService {
 
     }
 
-    public List<ResultsTransferObject> enterMarks(ResultsTransferObject resultstransferobject) {
+    public List<ResultsTransferObject> enterMarks(ResultsTransferObject resultstransferobject,long tenantId) {
 
-        db = retrieve.getDatabase(1);
+        db = retrieve.getDatabase(tenantId);
 
         long classid = resultstransferobject.getId();
         long gradeid = db.where("id=?", classid).results(ClassRoom.class).get(0).getGradeid();
@@ -115,9 +115,9 @@ public class ResultsService {
 
     }
 
-    public int addMarks(List<ResultsTransferObject> resultstransferobject) {
+    public int addMarks(List<ResultsTransferObject> resultstransferobject,long tenantId) {
 
-        db = retrieve.getDatabase(1);
+        db = retrieve.getDatabase(tenantId);
 
         int existingsubjectcount = 0;
         int marksenteredsubjectcount = 0;

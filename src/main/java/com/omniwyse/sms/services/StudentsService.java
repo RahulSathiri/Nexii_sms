@@ -27,7 +27,7 @@ public class StudentsService {
 	private String name;
 	private Students students;
 
-	public int addStudent(StudentTransferObject addStudent) {
+	public int addStudent(StudentTransferObject addStudent,long tenantId) {
 		students=new Students();
 		gradename = addStudent.getGradename();
 		syllabustype = addStudent.getSyllabustype();
@@ -41,7 +41,7 @@ public class StudentsService {
 		students.setGender(addStudent.getGender());
 		students.setMothername(addStudent.getMothername());
 		students.setName(addStudent.getName());
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		gradeid = db.where("gradename=? and syllabustype=?", gradename, syllabustype).results(Grades.class).get(0)
 				.getId();
 		students.setGradeid(gradeid);
@@ -66,31 +66,31 @@ public class StudentsService {
 			return false;
 	}
 
-	public int updateStudent(Students updateStudent) {
-		db = retrive.getDatabase(1);
+	public int updateStudent(Students updateStudent,long tenantId) {
+		db = retrive.getDatabase(tenantId);
 		return db.update(updateStudent).getRowsAffected();
 	}
 
-	public int addStudentToClassroom(String admissionnumber, long classid) {
+	public int addStudentToClassroom(String admissionnumber, long classid,long tenantId) {
 		StudentClassroom studentclassroom = new StudentClassroom();
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		long studentid = db.where("admissionnumber=?", admissionnumber).results(Students.class).get(0).getId();
 		studentclassroom.setClassid(classid);
 		studentclassroom.setStudentid(studentid);
 		return db.insert(studentclassroom).getRowsAffected();
 	}
 
-	public List<ClassRoomStudents> getStudentsOfClassRoom(long classid) {
-		db = retrive.getDatabase(1);
+	public List<ClassRoomStudents> getStudentsOfClassRoom(long classid,long tenantId) {
+		db = retrive.getDatabase(tenantId);
 		return db
 				.sql("select students.name,students.id,students.fathername,students.admissionnumber from students inner join classroom_students on classroom_students.classid=? and classroom_students.studentid=students.id",
 						classid)
 				.results(ClassRoomStudents.class);
 
 	}
-	public List<Students> getStudentsOfGrade(long gradeid)
+	public List<Students> getStudentsOfGrade(long gradeid,long tenantId)
 	{
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		return db.where("gradeid=?",gradeid).results(Students.class);
 	}
 

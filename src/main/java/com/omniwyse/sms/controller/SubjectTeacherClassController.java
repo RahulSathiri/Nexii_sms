@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,10 +25,10 @@ public class SubjectTeacherClassController {
 	@Autowired
 	private Response response;
 
-	@RequestMapping("/listsubjectsofgrade")
-	public List<Subjects> listSubjectsOfGrade(@RequestBody ClassSectionTransferObject classtransferobject) {
+	@RequestMapping("/{tenantId}/listsubjectsofgrade")
+	public List<Subjects> listSubjectsOfGrade(@PathVariable("tenantId") long tenantId,@RequestBody ClassSectionTransferObject classtransferobject) {
 		long gradeid = classtransferobject.getGradeid();
-		return service.getListOfSubjects(gradeid);
+		return service.getListOfSubjects(tenantId,gradeid);
 
 	}
 
@@ -55,11 +56,11 @@ public class SubjectTeacherClassController {
 		}
 	}
 
-	@RequestMapping("/listingassignedteachers")
+	@RequestMapping("/{tenantId}/listingassignedteachers")
 	public List<ClassSectionTransferObject> listOfSubjectsToTeachers(
-			@RequestBody ClassSectionTransferObject classtransferobject) {
+			@PathVariable("tenantId") long tenantId,@RequestBody ClassSectionTransferObject classtransferobject) {
 		long id = classtransferobject.getId();
-		List<ClassSectionTransferObject> list = service.listOfSubjectsTeachers(id);
+		List<ClassSectionTransferObject> list = service.listOfSubjectsTeachers(id,tenantId);
 		return list;
 	}
 
