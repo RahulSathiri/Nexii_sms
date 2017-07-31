@@ -42,7 +42,7 @@ public class ClassService {
 	private String syllabustype;
 	private long gradeid;
 
-	public int createClass(ClassSectionTransferObject createclass) {
+	public int createClass(long tenantId, ClassSectionTransferObject createclass) {
 		academicyear = createclass.getAcademicyear();
 		sectionname = createclass.getSectionname();
 		teachername = createclass.getTeachername();
@@ -97,6 +97,7 @@ public class ClassService {
 	}
 
 	private boolean isExist(long academicyear, long teacherid) {
+		
 		List<ClassRoom> teachersids = db.where("academicyear = ?", academicyear).results(ClassRoom.class);
 		for (ClassRoom classes : teachersids) {
 			if (classes.getClassteacherid() == teacherid) {
@@ -106,10 +107,10 @@ public class ClassService {
 		return true;
 	}
 
-	public int updateClassTeacher(ClassSectionTransferObject updateclass) {
+	public int updateClassTeacher(long tenantId, ClassSectionTransferObject updateclass) {
 
 		String teachername = updateclass.getTeachername();
-		db = retrieve.getDatabase(1);
+		db = retrieve.getDatabase(tenantId);
 		ClassRoom classes = new ClassRoom();
 		long teacherid = db.where("teachername=?", teachername).results(Teachers.class).get(0).getId();
 		long academicyear = updateclass.getAcademicyear();
@@ -127,8 +128,8 @@ public class ClassService {
 
 	}
 
-	public List<ClassSectionTransferObject> getClassRoomsByYearAndSyllabustype(long academicyear, String syllabustype) {
-		db = retrieve.getDatabase(1);
+	public List<ClassSectionTransferObject> getClassRoomsByYearAndSyllabustype(long tenantId, long academicyear, String syllabustype) {
+		db = retrieve.getDatabase(tenantId);
 
 		return db
 				.sql("select classrooms.id,classrooms.academicyear,classrooms.gradeid,grades.gradenumber,grades.gradename,classrooms.sectionname,grades.syllabustype,teachers.teachername from classrooms inner join grades on classrooms.academicyear=? and grades.syllabustype=? INNER JOIN teachers ON classrooms.classteacherid = teachers.id where classrooms.gradeid=grades.id",
@@ -137,8 +138,8 @@ public class ClassService {
 
 	}
 
-	public List<ClassSectionTransferObject> getClassRooms() {
-		db = retrieve.getDatabase(1);
+	public List<ClassSectionTransferObject> getClassRooms(long tenantId) {
+		db = retrieve.getDatabase(tenantId);
 
 		return db
 				.sql("select classrooms.id,classrooms.academicyear,classrooms.gradeid,grades.gradenumber,grades.gradename,classrooms.sectionname,grades.syllabustype,teachers.teachername from classrooms inner join grades INNER JOIN teachers ON classrooms.classteacherid = teachers.id where classrooms.gradeid=grades.id")
@@ -146,9 +147,9 @@ public class ClassService {
 
 	}
 
-	public List<ClassSectionTransferObject> getClassRoomsByYear(long academicyear) {
+	public List<ClassSectionTransferObject> getClassRoomsByYear(long tenantId, long academicyear) {
 
-		db = retrieve.getDatabase(1);
+		db = retrieve.getDatabase(tenantId);
 		List<ClassSectionTransferObject> classes = db
 				.sql("select classrooms.id,classrooms.academicyear,classrooms.gradeid,grades.gradenumber,grades.gradename,classrooms.sectionname,grades.syllabustype,teachers.teachername from classrooms inner join grades on classrooms.academicyear=? INNER JOIN teachers ON classrooms.classteacherid = teachers.id where classrooms.gradeid=grades.id",
 						academicyear)
@@ -157,15 +158,15 @@ public class ClassService {
 		return classes;
 	}
 
-	public List<AcademicYears> getAcademicYears() throws ParseException {
-		db = retrieve.getDatabase(1);
+	public List<AcademicYears> getAcademicYears(long tenantId) {
+		db = retrieve.getDatabase(tenantId);
 		return db.sql("select * from academicyears").results(AcademicYears.class);
 
 	}
 
-	public int addAcademicYears(AcademicYearsDTO academicyearsdto) {
+	public int addAcademicYears(long tenantId, AcademicYearsDTO academicyearsdto) {
 		AcademicYears academicyears = new AcademicYears();
-		db = retrieve.getDatabase(1);
+		db = retrieve.getDatabase(tenantId);
 		long passingyear = academicyearsdto.getPassingyear();
 		academicyears.setPassingyear(passingyear);
 		academicyears.setActive(academicyearsdto.getActive());
@@ -185,9 +186,9 @@ public class ClassService {
 		return new java.sql.Date(date.getTime());
 	}
 
-	public int updateAcademicYear(AcademicYears academicyears) {
+	public int updateAcademicYear(long tenantId, AcademicYears academicyears) {
 
-		db = retrieve.getDatabase(1);
+		db = retrieve.getDatabase(tenantId);
 		return db.update(academicyears).getRowsAffected();
 		
 	}

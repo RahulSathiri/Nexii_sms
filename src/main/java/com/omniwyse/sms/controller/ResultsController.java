@@ -17,6 +17,7 @@ import com.omniwyse.sms.utils.Response;
 import com.omniwyse.sms.utils.ResultsTransferObject;
 
 @RestController
+@RequestMapping("/{tenantId}")
 public class ResultsController {
 	@Autowired
 	private ResultsService service;
@@ -24,17 +25,17 @@ public class ResultsController {
 	private Response response;
 	
 	
-	@RequestMapping(value = "/{tenantId}/viewresults", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/viewresults", method = RequestMethod.POST, produces = "application/json")
     public MainResultsTransferObject viewResults(@PathVariable("tenantId") long tenantId,@RequestBody ResultsTransferObject resultstransferobject) {
 		return service.viewResults(resultstransferobject,tenantId);
 	}
 
-	@RequestMapping(value = "/{tenantId}/entermarks", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/entermarks", method = RequestMethod.POST, produces = "application/json")
 	public List<ResultsTransferObject> testresults(@PathVariable("tenantId") long tenantId,@RequestBody ResultsTransferObject resultstransferobject) {
 		return service.enterMarks(resultstransferobject,tenantId);
 	}
 	
-	@RequestMapping(value = "/{tenantId}/addmarks", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/addmarks", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> addMarks(@PathVariable("tenantId") long tenantId,@RequestBody List<ResultsTransferObject> resultstransferobject) {
 		 service.addMarks(resultstransferobject,tenantId);
 		 response.setStatus(201);

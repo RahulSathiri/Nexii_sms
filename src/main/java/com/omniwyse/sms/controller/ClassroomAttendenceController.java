@@ -19,6 +19,7 @@ import com.omniwyse.sms.utils.Response;
 import com.omniwyse.sms.utils.TeacherModuleDTO;
 
 @RestController
+@RequestMapping("/{tenantId}")
 public class ClassroomAttendenceController {
 
 	@Autowired
@@ -30,7 +31,7 @@ public class ClassroomAttendenceController {
 	private Response response;
 	
 	//attendance
-	@RequestMapping(value="/{tenantId}/attendance",method=RequestMethod.POST,produces="application/json")	
+	@RequestMapping(value="/attendance",method=RequestMethod.POST,produces="application/json")	
 	public List<TeacherModuleDTO> listOfTeacherSubjects(@PathVariable("tenantId") long tenantId, @RequestBody ClassSectionTransferObject moduleDTO) {
 
 		return teacherService.listAllSubjectsAlongWithClassRooms(tenantId,moduleDTO);
@@ -39,14 +40,14 @@ public class ClassroomAttendenceController {
 	
 //list of students for the classroom attendance			
 	
-@RequestMapping(value="/{tenantId}/listofstudentsofclassroom",method=RequestMethod.POST,produces="application/json")
+@RequestMapping(value="/listofstudentsofclassroom",method=RequestMethod.POST,produces="application/json")
 	public ClassAttendenceTransferObject listStudentsofClassroom(@PathVariable("tenantId") long tenantId, @RequestBody ClassAttendenceTransferObject classattendancetransferobject){
 						
 						return service.studentsList(tenantId,classattendancetransferobject);
 }	
 // attendance report
 	
-@RequestMapping(value = "/{tenantId}/recordattendance", method = RequestMethod.POST, produces = "application/json")
+@RequestMapping(value = "/recordattendance", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> getStudentsOfClassRoom(@PathVariable("tenantId") long tenantId, @RequestBody List<ClassAttendenceTransferObject> classattendancetransferobject) {
 		
 		int rowEffected= service.addingAttendanceStatus(tenantId,classattendancetransferobject);
@@ -65,14 +66,14 @@ public class ClassroomAttendenceController {
 		
 	}
 }
-			@RequestMapping("/{tenantId}/viewattendancedetails")
+			@RequestMapping("/viewattendancedetails")
 			public ClassAttendenceTransferObject  getattendance(@PathVariable("tenantId") long tenantId, @RequestBody ClassAttendenceTransferObject classattendancetransferobject) {
 			return	service.getAttendance(tenantId,classattendancetransferobject);
 			
 			
 	}
 
-			@RequestMapping("/{tenantId}/listdates")
+			@RequestMapping("/listdates")
 			public List<ClassroomAttendance> getdates(@PathVariable("tenantId") long tenantId)
 			{
 				return service.getdates(tenantId);	

@@ -56,7 +56,7 @@ public class TeacherModuleController {
 	}
 
 	@RequestMapping("/{tenantId}/teacherprofile")
-	public List<Teachers> showTeacherProfile(@PathVariable("tenantId") long tenantId, @RequestBody ClassSectionTransferObject teacher) {
+	public Teachers showTeacherProfile(@PathVariable("tenantId") long tenantId, @RequestBody ClassSectionTransferObject teacher) {
 
 		return service.showTeacherProfile(tenantId,teacher);
 	}

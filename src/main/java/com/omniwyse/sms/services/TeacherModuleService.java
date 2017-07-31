@@ -29,7 +29,8 @@ public class TeacherModuleService {
 
 	private Database db;
 
-	public List<TeacherModuleDTO> listAllSubjectsAlongWithClassRooms(long tenantId,ClassSectionTransferObject moduleDTO) {
+	public List<TeacherModuleDTO> listAllSubjectsAlongWithClassRooms(long tenantId,
+			ClassSectionTransferObject moduleDTO) {
 
 		db = retrive.getDatabase(tenantId);
 
@@ -42,7 +43,8 @@ public class TeacherModuleService {
 		return list;
 	}
 
-	public List<ClassSectionTransferObject> getClassRoomOfTeacherAssignedCRT(long tenantId,ClassSectionTransferObject moduleDTO) {
+	public List<ClassSectionTransferObject> getClassRoomOfTeacherAssignedCRT(long tenantId,
+			ClassSectionTransferObject moduleDTO) {
 		db = retrive.getDatabase(tenantId);
 
 		List<ClassSectionTransferObject> list = db
@@ -52,16 +54,16 @@ public class TeacherModuleService {
 		return list;
 	}
 
-	public List<Teachers> showTeacherProfile(long tenantId,ClassSectionTransferObject moduleDTO) {
+	public Teachers showTeacherProfile(long tenantId, ClassSectionTransferObject moduleDTO) {
 
 		db = retrive.getDatabase(tenantId);
-		List<Teachers> teacher = db.where("id = ?", moduleDTO.getId()).results(Teachers.class);
+		Teachers teacher = db.where("id = ?", moduleDTO.getId()).results(Teachers.class).get(0);
 		return teacher;
 
 	}
 
 	@SuppressWarnings("deprecation")
-	public List<TeacherScheduleDTO> getSchedule(long tenantId,ClassSectionTransferObject dataObject, String date) {
+	public List<TeacherScheduleDTO> getSchedule(long tenantId, ClassSectionTransferObject dataObject, String date) {
 
 		db = retrive.getDatabase(tenantId);
 
@@ -98,7 +100,8 @@ public class TeacherModuleService {
 		long subjectid = db.where("subjectname=?",subjectname).results(Subjects.class).get(0).getId();
 		long gradeid=db.where("id=?", id).results(ClassRoom.class).get(0).getGradeid();
 		List<TestTransferObject> listTetss = db
-				.sql("select test_type.testtype,test_create.startdate, test_create.enddate from test_create join test_syllabus on test_create.gradeid=?"
+				.sql("select test_type.testtype,test_create.startdate, test_create.enddate from "
+						+ "test_create join test_syllabus on test_create.gradeid=?"
 						+ " and test_syllabus.subjectid=? and test_create.id=test_syllabus.testid join test_type on"
 						+ " test_create.testtypeid=test_type.id ", gradeid, subjectid)
 				.results(TestTransferObject.class);

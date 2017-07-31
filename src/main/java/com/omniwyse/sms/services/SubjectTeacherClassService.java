@@ -18,9 +18,9 @@ public class SubjectTeacherClassService {
     private com.omniwyse.sms.db.DatabaseRetrieval database;
 	public Database db;
 
-	public void addingSubjectTeacher() {
+	public void addingSubjectTeacher( long tenantId) {
 
-		db = database.getDatabase(1);
+		db = database.getDatabase(tenantId);
 
 		List<SubjectTeacherClass> list = db
 				.sql("select subjects.id, teachers.id, classes.id from subjects INNER JOIN teachers ON subjects.id=teachers.id INNER JOIN classes ON subjects.id=classes.id")
@@ -36,12 +36,14 @@ public class SubjectTeacherClassService {
 		}
 	}
 
-	public List<ClassSectionTransferObject> listOfSubjectsTeachers(long classid,long tenantId) {
+	public List<ClassSectionTransferObject> listOfSubjectsTeachers( long tenantId, long classid) {
 
 		db = database.getDatabase(tenantId);
 
 		List<ClassSectionTransferObject> list = db
-				.sql("select subjects.subjectname, teachers.teachername from subjects left JOIN class_subject_teacher  ON class_subject_teacher.subjectid = subjects.id left JOIN teachers ON class_subject_teacher.teacherid=teachers.id where class_subject_teacher.classid=?",
+				.sql("select subjects.subjectname, teachers.teachername from subjects left JOIN class_subject_teacher "
+						+ " ON class_subject_teacher.subjectid = subjects.id left JOIN teachers ON "
+						+ "class_subject_teacher.teacherid=teachers.id where class_subject_teacher.classid=?",
 						classid)
 				.results(ClassSectionTransferObject.class);
 		return list;
@@ -50,14 +52,15 @@ public class SubjectTeacherClassService {
 	public List<Subjects> getListOfSubjects(long gradeid,long tenantId) {
 		db = database.getDatabase(tenantId);
 		return db
-				.sql("select subjects.subjectname from subjects inner join grade_subjects on grade_subjects.subjectid=subjects.id and grade_subjects.gradeid=?",
+				.sql("select subjects.subjectname from subjects inner join grade_subjects"
+						+ " on grade_subjects.subjectid=subjects.id and grade_subjects.gradeid=?",
 						gradeid)
 				.results(Subjects.class);
 
 	}
 
-	public int assignTeacherToSubject(long classid, String teachername, String subjectname) {
-		db = database.getDatabase(1);
+	public int assignTeacherToSubject( long tenantId, long classid, String teachername, String subjectname) {
+		db = database.getDatabase(tenantId);
 
 		long subjectid = db.where("subjectname = ?", subjectname).results(Subjects.class).get(0).getId();
 		long id=db.where("subjectid=? and classid=?" , subjectid,classid).results(SubjectTeacherClass.class).get(0).getId();
@@ -75,8 +78,8 @@ return 0;
 
 	}
 
-	public int updateSubjectTeacher(long classid, String subjectname, String teachername) {
-		db = database.getDatabase(1);
+	public int updateSubjectTeacher( long tenantId, long classid, String subjectname, String teachername) {
+		db = database.getDatabase(tenantId);
 		long subjectid = db.where("subjectname=?", subjectname).results(Subjects.class).get(0).getId();
 		long teacherid = db.where("teachername=?", teachername).results(Teachers.class).get(0).getId();
 		SubjectTeacherClass stc = new SubjectTeacherClass();
