@@ -26,24 +26,24 @@ public class ClassroomAttendenceService {
 
 	// list of students for the classroom attendance
 
-	public ClassAttendenceTransferObject studentsList(ClassAttendenceTransferObject classattendancetransferobject) {
+	public ClassAttendenceTransferObject studentsList(long tenantId, ClassAttendenceTransferObject classattendancetransferobject) {
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		long gradeid = classattendancetransferobject.getGradeid();
 		String sectionname = classattendancetransferobject.getSectionname();
 		long classid = db.where("gradeid=? and sectionname=?", gradeid, sectionname).results(ClassRoom.class).get(0)
 				.getId();
 
-		classattendancetransferobject.setStudentsOfClassRoom(studentService.getStudentsOfClassRoom(classid));
+		classattendancetransferobject.setStudentsOfClassRoom(studentService.getStudentsOfClassRoom(classid,tenantId));
 
 		return classattendancetransferobject;
 	}
 
 	// Record students attendance
 
-	public int addingAttendanceStatus(List<ClassAttendenceTransferObject> classattendancetransferobject) {
+	public int addingAttendanceStatus(long tenantId, List<ClassAttendenceTransferObject> classattendancetransferobject) {
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		Transaction transact = db.startTransaction();
 
 		ClassAttendenceTransferObject classattendance = classattendancetransferobject.get(0);
@@ -81,17 +81,17 @@ public class ClassroomAttendenceService {
 
 	// dates list
 
-	public List<ClassroomAttendance> getdates() {
+	public List<ClassroomAttendance> getdates(long tenantId) {
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		return db.sql("select distinct dateofattendance from classroom_attendance").results(ClassroomAttendance.class);
 	}
 
 	// view attendance
 
-	public ClassAttendenceTransferObject getAttendance(ClassAttendenceTransferObject classattendancetransferobject) {
+	public ClassAttendenceTransferObject getAttendance(long tenantId, ClassAttendenceTransferObject classattendancetransferobject) {
 		ClassAttendenceTransferObject attendancereport = new ClassAttendenceTransferObject();
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 
 		long classroomid = db.where("gradeid=? and sectionname=?", classattendancetransferobject.getGradeid(),
 				classattendancetransferobject.getSectionname()).results(ClassRoom.class).get(0).getId();
