@@ -2,14 +2,14 @@ package com.omniwyse.sms.utils;
 
 import java.util.Set;
 
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 public class UserAndRoles {
 
     private long userid;
     private String username;
     private long userstatus;
-    private Set<GrantedAuthority> roles;
+    private Set<SimpleGrantedAuthority> roles;
 
 
 
@@ -37,12 +37,13 @@ public class UserAndRoles {
         this.userstatus = userstatus;
     }
 
-    public Set<GrantedAuthority> getRoles() {
+    public Set<SimpleGrantedAuthority> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<GrantedAuthority> roles) {
+    public void setRoles(Set<SimpleGrantedAuthority> roles) {
         this.roles = roles;
     }
+
 
 }

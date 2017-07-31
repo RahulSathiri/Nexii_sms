@@ -7,7 +7,6 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +62,7 @@ public class LoginService {
             for (UserRoleMaintain role : roles) {
                 assignedroleslist = db.where("id=?", role.getRoleid()).results(UserRoles.class);
             }
-            Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+            Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet<>();
             if (mainuser != null && mainuser.getMail() != null) {
                 userandroles.setUserid(mainuser.getId());
                 userandroles.setUsername(mainuser.getMail());
