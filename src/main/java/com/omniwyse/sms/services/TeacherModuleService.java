@@ -29,9 +29,10 @@ public class TeacherModuleService {
 
 	private Database db;
 
-	public List<TeacherModuleDTO> listAllSubjectsAlongWithClassRooms(ClassSectionTransferObject moduleDTO) {
+	public List<TeacherModuleDTO> listAllSubjectsAlongWithClassRooms(long tenantId,
+			ClassSectionTransferObject moduleDTO) {
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 
 		List<TeacherModuleDTO> list = db.sql(
 				"select classrooms.id, subjects.subjectname, classrooms.gradeid, classrooms.sectionname from subjects "
@@ -42,8 +43,9 @@ public class TeacherModuleService {
 		return list;
 	}
 
-	public List<ClassSectionTransferObject> getClassRoomOfTeacherAssignedCRT(ClassSectionTransferObject moduleDTO) {
-		db = retrive.getDatabase(1);
+	public List<ClassSectionTransferObject> getClassRoomOfTeacherAssignedCRT(long tenantId,
+			ClassSectionTransferObject moduleDTO) {
+		db = retrive.getDatabase(tenantId);
 
 		List<ClassSectionTransferObject> list = db
 				.sql("select gradeid, sectionname from classrooms where classteacherid = ? ", moduleDTO.getId())
@@ -52,18 +54,18 @@ public class TeacherModuleService {
 		return list;
 	}
 
-	public List<Teachers> showTeacherProfile(ClassSectionTransferObject moduleDTO) {
+	public Teachers showTeacherProfile(long tenantId, ClassSectionTransferObject moduleDTO) {
 
-		db = retrive.getDatabase(1);
-		List<Teachers> teacher = db.where("id = ?", moduleDTO.getId()).results(Teachers.class);
+		db = retrive.getDatabase(tenantId);
+		Teachers teacher = db.where("id = ?", moduleDTO.getId()).results(Teachers.class).get(0);
 		return teacher;
 
 	}
 
 	@SuppressWarnings("deprecation")
-	public List<TeacherScheduleDTO> getSchedule(ClassSectionTransferObject dataObject, String date) {
+	public List<TeacherScheduleDTO> getSchedule(long tenantId, ClassSectionTransferObject dataObject, String date) {
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 
 		List<TeacherScheduleDTO> list = new ArrayList<>();
 		List<SubjectTeacherClass> classub = db
@@ -88,17 +90,18 @@ public class TeacherModuleService {
 		return list;
 
 	}
-	public  ClassRoomDetails  teacherModuleList(long id, String subjectname) {
+	public  ClassRoomDetails  teacherModuleList(long tenantId, long id, String subjectname) {
 		
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		ClassRoomDetails classroom=new ClassRoomDetails();
-		classroom.setStudentsOfClassRoom(studentService.getStudentsOfClassRoom(id));
+		classroom.setStudentsOfClassRoom(studentService.getStudentsOfClassRoom(tenantId,id));
 		
 		
 		long subjectid = db.where("subjectname=?",subjectname).results(Subjects.class).get(0).getId();
 		long gradeid=db.where("id=?", id).results(ClassRoom.class).get(0).getGradeid();
 		List<TestTransferObject> listTetss = db
-				.sql("select test_type.testtype,test_create.startdate, test_create.enddate from test_create join test_syllabus on test_create.gradeid=?"
+				.sql("select test_type.testtype,test_create.startdate, test_create.enddate from "
+						+ "test_create join test_syllabus on test_create.gradeid=?"
 						+ " and test_syllabus.subjectid=? and test_create.id=test_syllabus.testid join test_type on"
 						+ " test_create.testtypeid=test_type.id ", gradeid, subjectid)
 				.results(TestTransferObject.class);
@@ -109,17 +112,17 @@ public class TeacherModuleService {
 	}
 		
 //students list of subject 
-	public  ClassRoomDetails teacherModulestudentsList(long id, String subjectname) {
+	public  ClassRoomDetails teacherModulestudentsList(long tenantId,long id, String subjectname) {
 	
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		ClassRoomDetails classroom=new ClassRoomDetails();
-		classroom.setStudentsOfClassRoom(studentService.getStudentsOfClassRoom(id));
+		classroom.setStudentsOfClassRoom(studentService.getStudentsOfClassRoom(tenantId,id));
 		return classroom;
 	}
 //tests list
-	public List<TestTransferObject> getListOfsubjectTests(long id, String subjectname) {
+	public List<TestTransferObject> getListOfsubjectTests(long tenantId,long id, String subjectname) {
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		long gradeid = db.where("id=?", id).results(ClassRoom.class).get(0).getGradeid();
 		long subjectid = db.where("subjectname=?", subjectname).results(Subjects.class).get(0).getId();
 		List<TestTransferObject> testsdetails = db

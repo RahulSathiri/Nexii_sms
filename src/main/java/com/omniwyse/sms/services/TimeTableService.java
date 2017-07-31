@@ -25,8 +25,8 @@ public class TimeTableService {
 
 	public Database db;
 
-	public int createPeriods(TimeTableDataTransferObject timetable) {
-		db = retrive.getDatabase(1);
+	public int createPeriods(long tenantId, TimeTableDataTransferObject timetable) {
+		db = retrive.getDatabase(tenantId);
 		int num = 0;
 		Transaction transact = db.startTransaction();
 		try {
@@ -96,99 +96,17 @@ public class TimeTableService {
 		return flag;
 	}
 
-	public List<TableView> getClassPeriods(Long id) {
-		db = retrive.getDatabase(1);
+	public List<TableView> getClassPeriods(long tenantId,Long id) {
+		db = retrive.getDatabase(tenantId);
 		return db
 				.sql("select wd.day,sbj.subjectname, cp.periodfrom, cp.periodto, cp.dateofassigning from classroom_periods cp join subjects sbj on sbj.id = cp.subjectid join weekdays wd on wd.id = cp.classroomweekdayid where classroomid=?",
 						id)
 				.results(TableView.class);
 	}
 
-	public List<WeekDays> getAllDays() {
-		db = retrive.getDatabase(1);
+	public List<WeekDays> getAllDays(long tenantId) {
+		db = retrive.getDatabase(tenantId);
 		return db.sql("select * from weekdays").results(WeekDays.class);
 	}
-
-	// public List<ClassRoomTimeTablePeriods> listOfPeriods() {
-	//
-	// db = retrive.getDatabase(1);
-	//
-	// return db.sql("select * from
-	// periods").results(ClassRoomTimeTablePeriods.class);
-	// }
-	//
-	// public List<WeekDays> listOfWeekDays() {
-	// db = retrive.getDatabase(1);
-	//
-	// return db.sql("select * from days").results(WeekDays.class);
-	// }
-	//
-	// public TimeTableView WholeTimeTable(TimeTableDataTransferObject
-	// timetableDTO) {
-	//
-	// db = retrive.getDatabase(1);
-	//
-	// TimeTableView table = new TimeTableView();
-	// /*
-	// * long academicyear = timetableDTO.getAcademicyear(); String gradeid =
-	// * timetableDTO.getGradeid(); String section =
-	// * timetableDTO.getSection();
-	// */
-	//
-	// long classroomid = timetableDTO.getId();
-	//
-	// List<TimeTableDataTransferObject> periodsandtime = db
-	// .sql("select class_period_maintanance.periodfrom,
-	// class_period_maintanance.periodto from periods JOIN
-	// class_period_maintanance where classroomid = ?",
-	// classroomid)
-	// .results(TimeTableDataTransferObject.class);
-	// table.setPeriodsandtime(periodsandtime);
-	//
-	// List<TimeTableDataTransferObject> subjects = db
-	// .sql("select subjects.subjectname from subjects JOIN
-	// gradePeriod__subject_teacher ON subjects.id =
-	// gradePeriod__subject_teacher.subjectid where classroomid = ?",
-	// classroomid)
-	// .results(TimeTableDataTransferObject.class);
-	//
-	// table.setSubjects(subjects);
-	// List<WeekDays> days = db
-	// .sql("select days.weekday from days JOIN gradePeriod__subject_teacher ON
-	// days.id=gradePeriod__subject_teacher.weekdayid where classroomid = ?",
-	// classroomid)
-	// .results(WeekDays.class);
-	// table.setWeekday(days);
-	//
-	// return table;
-	// }
-
-	// public int setTimeTable(TimeTableDataTransferObject timetable) {
-	//
-	// db = retrive.getDatabase(1);
-	// String subject = timetable.getSubjectname();
-	// String day = timetable.getWeekday();
-	// String periodname = timetable.getPeriodname();
-	//
-	// GradePeriodSubjectTeacher gpst = new GradePeriodSubjectTeacher();
-	//
-	// long classroomid = timetable.getId();
-	// long weekdayid = db.where("weekday =?",
-	// day).results(WeekDays.class).get(0).getId();
-	// long subjectid = db.where("subjectname = ?",
-	// subject).results(Subjects.class).get(0).getId();
-	//
-	// //gpst.setPeriodid(
-	// //db.where("periodname = ?",
-	// periodname).results(ClassRoomTimeTablePeriods.class).get(0).getId());
-	// gpst.setClassroomid(classroomid);
-	// gpst.setSubjectid(subjectid);
-	// gpst.setTeacherid(db.where("classid =? and subjectid = ?", classroomid,
-	// subjectid)
-	// .results(SubjectTeacherClass.class).get(0).getTeacherid());
-	// gpst.setWeekdayid(weekdayid);
-	// return db.insert(gpst).getRowsAffected();
-	//
-	// }
 
 }
