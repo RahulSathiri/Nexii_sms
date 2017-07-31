@@ -48,20 +48,20 @@ public class NewsController {
 
 	}
 
-	@RequestMapping("/news")
-	public List<NewsFeed> listOfNews() {
+	@RequestMapping("/{tenantId}/news")
+	public List<NewsFeed> listOfNews(@PathVariable("tenantId") long tenantId) {
 
-		List<NewsFeed> list = service.listNews();
+		List<NewsFeed> list = service.listNews(tenantId);
 
 		return list;
 
 	}
 
     @PreAuthorize("hasRole('SUPERADMIN','ADMIN')")
-	@RequestMapping("/editnews")
-	public ResponseEntity<Response> editNews(@RequestBody NewsFeed newsfeed) {
+	@RequestMapping("/{tenantId}/editnews")
+	public ResponseEntity<Response> editNews(@PathVariable("tenantId") long tenantId,@RequestBody NewsFeed newsfeed) {
 
-		service.editNews(newsfeed);
+		service.editNews(newsfeed,tenantId);
 		response.setStatus(200);
 		response.setMessage("news updated");
 		response.setDescription("news updated successfuly");
@@ -70,10 +70,10 @@ public class NewsController {
 	}
 
     @PreAuthorize("hasRole('SUPERADMIN','ADMIN')")
-	@RequestMapping("/deletenews")
-	public ResponseEntity<Response> deleteNews(@RequestBody NewsFeed newsfeed) {
+	@RequestMapping("/{tenantId}/deletenews")
+	public ResponseEntity<Response> deleteNews(@PathVariable("tenantId") long tenantId,@RequestBody NewsFeed newsfeed) {
 
-		service.deleteNews(newsfeed);
+		service.deleteNews(newsfeed,tenantId);
 		response.setStatus(200);
 		response.setMessage("news deleted");
 		response.setDescription("news deleted successfuly");
