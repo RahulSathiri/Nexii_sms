@@ -14,9 +14,9 @@ public class EventsService {
     private com.omniwyse.sms.db.DatabaseRetrieval retrive;
 	private Database db;
 
-	public int postEvent(Events event) {
+    public int postEvent(Events event, long tenantId) {
 
-		db = retrive.getDatabase(1);
+        db = retrive.getDatabase(tenantId);
 
 		return db.insert(event).getRowsAffected();
 	}
