@@ -17,7 +17,16 @@ public class WorkSheetsDTO {
 	private Date dateofassigned;
 	private Date duedate;
 	private String lessonname;
+	private long worksheetid;
 	
+	public long getWorksheetid() {
+		return worksheetid;
+	}
+
+	public void setWorksheetid(long worksheetid) {
+		this.worksheetid = worksheetid;
+	}
+
 	public String getLessonname() {
 		return lessonname;
 	}

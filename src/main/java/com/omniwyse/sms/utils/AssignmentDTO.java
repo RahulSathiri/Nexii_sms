@@ -10,8 +10,14 @@ public class AssignmentDTO {
 	private Date duedate;
 	private String subjectname;
 	private long id;
+	private long assignedid;
 	
-	
+	public long getAssignedid() {
+		return assignedid;
+	}
+	public void setAssignedid(long assignedid) {
+		this.assignedid = assignedid;
+	}
 	public String getLessonname() {
 		return lessonname;
 	}

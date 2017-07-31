@@ -117,6 +117,22 @@ public class TeacherModuleController {
 		}
 	}
 	
+	@RequestMapping("/updateassignassignment")
+	public ResponseEntity<Response> updateAssignmentAssigned(@RequestBody AssignmentDTO assigning) {
+
+		int rowEffected = service.updateAssignedAssignment(assigning);
+		if (rowEffected > 0) {
+			response.setStatus(200);
+			response.setMessage("updated successfuly");
+			response.setDescription("Assigned successfuly");
+			return new ResponseEntity<Response>(response, HttpStatus.OK);
+		} else {
+			response.setStatus(400);
+			response.setMessage("failed to update");
+			response.setDescription("failed to update assign to class");
+			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+		}
+	}
 	@RequestMapping("/assignworksheet")
 	public ResponseEntity<Response> worksheetAssigning(@RequestBody WorkSheetsDTO data) {
 
@@ -130,6 +146,24 @@ public class TeacherModuleController {
 			response.setStatus(400);
 			response.setMessage("failed to assign");
 			response.setDescription("failed to assign to class");
+			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	
+	@RequestMapping("/updateassignworksheet")
+	public ResponseEntity<Response> updatseWorksheetAssigned(@RequestBody WorkSheetsDTO data) {
+
+		int rowEffected = service.updaetWorksheetAssigned(data);
+		if (rowEffected > 0) {
+			response.setStatus(200);
+			response.setMessage("updated successfuly");
+			response.setDescription("Assigned successfuly");
+			return new ResponseEntity<Response>(response, HttpStatus.OK);
+		} else {
+			response.setStatus(400);
+			response.setMessage("failed to update");
+			response.setDescription("failed to update to class");
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		}
 	}

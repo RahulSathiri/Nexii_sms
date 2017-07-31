@@ -204,7 +204,12 @@ public class TeacherModuleService {
 	public int assignAssignment(AssignmentDTO assigning) {
 
 		db = retrive.getDatabase(1);
-
+		
+		return db.insert(assignments(db, assigning)).getRowsAffected();
+	}
+	
+	private Assignments assignments(Database db, AssignmentDTO assigning){
+		
 		long lessonid = db.where("lessonname = ?", assigning.getLessonname()).results(Lessons.class).get(0).getId();
 		Assignments assignment = new Assignments();
 
@@ -216,12 +221,17 @@ public class TeacherModuleService {
 				db.where("subjectname = ?", assigning.getSubjectname()).results(Subjects.class).get(0).getId());
 		assignment.setLessonsid(lessonid);
 
-		return db.insert(assignment).getRowsAffected();
+		return assignment;
 	}
 
 	public int worksheetAssign(WorkSheetsDTO data) {
 
 		db = retrive.getDatabase(1);
+		return db.insert(worksheets(db, data)).getRowsAffected();
+
+	}
+
+	private ClassroomWorksheets worksheets(Database db, WorkSheetsDTO data) {
 
 		long lessonid = db.where("lessonname = ?", data.getLessonname()).results(Lessons.class).get(0).getId();
 
@@ -231,15 +241,14 @@ public class TeacherModuleService {
 		worksheet.setWorksheetsid(
 				db.where("worksheetname = ?", data.getWorksheetname()).results(Worksheets.class).get(0).getId());
 		worksheet.setDateofassigned(data.getDateofassigned());
-		worksheet.setWorksheetduedate(data.getDateofassigned());
+		worksheet.setWorksheetduedate(data.getDuedate());
 		worksheet.setSubjectid(
 				db.where("subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId());
 		worksheet.setLessonsid(lessonid);
 
-		return db.insert(worksheet).getRowsAffected();
-
+		return worksheet;
 	}
-
+	
 	public List<Lessons> lessonsList(TimelineDTO data) {
 
 		db = retrive.getDatabase(1);
@@ -247,6 +256,18 @@ public class TeacherModuleService {
 		long subjectid = db.where("subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId();
 
 		return db.where("classroomid = ? and subjectid = ?", data.getId(), subjectid).results(Lessons.class);
+	}
+
+	public int updateAssignedAssignment(AssignmentDTO assigning) {
+
+		db = retrive.getDatabase(1);
+		return db.update(assignments(db, assigning)).getRowsAffected();
+	}
+
+	public int updaetWorksheetAssigned(WorkSheetsDTO data) {
+
+		db = retrive.getDatabase(1);
+		return db.update(worksheets(db, data)).getRowsAffected();
 	}
 
 }
