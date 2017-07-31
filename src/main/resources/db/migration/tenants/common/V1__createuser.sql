@@ -155,10 +155,10 @@ description VARCHAR(400) NOT NULL
 
 INSERT INTO houses(housename,description) VALUES
 		('DARIYA','passion towards learning'),
-		('C.V.Raman','C.V.Raman was a nobel prize winner for his work on ?Molecular Diffraction of Light? popularly known as ?Raman Effect? . His achievements signify a scientific and rational outlook of the school system.'),
-		('Lal Bhahdur Shastri','Lal Bhahdur Shastri house recalls the memory of Great Indian Politician and Second Prime Minister of India i.e. Lal Bhahdur Shastri'),
+		('C.V.Raman','C.V.Raman was a nobel prize winner for his work on Molecular Diffraction of Light popularly known as Raman Effect . His achievements signify a scientific and rational outlook of the school system.'),
+		('Lal Bhahdur Shastri','Lal Bhahdur Shastri house recalls the memory of Great Indian Politician and Second Prime Minister of India'),
 		('Chhatrapati Shivaji','Shivaji is a house of the hero of Maharashtra known as Chhatrapati Shivaji . An icon in Freedom Fight  teaches us how to be an able administrator.'),
-		('Subhash Chandra Bose','Subhash house is a house of Subhash Chandra Bose, popularly known as ?Netaji ? a freedom fighter.It teaches us never to give up in life.');
+		('Subhash Chandra Bose','Subhash house is a house of Subhash Chandra Bose, popularly known as Netaji  a freedom fighter.It teaches us never to give up in life.');
 
 -- ********** STUDENTS TABLES ******************************
 
