@@ -16,9 +16,16 @@ public class StudentTransferObject {
 	private String admissionnumber;
 	private String emailid;
 	private long id;
-	public String getName() {
+	private String housename;
+		public String getName() {
 		return name;
 	}
+	public String getHousename() {
+			return housename;
+		}
+		public void setHousename(String housename) {
+			this.housename = housename;
+		}
 	public void setName(String name) {
 		this.name = name;
 	}

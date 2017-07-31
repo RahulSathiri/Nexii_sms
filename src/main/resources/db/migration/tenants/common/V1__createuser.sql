@@ -142,6 +142,23 @@ CREATE TABLE classrooms(
 
 insert into classrooms(gradeid,academicyear,sectionname,classteacherid)
 	values(1,2017,'A',1),(2,2017,'A',2),(2,2017,'B',3);
+	
+	
+--************ HOUSES TABLES *****************************
+
+CREATE TABLE houses(
+id bigint(8) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+housename VARCHAR(50) NOT NULL,
+description VARCHAR(400) NOT NULL
+);
+
+
+INSERT INTO houses(housename,description) VALUES
+		('DARIYA','passion towards learning'),
+		('C.V.Raman','C.V.Raman was a nobel prize winner for his work on ?Molecular Diffraction of Light? popularly known as ?Raman Effect? . His achievements signify a scientific and rational outlook of the school system.'),
+		('Lal Bhahdur Shastri','Lal Bhahdur Shastri house recalls the memory of Great Indian Politician and Second Prime Minister of India i.e. Lal Bhahdur Shastri'),
+		('Chhatrapati Shivaji','Shivaji is a house of the hero of Maharashtra known as Chhatrapati Shivaji . An icon in Freedom Fight  teaches us how to be an able administrator.'),
+		('Subhash Chandra Bose','Subhash house is a house of Subhash Chandra Bose, popularly known as ?Netaji ? a freedom fighter.It teaches us never to give up in life.');
 
 -- ********** STUDENTS TABLES ******************************
 
@@ -158,15 +175,16 @@ CREATE TABLE students(
 	gender VARCHAR(10) NOT NULL,
 	emailid VARCHAR(30) NOT NULL,
 	admissionnumber VARCHAR(20) NOT NULL,
+	houseid bigint(8),
 	UNIQUE(admissionnumber),
 	FOREIGN KEY(gradeid) references grades(id)
 );
 
-insert into students(gradeid,name,fathername,mothername,contactnumber,address,dateofbirth,dateofjoining,gender,emailid,admissionnumber)
-	values (1,'vikram','srinivas','sunitha','8977646503','hno:5-2-203, Janagaon,Telangana,508203','2005-07-26','2010-06-10','male','vikram@gmail.com','7011'),
-	(2,'kalpana','koteshwar rao','padma','9977765623','plot no:12-14-97,patancheruvu,Hyd -500045','2003-07-25','2008-01-01','female','kalpana@gmail.com','90111'),
-	(2,'srinadh','suresh','devi','8977690734','hno:5-203,kr nagar, mancheryal,Telangana-504203','2002-07-25','2006-06-06','male','srinadh@gmail.com','10111'),
-	(1,'yamini','kamal','vimala','9955544499','plot no:12-5-50,anakapally,vizag-500085','2007-01-01','2012-06-19','female','yamini@gmail.com','50111');
+insert into students(houseid,gradeid,name,fathername,mothername,contactnumber,address,dateofbirth,dateofjoining,gender,emailid,admissionnumber)
+	values (3,1,'vikram','srinivas','sunitha','8977646503','hno:5-2-203, Janagaon,Telangana,508203','2005-07-26','2010-06-10','male','vikram@gmail.com','7011'),
+	(2,2,'kalpana','koteshwar rao','padma','9977765623','plot no:12-14-97,patancheruvu,Hyd -500045','2003-07-25','2008-01-01','female','kalpana@gmail.com','90111'),
+	(2,2,'srinadh','suresh','devi','8977690734','hno:5-203,kr nagar, mancheryal,Telangana-504203','2002-07-25','2006-06-06','male','srinadh@gmail.com','10111'),
+	(1,1,'yamini','kamal','vimala','9955544499','plot no:12-5-50,anakapally,vizag-500085','2007-01-01','2012-06-19','female','yamini@gmail.com','50111');
 
 CREATE TABLE classroom_students(
 	id bigint(8) NOT NULL AUTO_INCREMENT PRIMARY KEY,
