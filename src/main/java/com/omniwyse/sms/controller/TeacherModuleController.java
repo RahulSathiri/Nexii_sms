@@ -24,6 +24,7 @@ import com.omniwyse.sms.utils.WorkSheetsDTO;
 
 
 @RestController
+@RequestMapping("/{tenantId}")
 public class TeacherModuleController {
 
 	@Autowired
@@ -32,53 +33,53 @@ public class TeacherModuleController {
 	@Autowired
 	private Response response;
 	
-	@RequestMapping("/{tenantId}/mysubjects")
+	@RequestMapping("/mysubjects")
 	public List<TeacherModuleDTO> listOfTeacherAssignedSubjects(@PathVariable("tenantId") long tenantId, @RequestBody ClassSectionTransferObject moduleDTO) {
 		return service.listAllSubjectsAlongWithClassRooms(tenantId,moduleDTO);
 	}
-	@RequestMapping("/{tenantId}/mysubjects/{id}/{subjectname}")
+	@RequestMapping("/mysubjects/{id}/{subjectname}")
 	public ClassRoomDetails listStudentsAndTests(@PathVariable("tenantId") long tenantId, @PathVariable ("id") long id, @PathVariable ("subjectname") String subjectname){
 		
 		return service.teacherModuleList(tenantId,id,subjectname);
 		
 	}
 	
-	@RequestMapping("/{tenantId}/mysubjectsstudents/{id}/{subjectname}")
+	@RequestMapping("/mysubjectsstudents/{id}/{subjectname}")
 	public ClassRoomDetails listStudents(@PathVariable("tenantId") long tenantId, @PathVariable ("id") long id, @PathVariable ("subjectname") String subjectname){
 		
 		return service.teacherModulestudentsList(tenantId,id,subjectname);
 		
 	}
 	
-	@RequestMapping("/{tenantId}/subjectstests/{id}/{subjectname}")
+	@RequestMapping("/subjectstests/{id}/{subjectname}")
 	public List<TestTransferObject> getListOfTests(@PathVariable("tenantId") long tenantId, @PathVariable ("id") long id, @PathVariable ("subjectname") String subjectname) {
 		List<TestTransferObject> tests= service.getListOfsubjectTests(tenantId,id,subjectname);
 		return tests; 
 
 	}
 
-	@RequestMapping("/{tenantId}/myclassroom")
+	@RequestMapping("/myclassroom")
 	public List<ClassSectionTransferObject> listClassRoomAssignedAsClassRoomTeacher(@PathVariable("tenantId") long tenantId, 
 			@RequestBody ClassSectionTransferObject moduleDTO) {
 
 		return service.getClassRoomOfTeacherAssignedCRT(tenantId,moduleDTO);
 	}
 
-	@RequestMapping("/{tenantId}/teacherprofile")
+	@RequestMapping("/teacherprofile")
 	public Teachers showTeacherProfile(@PathVariable("tenantId") long tenantId, @RequestBody ClassSectionTransferObject teacher) {
 
 		return service.showTeacherProfile(tenantId,teacher);
 	}
 	@RequestMapping("/timeline")
-	public List<TimelineDTO> timelineView(@RequestBody TimelineDTO data){
+	public List<TimelineDTO> timelineView(@PathVariable("tenantId") long tenantId, @RequestBody TimelineDTO data){
 		
-		return service.viewTimeline(data);
+		return service.viewTimeline(tenantId, data);
 	}
 	
 	@RequestMapping("/addlesson")
-	public ResponseEntity<Response> addLessonToSubject(@RequestBody TimelineDTO data) {
+	public ResponseEntity<Response> addLessonToSubject(@PathVariable("tenantId") long tenantId, @RequestBody TimelineDTO data) {
 
-		int rowEffected = service.addingLesson(data);
+		int rowEffected = service.addingLesson(tenantId, data);
 		if (rowEffected > 0) {
 			response.setStatus(200);
 			response.setMessage("data recorded successfuly");
@@ -95,15 +96,15 @@ public class TeacherModuleController {
 	}
 	
 	@RequestMapping("/teacherschedule/listofworksheets")
-	public List<WorkSheetsDTO> listOFWorksheets(@RequestBody WorkSheetsDTO data){
+	public List<WorkSheetsDTO> listOFWorksheets(@PathVariable("tenantId") long tenantId, @RequestBody WorkSheetsDTO data){
 		
-		return service.listWorkSheetsbasedOn(data);
+		return service.listWorkSheetsbasedOn(tenantId, data);
 	}
 
 	@RequestMapping("/assignassignment")
-	public ResponseEntity<Response> assignmentAssigning(@RequestBody AssignmentDTO assigning) {
+	public ResponseEntity<Response> assignmentAssigning(@PathVariable("tenantId") long tenantId, @RequestBody AssignmentDTO assigning) {
 
-		int rowEffected = service.assignAssignment(assigning);
+		int rowEffected = service.assignAssignment(tenantId, assigning);
 		if (rowEffected > 0) {
 			response.setStatus(200);
 			response.setMessage("Assigned successfuly");
@@ -118,9 +119,9 @@ public class TeacherModuleController {
 	}
 	
 	@RequestMapping("/updateassignassignment")
-	public ResponseEntity<Response> updateAssignmentAssigned(@RequestBody AssignmentDTO assigning) {
+	public ResponseEntity<Response> updateAssignmentAssigned(@PathVariable("tenantId") long tenantId, @RequestBody AssignmentDTO assigning) {
 
-		int rowEffected = service.updateAssignedAssignment(assigning);
+		int rowEffected = service.updateAssignedAssignment(tenantId, assigning);
 		if (rowEffected > 0) {
 			response.setStatus(200);
 			response.setMessage("updated successfuly");
@@ -134,9 +135,9 @@ public class TeacherModuleController {
 		}
 	}
 	@RequestMapping("/assignworksheet")
-	public ResponseEntity<Response> worksheetAssigning(@RequestBody WorkSheetsDTO data) {
+	public ResponseEntity<Response> worksheetAssigning(@PathVariable("tenantId") long tenantId, @RequestBody WorkSheetsDTO data) {
 
-		int rowEffected = service.worksheetAssign(data);
+		int rowEffected = service.worksheetAssign(tenantId, data);
 		if (rowEffected > 0) {
 			response.setStatus(200);
 			response.setMessage("Assigned successfuly");
@@ -152,9 +153,9 @@ public class TeacherModuleController {
 	
 	
 	@RequestMapping("/updateassignworksheet")
-	public ResponseEntity<Response> updatseWorksheetAssigned(@RequestBody WorkSheetsDTO data) {
+	public ResponseEntity<Response> updatseWorksheetAssigned(@PathVariable("tenantId") long tenantId, @RequestBody WorkSheetsDTO data) {
 
-		int rowEffected = service.updaetWorksheetAssigned(data);
+		int rowEffected = service.updaetWorksheetAssigned(tenantId, data);
 		if (rowEffected > 0) {
 			response.setStatus(200);
 			response.setMessage("updated successfuly");
@@ -169,9 +170,9 @@ public class TeacherModuleController {
 	}
 	
 	@RequestMapping("/lessonslist")
-	public List<Lessons> listOfLessons(@RequestBody TimelineDTO data){
+	public List<Lessons> listOfLessons(@PathVariable("tenantId") long tenantId, @RequestBody TimelineDTO data){
 		
-		return service.lessonsList(data);
+		return service.lessonsList(tenantId, data);
 	}
 	
 }

@@ -149,9 +149,9 @@ public class TeacherModuleService {
 
 	}
 
-	public List<TimelineDTO> viewTimeline(TimelineDTO data) {
+	public List<TimelineDTO> viewTimeline(long tenantId,TimelineDTO data) {
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 
 		long classroomid = data.getId();
 		long subjectid = db.where("subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId();
@@ -167,10 +167,10 @@ public class TeacherModuleService {
 		return list;
 	}
 
-	public int addingLesson(TimelineDTO data) {
+	public int addingLesson(long tenantId, TimelineDTO data) {
 
 		int rowEffected = 0;
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		Lessons lesson = new Lessons();
 
 		Transaction transact = db.startTransaction();
@@ -184,6 +184,7 @@ public class TeacherModuleService {
 			lesson.setStatus(data.getStatus());
 
 			rowEffected = db.transaction(transact).insert(lesson).getRowsAffected();
+			
 			transact.commit();
 		} catch (Exception e) {
 
@@ -193,17 +194,17 @@ public class TeacherModuleService {
 		return rowEffected;
 	}
 
-	public List<WorkSheetsDTO> listWorkSheetsbasedOn(WorkSheetsDTO data) {
+	public List<WorkSheetsDTO> listWorkSheetsbasedOn(long tenantId, WorkSheetsDTO data) {
 
 		long gradeid = db.where("id = ?", data.getId()).results(ClassRoom.class).get(0).getGradeid();
 		data.setGradeid(gradeid);
-		List<WorkSheetsDTO> list = workSheetService.listingWorksheetsOfTenant(data);
+		List<WorkSheetsDTO> list = workSheetService.listingWorksheetsOfTenant(tenantId,data);
 		return list;
 	}
 
-	public int assignAssignment(AssignmentDTO assigning) {
+	public int assignAssignment(long tenantId, AssignmentDTO assigning) {
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		
 		return db.insert(assignments(db, assigning)).getRowsAffected();
 	}
@@ -224,9 +225,9 @@ public class TeacherModuleService {
 		return assignment;
 	}
 
-	public int worksheetAssign(WorkSheetsDTO data) {
+	public int worksheetAssign(long tenantId, WorkSheetsDTO data) {
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		return db.insert(worksheets(db, data)).getRowsAffected();
 
 	}
@@ -249,24 +250,24 @@ public class TeacherModuleService {
 		return worksheet;
 	}
 	
-	public List<Lessons> lessonsList(TimelineDTO data) {
+	public List<Lessons> lessonsList(long tenantId, TimelineDTO data) {
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 
 		long subjectid = db.where("subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId();
 
 		return db.where("classroomid = ? and subjectid = ?", data.getId(), subjectid).results(Lessons.class);
 	}
 
-	public int updateAssignedAssignment(AssignmentDTO assigning) {
+	public int updateAssignedAssignment(long tenantId, AssignmentDTO assigning) {
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		return db.update(assignments(db, assigning)).getRowsAffected();
 	}
 
-	public int updaetWorksheetAssigned(WorkSheetsDTO data) {
+	public int updaetWorksheetAssigned(long tenantId, WorkSheetsDTO data) {
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		return db.update(worksheets(db, data)).getRowsAffected();
 	}
 

@@ -21,7 +21,7 @@ public class WorksheetService {
 
 	public List<WorkSheetsDTO> listingWorksheetsOfStdLib(long tenantId, WorkSheetsDTO worksheets) {
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		List<WorkSheetsDTO> list = db
 				.sql("select worksheets.worksheetname, worksheets.createdby, worksheets.description,"
 						+ " worksheets.gradeid, worksheets.worksheetpath, subjects.subjectname, degreeofdifficulty.description"
@@ -33,7 +33,7 @@ public class WorksheetService {
 
 	public List<WorkSheetsDTO> listingWorksheetsOfTenant(long tenantId, WorkSheetsDTO worksheets) {
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		String subjectname = worksheets.getSubjectname();
 		long gradeid = worksheets.getGradeid();
 		String level = worksheets.getDegreeofdifficulty();
