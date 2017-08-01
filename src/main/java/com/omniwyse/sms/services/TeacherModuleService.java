@@ -126,7 +126,7 @@ public class TeacherModuleService {
 	
 		db = retrive.getDatabase(tenantId);
 		ClassRoomDetails classroom=new ClassRoomDetails();
-		classroom.setStudentsOfClassRoom(studentService.getStudentsOfClassRoom(tenantId,id));
+		classroom.setStudentsOfClassRoom(studentService.getStudentsOfClassRoom(id, tenantId));
 		return classroom;
 	}
 //tests list
