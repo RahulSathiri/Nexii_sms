@@ -43,7 +43,7 @@ public class MyUserDetailsService implements UserDetailsService {
             String assignedrole = null;
             for (UserRoles assignedroles : assignedroleslist) {
                 assignedrole = assignedroles.getRole();
-                grantedAuthorities.add(new SimpleGrantedAuthority(assignedrole));
+                grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_"+assignedrole));
             }
         }
         UserDetails userdetails = new User(mainuser.getMail(), mainuser.getPassword(), true, true, true, true,

@@ -1,8 +1,7 @@
 package com.omniwyse.sms.controller;
 
-import javax.annotation.security.RolesAllowed;
-
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,13 +20,14 @@ public class HomeController {
     }
 
     // @Secured(value = { "ADMIN" })
-    @PreAuthorize("hasRole('ADMIN')")
+  // @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/admin**", method = RequestMethod.GET)
     public String privatepage() {
+	  // SecurityContextHolder.getContext().setAuthentication(authentication);
         return "privatepage";
     }
 
-    @RolesAllowed("hasAuthority('SUPERADMIN')")
+    //@RolesAllowed("hasAuthority('SUPERADMIN')")
     @RequestMapping(value = "/{tenantId}/superadmin**", method = RequestMethod.POST, produces = "application/json")
     public String superprivatepage(@PathVariable("tenantId") long tenantId, @RequestBody UserAndRoles user) {
         return "superprivatepage";

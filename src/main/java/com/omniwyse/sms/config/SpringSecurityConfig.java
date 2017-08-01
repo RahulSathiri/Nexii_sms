@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 import com.omniwyse.sms.utils.MyAccessDeniedHandler;
 
@@ -17,9 +18,15 @@ import com.omniwyse.sms.utils.MyAccessDeniedHandler;
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
+	@Autowired
+	HttpAuthenticationEntryPoint authenticationEntryPoint;
+	
     @Autowired
     @Qualifier("userDetailsService")
     UserDetailsService userDetailsService;
+    
+    @Autowired
+    AuthenticationSuccessHandler authsuccesshandler;
     
     @Autowired
     private MyAccessDeniedHandler accesshandler;
@@ -28,7 +35,24 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpsecurity) {
         try {
             httpsecurity.csrf().disable();
-            // httpsecurity.authorizeRequests().antMatchers("/admin**").authenticated().anyRequest().permitAll().and().formLogin().permitAll();
+            
+            httpsecurity.authorizeRequests().anyRequest().fullyAuthenticated();
+            httpsecurity.httpBasic();
+            
+//            httpsecurity.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).
+//            and().authorizeRequests().
+//            antMatchers("/admin**").authenticated().
+//            and()
+//            .formLogin()
+//            .successHandler(authsuccesshandler)
+//            .failureHandler(new SimpleUrlAuthenticationFailureHandler())
+//            .and()
+//            .logout();
+//            
+            
+//            httpsecurity.authorizeRequests().
+//            antMatchers("/admin**").access("hasRole('ROLE_ADMIN')").
+//            and().formLogin().permitAll();
         } catch (Exception e) {
             e.printStackTrace();
         }
