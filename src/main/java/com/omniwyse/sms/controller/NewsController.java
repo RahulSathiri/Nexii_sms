@@ -20,6 +20,7 @@ import com.omniwyse.sms.utils.Response;
 import com.omniwyse.sms.utils.UserAndRoles;
 
 @RestController
+@RequestMapping("/{tenantId}")
 public class NewsController {
 	@Autowired
 	private NewsService service;
@@ -28,7 +29,7 @@ public class NewsController {
 	private Response response;
 
     @RolesAllowed("hasAuthority('SUPERADMIN','ADMIN')")
-    @RequestMapping(value = "/{tenantId}/postnews", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/postnews", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<Response> postNews(@PathVariable("tenantId") long tenantId, @RequestBody UserAndRoles user,
             @RequestBody NewsFeed news) {
 
@@ -48,7 +49,7 @@ public class NewsController {
 
 	}
 
-	@RequestMapping("/{tenantId}/news")
+	@RequestMapping("/news")
 	public List<NewsFeed> listOfNews(@PathVariable("tenantId") long tenantId) {
 
 		List<NewsFeed> list = service.listNews(tenantId);
@@ -58,7 +59,7 @@ public class NewsController {
 	}
 
     @PreAuthorize("hasRole('SUPERADMIN','ADMIN')")
-	@RequestMapping("/{tenantId}/editnews")
+	@RequestMapping("/editnews")
 	public ResponseEntity<Response> editNews(@PathVariable("tenantId") long tenantId,@RequestBody NewsFeed newsfeed) {
 
 		service.editNews(newsfeed,tenantId);
@@ -70,7 +71,7 @@ public class NewsController {
 	}
 
     @PreAuthorize("hasRole('SUPERADMIN','ADMIN')")
-	@RequestMapping("/{tenantId}/deletenews")
+	@RequestMapping("/deletenews")
 	public ResponseEntity<Response> deleteNews(@PathVariable("tenantId") long tenantId,@RequestBody NewsFeed newsfeed) {
 
 		service.deleteNews(newsfeed,tenantId);

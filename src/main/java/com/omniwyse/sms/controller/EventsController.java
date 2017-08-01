@@ -16,6 +16,7 @@ import com.omniwyse.sms.services.EventsService;
 import com.omniwyse.sms.utils.Response;
 
 @RestController
+@RequestMapping("/{tenantId}")
 public class EventsController {
 	@Autowired
 	private EventsService service;
@@ -23,7 +24,7 @@ public class EventsController {
 	@Autowired
 	private Response response;
 
-    @RequestMapping(value = "/{tenantId}/postevent", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/postevent", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<Response> postEvent(@PathVariable("tenantId") long tenantId, @RequestBody Events events) {
 
         int rowEffected = service.postEvent(events, tenantId);
@@ -42,7 +43,7 @@ public class EventsController {
 
 	}
 
-	@RequestMapping("/{tenantId}/events")
+	@RequestMapping("/events")
 	public List<Events> listOfEvents(@PathVariable("tenantId") long tenantId) {
 
 		List<Events> list = service.listEvents(tenantId);
@@ -50,7 +51,7 @@ public class EventsController {
 
 	}
 
-	@RequestMapping("/{tenantId}/editevent")
+	@RequestMapping("/editevent")
 	public ResponseEntity<Response> editEvent(@PathVariable("tenantId") long tenantId,@RequestBody Events event) {
 		service.editEvent(event,tenantId);
 		response.setStatus(200);
@@ -59,7 +60,7 @@ public class EventsController {
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 
-	@RequestMapping("/{tenantId}/deleteevent")
+	@RequestMapping("/deleteevent")
 	public ResponseEntity<Response> listOfEvents(@PathVariable("tenantId") long tenantId,@RequestBody Events event) {
 		service.deleteEvent(event,tenantId);
 		response.setStatus(200);

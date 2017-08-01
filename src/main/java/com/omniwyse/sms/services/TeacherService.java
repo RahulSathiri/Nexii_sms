@@ -15,9 +15,9 @@ public class TeacherService {
     private com.omniwyse.sms.db.DatabaseRetrieval retrive;
 	private Database db;
 
-	public int addTeacher(Teachers teacher) {
+	public int addTeacher( long tenantId, Teachers teacher) {
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 
 		String email = teacher.getEmailid();
 		String teachername = teacher.getTeachername();
@@ -50,8 +50,8 @@ public class TeacherService {
 			return false;
 	}
 
-	public int updateTeacher(Teachers updateTeacher) {
-		db = retrive.getDatabase(1);
+	public int updateTeacher( long tenantId, Teachers updateTeacher) {
+		db = retrive.getDatabase(tenantId);
 		// String email = updateTeacher.getEmailid();
 
 		return db.update(updateTeacher).where("id = ?", updateTeacher.getId()).getRowsAffected();

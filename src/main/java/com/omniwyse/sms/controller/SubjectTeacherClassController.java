@@ -18,6 +18,7 @@ import com.omniwyse.sms.utils.ClassSectionTransferObject;
 import com.omniwyse.sms.utils.Response;
 
 @RestController
+@RequestMapping("/{tenantId}")
 public class SubjectTeacherClassController {
 	@Autowired
 	private SubjectTeacherClassService service;
@@ -25,7 +26,7 @@ public class SubjectTeacherClassController {
 	@Autowired
 	private Response response;
 
-	@RequestMapping("/{tenantId}/listsubjectsofgrade")
+	@RequestMapping("/listsubjectsofgrade")
 	public List<Subjects> listSubjectsOfGrade(@PathVariable("tenantId") long tenantId,@RequestBody ClassSectionTransferObject classtransferobject) {
 		long gradeid = classtransferobject.getGradeid();
 		return service.getListOfSubjects(tenantId,gradeid);
@@ -35,13 +36,13 @@ public class SubjectTeacherClassController {
 	@PostMapping
 	@RequestMapping("/assignteachertosubject")
 	@ResponseBody
-	public ResponseEntity<Response> assignOrEditTeacherToSubject(
+	public ResponseEntity<Response> assignOrEditTeacherToSubject(@PathVariable("tenantId") long tenantId,
 			@RequestBody ClassSectionTransferObject classtransferobject) {
 		String teachername = classtransferobject.getTeachername();
 		long classid = classtransferobject.getId();
 		String subjectname = classtransferobject.getSubjectname();
 
-		int rowEffected = service.assignTeacherToSubject(classid, teachername, subjectname);
+		int rowEffected = service.assignTeacherToSubject(tenantId, classid, teachername, subjectname);
 		if (rowEffected > 0) {
 			response.setStatus(202);
 			response.setMessage("teacher assigned successfully");
@@ -59,18 +60,18 @@ public class SubjectTeacherClassController {
 	@RequestMapping("/{tenantId}/listingassignedteachers")
 	public List<ClassSectionTransferObject> listOfSubjectsToTeachers(
 			@PathVariable("tenantId") long tenantId,@RequestBody ClassSectionTransferObject classtransferobject) {
-		long id = classtransferobject.getId();
-		List<ClassSectionTransferObject> list = service.listOfSubjectsTeachers(id,tenantId);
+		long classid = classtransferobject.getId();
+		List<ClassSectionTransferObject> list = service.listOfSubjectsTeachers(tenantId, classid);
 		return list;
 	}
 
 	@RequestMapping("/editsubjectteacher")
-	public ResponseEntity<Response> updateSubjectTeachers(@RequestBody ClassSectionTransferObject classtransferobject) {
+	public ResponseEntity<Response> updateSubjectTeachers(@PathVariable("tenantId") long tenantId, @RequestBody ClassSectionTransferObject classtransferobject) {
 		long classid = classtransferobject.getId();
 		String subjectname = classtransferobject.getSubjectname();
 		String teachername = classtransferobject.getTeachername();
 
-		service.updateSubjectTeacher(classid, subjectname, teachername);
+		service.updateSubjectTeacher(tenantId, classid, subjectname, teachername);
 
 		response.setStatus(202);
 		response.setMessage("subject techer edited successfully");

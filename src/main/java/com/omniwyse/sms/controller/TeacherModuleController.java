@@ -32,43 +32,42 @@ public class TeacherModuleController {
 	@Autowired
 	private Response response;
 	
-	@RequestMapping("/mysubjects")
-	public List<TeacherModuleDTO> listOfTeacherAssignedSubjects(@RequestBody ClassSectionTransferObject moduleDTO) {
-
-		return service.listAllSubjectsAlongWithClassRooms(moduleDTO);
+	@RequestMapping("/{tenantId}/mysubjects")
+	public List<TeacherModuleDTO> listOfTeacherAssignedSubjects(@PathVariable("tenantId") long tenantId, @RequestBody ClassSectionTransferObject moduleDTO) {
+		return service.listAllSubjectsAlongWithClassRooms(tenantId,moduleDTO);
 	}
-	@RequestMapping("/mysubjects/{id}/{subjectname}")
-	public ClassRoomDetails listStudentsAndTests(@PathVariable ("id") long id, @PathVariable ("subjectname") String subjectname){
+	@RequestMapping("/{tenantId}/mysubjects/{id}/{subjectname}")
+	public ClassRoomDetails listStudentsAndTests(@PathVariable("tenantId") long tenantId, @PathVariable ("id") long id, @PathVariable ("subjectname") String subjectname){
 		
-		return service.teacherModuleList(id,subjectname);
-		
-	}
-	
-	@RequestMapping("/mysubjectsstudents/{id}/{subjectname}")
-	public ClassRoomDetails listStudents(@PathVariable ("id") long id, @PathVariable ("subjectname") String subjectname){
-		
-		return service.teacherModulestudentsList(id,subjectname);
+		return service.teacherModuleList(tenantId,id,subjectname);
 		
 	}
 	
-	@RequestMapping("/subjectstests/{id}/{subjectname}")
-	public List<TestTransferObject> getListOfTests(@PathVariable ("id") long id, @PathVariable ("subjectname") String subjectname) {
-		List<TestTransferObject> tests= service.getListOfsubjectTests(id,subjectname);
+	@RequestMapping("/{tenantId}/mysubjectsstudents/{id}/{subjectname}")
+	public ClassRoomDetails listStudents(@PathVariable("tenantId") long tenantId, @PathVariable ("id") long id, @PathVariable ("subjectname") String subjectname){
+		
+		return service.teacherModulestudentsList(tenantId,id,subjectname);
+		
+	}
+	
+	@RequestMapping("/{tenantId}/subjectstests/{id}/{subjectname}")
+	public List<TestTransferObject> getListOfTests(@PathVariable("tenantId") long tenantId, @PathVariable ("id") long id, @PathVariable ("subjectname") String subjectname) {
+		List<TestTransferObject> tests= service.getListOfsubjectTests(tenantId,id,subjectname);
 		return tests; 
 
 	}
 
-	@RequestMapping("/myclassroom")
-	public List<ClassSectionTransferObject> listClassRoomAssignedAsClassRoomTeacher(
+	@RequestMapping("/{tenantId}/myclassroom")
+	public List<ClassSectionTransferObject> listClassRoomAssignedAsClassRoomTeacher(@PathVariable("tenantId") long tenantId, 
 			@RequestBody ClassSectionTransferObject moduleDTO) {
 
-		return service.getClassRoomOfTeacherAssignedCRT(moduleDTO);
+		return service.getClassRoomOfTeacherAssignedCRT(tenantId,moduleDTO);
 	}
 
-	@RequestMapping("/teacherprofile")
-	public List<Teachers> showTeacherProfile(@RequestBody ClassSectionTransferObject teacher) {
+	@RequestMapping("/{tenantId}/teacherprofile")
+	public Teachers showTeacherProfile(@PathVariable("tenantId") long tenantId, @RequestBody ClassSectionTransferObject teacher) {
 
-		return service.showTeacherProfile(teacher);
+		return service.showTeacherProfile(tenantId,teacher);
 	}
 	@RequestMapping("/timeline")
 	public List<TimelineDTO> timelineView(@RequestBody TimelineDTO data){

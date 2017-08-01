@@ -19,6 +19,7 @@ import com.omniwyse.sms.utils.Response;
 import com.omniwyse.sms.utils.StudentTransferObject;
 
 @RestController
+@RequestMapping("/{tenantId}")
 public class StudentsController {
 
 	@Autowired
@@ -26,7 +27,7 @@ public class StudentsController {
 	@Autowired
 	private Response response;
 
-	@RequestMapping(value = "/{tenantId}/addstudent", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/addstudent", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> addStudent(@PathVariable("tenantId") long tenantId,@RequestBody StudentTransferObject addStudent) {
 
 		int rowEffected = service.addStudent(addStudent,tenantId);
@@ -48,7 +49,7 @@ public class StudentsController {
 		}
 	}
 
-	@RequestMapping(value = "/{tenantId}/updatestudent", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/updatestudent", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> updateStudent(@PathVariable("tenantId") long tenantId,@RequestBody Students updateStudent) {
 
 		service.updateStudent(updateStudent,tenantId);
@@ -59,7 +60,7 @@ public class StudentsController {
 
 	}
 
-	@RequestMapping(value = "/{tenantId}/addstudenttoclassroom", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/addstudenttoclassroom", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> addstudenttoclassroom(@PathVariable("tenantId") long tenantId,@RequestBody Students addStudent) {
 		String admissionnumber = addStudent.getAdmissionnumber();
 		long classid = addStudent.getId();
@@ -72,7 +73,7 @@ public class StudentsController {
 	}
 
 
-	@RequestMapping(value = "/{tenantId}/liststudentsofclassroom", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/liststudentsofclassroom", method = RequestMethod.POST, produces = "application/json")
 	public List<ClassRoomStudents> getStudentsOfClassRoom(@PathVariable("tenantId") long tenantId,@RequestBody StudentClassroom studentclassroom) {
 		long classid = studentclassroom.getId();
 		return service.getStudentsOfClassRoom(classid,tenantId);

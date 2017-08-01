@@ -18,24 +18,25 @@ import com.omniwyse.sms.utils.ClassRoomDetails;
 import com.omniwyse.sms.utils.StudentTransferObject;
 
 @RestController
+@RequestMapping("/{tenantId}")
 public class RecordsController {
 
 	@Autowired
 	RecordsService recordservice;
 
-	@RequestMapping("/{tenantId}/teachers")
+	@RequestMapping("/teachers")
 	public List<Teachers> getAllTeachers(@PathVariable("tenantId") long tenantId) {
 		return recordservice.getAllTeachers(tenantId);
 
 	}
 
-	@RequestMapping("/{tenantId}/students")
+	@RequestMapping("/students")
 	public List<StudentTransferObject> getAllStudents(@PathVariable("tenantId") long tenantId) {
 		return recordservice.getAllStudents(tenantId);
 
 	}
 
-	@RequestMapping("/{tenantId}/subjects")
+	@RequestMapping("/subjects")
 	public List<Subjects> getAllSubjects(@PathVariable("tenantId") long tenantId) {
 		return recordservice.getAllSubjects(tenantId);
 
@@ -47,7 +48,7 @@ public class RecordsController {
 
 	}
 
-	@RequestMapping("/{tenantId}/classroomdetails")
+	@RequestMapping("/classroomdetails")
 	public ClassRoomDetails getClassRoomDetails(@PathVariable("tenantId") long tenantId,@RequestBody ClassRoom classroom) {
 		long id = classroom.getId();
 		long gradeid = classroom.getGradeid();
@@ -55,19 +56,19 @@ public class RecordsController {
 
 	}
 
-	@RequestMapping("/{tenantId}/syllabus")
+	@RequestMapping("/syllabus")
 	public List<Syllabus> getAllSyllabus(@PathVariable("tenantId") long tenantId) {
 		return recordservice.getAllSyllabus(tenantId);
 
 	}
 
-    @RequestMapping("/{tenantId}/classroomsyllabustypes")
+    @RequestMapping("/classroomsyllabustypes")
     public List<Grades> distinctSyllabusType(@PathVariable("tenantId") long tenantId) {
 
         return recordservice.getAllClassRoomSyllabusTypes(tenantId);
     }
 
-    @RequestMapping("/{tenantId}/classroomacademicyears")
+    @RequestMapping("/classroomacademicyears")
     public List<ClassRoom> getAcademicYears(@PathVariable("tenantId") long tenantId) {
         return recordservice.getAcademicYears(tenantId);
 

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import com.omniwyse.sms.utils.NoticeBoardTransferObject;
 import com.omniwyse.sms.utils.Response;
 
 @RestController
+@RequestMapping("/{tenantId}")
 public class NoticeBoardController {
 	@Autowired
 	NoticeBoardService service;
@@ -22,8 +24,8 @@ public class NoticeBoardController {
 	private Response response;
 
 	@RequestMapping("/postnotice")
-	public ResponseEntity<Response> postNotice(@RequestBody NoticeBoardTransferObject noticeboardTransferObject) {
-		int rowEffected = service.postNotice(noticeboardTransferObject);
+	public ResponseEntity<Response> postNotice(@PathVariable("tenantId") long tenantId, @RequestBody NoticeBoardTransferObject noticeboardTransferObject) {
+		int rowEffected = service.postNotice(tenantId, noticeboardTransferObject);
 		if (rowEffected > 0) {
 			response.setStatus(200);
 			response.setMessage("Notice posted successfuly");
@@ -40,8 +42,8 @@ public class NoticeBoardController {
 	}
 
 	@RequestMapping("/editnotice")
-	public ResponseEntity<Response> editNotice(@RequestBody NoticeBoard noticeboard) {
-		service.editNotice(noticeboard);
+	public ResponseEntity<Response> editNotice(@PathVariable("tenantId") long tenantId, @RequestBody NoticeBoard noticeboard) {
+		service.editNotice(tenantId, noticeboard);
 		response.setStatus(200);
 		response.setMessage("edited successfuly");
 		response.setDescription("edited successfuly");
@@ -49,8 +51,8 @@ public class NoticeBoardController {
 	}
 
 	@RequestMapping("/listnotice")
-	public List<NoticeBoardTransferObject> listNotice(@RequestBody NoticeBoard noticeboard) {
-		return service.listNotice();
+	public List<NoticeBoardTransferObject> listNotice(@PathVariable("tenantId") long tenantId, @RequestBody NoticeBoard noticeboard) {
+		return service.listNotice(tenantId);
 
 	}
 }

@@ -17,6 +17,7 @@ import com.omniwyse.sms.services.HolidaysService;
 import com.omniwyse.sms.utils.Response;
 
 @RestController
+@RequestMapping("/{tenantId}")
 public class HolidaysController {
 	@Autowired
 	private HolidaysService service;
@@ -25,7 +26,7 @@ public class HolidaysController {
 	private Response response;
 
     @PreAuthorize("hasRole('SUPERADMIN','ADMIN')")
-	@RequestMapping(value = "/{tenantId}/postholiday", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/postholiday", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> postHoliday(@PathVariable("tenantId") long tenantId,@RequestBody Holidays holiday) {
 
 		int rowEffected = service.postHoliday(holiday,tenantId);
@@ -44,7 +45,7 @@ public class HolidaysController {
 
 	}
 
-	@RequestMapping("/{tenantId}/holidays")
+	@RequestMapping("/holidays")
 	public List<Holidays> listOfHolidays(@PathVariable("tenantId") long tenantId) {
 
 		List<Holidays> list = service.listOfHolidays(tenantId);
@@ -54,7 +55,7 @@ public class HolidaysController {
 	}
 
     @PreAuthorize("hasRole('SUPERADMIN','ADMIN')")
-	@RequestMapping("/{tenantId}/editholiday")
+	@RequestMapping("/editholiday")
 	public ResponseEntity<Response> editHoliday(@PathVariable("tenantId") long tenantId,@RequestBody Holidays holiday) {
 
 		service.editHoliday(holiday,tenantId);
@@ -66,7 +67,7 @@ public class HolidaysController {
 	}
 
     @PreAuthorize("hasRole('SUPERADMIN','ADMIN')")
-	@RequestMapping("/{tenantId}/deleteholiday")
+	@RequestMapping("/deleteholiday")
 	public ResponseEntity<Response> deleteHoliday(@PathVariable("tenantId") long tenantId,@RequestBody Holidays holiday) {
 
 		service.deleteHoliday(holiday,tenantId);

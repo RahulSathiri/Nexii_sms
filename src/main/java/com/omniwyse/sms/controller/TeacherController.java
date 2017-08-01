@@ -3,6 +3,7 @@ package com.omniwyse.sms.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,7 +14,7 @@ import com.omniwyse.sms.services.TeacherService;
 import com.omniwyse.sms.utils.Response;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/{tenantId}")
 public class TeacherController {
 
 	@Autowired
@@ -25,9 +26,9 @@ public class TeacherController {
 	private int rowEffected;
 
 	@RequestMapping(value = "/addteacher", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Response> addTeachers(@RequestBody Teachers addTeacher) {
+	public ResponseEntity<Response> addTeachers(@PathVariable("tenantId") long tenantId, @RequestBody Teachers addTeacher) {
 
-		rowEffected = service.addTeacher(addTeacher);
+		rowEffected = service.addTeacher(tenantId, addTeacher);
 		if (rowEffected > 0) {
 			response.setStatus(202);
 			response.setMessage("Teacher added");
@@ -49,8 +50,8 @@ public class TeacherController {
 	}
 
 	@RequestMapping(value = "/updateteacher", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Response> updateTeachers(@RequestBody Teachers updateTeacher) {
-		rowEffected = service.updateTeacher(updateTeacher);
+	public ResponseEntity<Response> updateTeachers(@PathVariable("tenantId") long tenantId, @RequestBody Teachers updateTeacher) {
+		rowEffected = service.updateTeacher(tenantId, updateTeacher);
 		if (rowEffected > 0) {
 			response.setStatus(202);
 			response.setMessage("Teacher data updated");

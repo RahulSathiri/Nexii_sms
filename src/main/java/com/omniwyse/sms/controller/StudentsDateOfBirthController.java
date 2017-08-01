@@ -13,34 +13,35 @@ import com.omniwyse.sms.services.StudentsDateOfBirthService;
 import com.omniwyse.sms.utils.DateOfBirthDTO;
 
 @RestController
+@RequestMapping("/{tenantId}")
 public class StudentsDateOfBirthController {
 
 	@Autowired
 	StudentsDateOfBirthService studentsDateOfBirthService;
 
-	@RequestMapping("/{tenantId}/birthday/classteacher")
+	@RequestMapping("/birthday/classteacher")
 	public List<DateOfBirthDTO> getClassStudentsBirthDay(@PathVariable("tenantId") long tenantId,@RequestBody DateOfBirthDTO dateOfBirthDTO) {
 		return studentsDateOfBirthService.getClassStudentsBirthDay(dateOfBirthDTO,tenantId);
 
 	}
 
-	@RequestMapping("/{tenantId}/birthday/classsubjectteacher")
+	@RequestMapping("/birthday/classsubjectteacher")
 	public List<DateOfBirthDTO> getClassSubjectsStudentsBirthDay(@PathVariable("tenantId") long tenantId,@RequestBody DateOfBirthDTO dateOfBirthDTO) {
 		return studentsDateOfBirthService.getClassSubjectsStudentsBirthDay(dateOfBirthDTO,tenantId);
 	}
 
-	@RequestMapping("/{tenantId}/birthday/students")
+	@RequestMapping("/birthday/students")
 	public List<DateOfBirthDTO> getStudentsBirthDays(@PathVariable("tenantId") long tenantId) {
 		return studentsDateOfBirthService.getStudentsBirthDays(tenantId);
 
 	}
 	
-	@RequestMapping("/{tenantId}/birthday/myclassstudentstoday")
+	@RequestMapping("/birthday/myclassstudentstoday")
 	public List<DateOfBirthDTO> getBirthDaysOfMyClassStudents(@PathVariable("tenantId") long tenantId,@RequestBody ClassRoom classRoom) {
 		return studentsDateOfBirthService.getBirthDaysOfMyClassStudents(classRoom,tenantId);
 
 	}
-	@RequestMapping("/{tenantId}/birthday/myclassstudentstomorrow")
+	@RequestMapping("/birthday/myclassstudentstomorrow")
 	public List<DateOfBirthDTO> getTomorrowBirthDaysOfMyClassStudents(@PathVariable("tenantId") long tenantId,@RequestBody ClassRoom classRoom) {
 		return studentsDateOfBirthService.getTomorrowBirthDaysOfMyClassStudents(classRoom,tenantId);
 
