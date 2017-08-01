@@ -149,6 +149,7 @@ insert into classrooms(gradeid,academicyear,sectionname,classteacherid)
 CREATE TABLE houses(
 id bigint(8) NOT NULL PRIMARY KEY AUTO_INCREMENT,
 housename VARCHAR(50) NOT NULL,
+UNIQUE (housename),
 description VARCHAR(400) NOT NULL
 );
 
