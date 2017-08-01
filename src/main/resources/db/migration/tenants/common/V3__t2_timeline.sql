@@ -2,7 +2,7 @@
 
 CREATE TABLE lessons(
 id bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
-lessonname VARCHAR(150) NOT NULL UNIQUE,
+lessonname VARCHAR(150) NOT NULL,
 lessonstartdate date NOT NULL,
 status VARCHAR(30),
 tags VARCHAR(50) NOT NULL,
