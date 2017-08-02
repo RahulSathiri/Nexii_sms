@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.dieselpoint.norm.Database;
 import com.omniwyse.sms.models.Grades;
+import com.omniwyse.sms.models.House;
 import com.omniwyse.sms.models.StudentClassroom;
 import com.omniwyse.sms.models.Students;
 import com.omniwyse.sms.utils.ClassRoomStudents;
@@ -44,6 +45,11 @@ public class StudentsService {
 		db = retrive.getDatabase(tenantId);
 		gradeid = db.where("gradename=? and syllabustype=?", gradename, syllabustype).results(Grades.class).get(0)
 				.getId();
+		List<House> house=db.where("housename=?", addStudent.getHousename()).results(House.class);
+		if(!house.isEmpty())
+		{
+			students.setHouseid(house.get(0).getId());
+		}
 		students.setGradeid(gradeid);
 		name = addStudent.getName();
 

@@ -20,6 +20,17 @@ public class Students {
 	private long gradeid;
 	private String admissionnumber;
 	private String emailid;
+	private long houseid;
+	public long getHouseid() {
+		return houseid;
+	}
+
+	public void setHouseid(long houseid) {
+		this.houseid = houseid;
+	}
+
+
+
 	private long id;
 	public Date getDateofbirth() {
 		return dateofbirth;
