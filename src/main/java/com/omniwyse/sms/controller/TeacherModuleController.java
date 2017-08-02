@@ -65,6 +65,11 @@ public class TeacherModuleController {
 		return service.getClassRoomOfTeacherAssignedCRT(tenantId,moduleDTO);
 	}
 
+	@RequestMapping("/myclassroomtests/{id}")
+	public List<TestTransferObject> getListOfClassroomTests(@PathVariable("tenantId") long tenantId, @PathVariable ("id") long id){
+		
+		return service.getListOfClassroomTests(tenantId,id);
+	}
 	@RequestMapping("/teacherprofile")
 	public Teachers showTeacherProfile(@PathVariable("tenantId") long tenantId, @RequestBody ClassSectionTransferObject teacher) {
 
