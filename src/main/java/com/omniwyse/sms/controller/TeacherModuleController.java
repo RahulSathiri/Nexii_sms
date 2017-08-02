@@ -3,17 +3,24 @@ package com.omniwyse.sms.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.omniwyse.sms.models.Lessons;
 import com.omniwyse.sms.models.Teachers;
 import com.omniwyse.sms.services.TeacherModuleService;
+import com.omniwyse.sms.utils.AssignmentDTO;
 import com.omniwyse.sms.utils.ClassRoomDetails;
 import com.omniwyse.sms.utils.ClassSectionTransferObject;
+import com.omniwyse.sms.utils.Response;
 import com.omniwyse.sms.utils.TeacherModuleDTO;
 import com.omniwyse.sms.utils.TestTransferObject;
+import com.omniwyse.sms.utils.TimelineDTO;
+import com.omniwyse.sms.utils.WorkSheetsDTO;
 
 
 @RestController
@@ -22,6 +29,9 @@ public class TeacherModuleController {
 	@Autowired
 	private TeacherModuleService service;
 
+	@Autowired
+	private Response response;
+	
 	@RequestMapping("/mysubjects")
 	public List<TeacherModuleDTO> listOfTeacherAssignedSubjects(@RequestBody ClassSectionTransferObject moduleDTO) {
 
@@ -59,6 +69,76 @@ public class TeacherModuleController {
 	public List<Teachers> showTeacherProfile(@RequestBody ClassSectionTransferObject teacher) {
 
 		return service.showTeacherProfile(teacher);
+	}
+	@RequestMapping("/timeline")
+	public List<TimelineDTO> timelineView(@RequestBody TimelineDTO data){
+		
+		return service.viewTimeline(data);
+	}
+	
+	@RequestMapping("/addlesson")
+	public ResponseEntity<Response> addLessonToSubject(@RequestBody TimelineDTO data) {
+
+		int rowEffected = service.addingLesson(data);
+		if (rowEffected > 0) {
+			response.setStatus(200);
+			response.setMessage("data recorded successfuly");
+			response.setDescription("data recorded");
+			return new ResponseEntity<Response>(response, HttpStatus.OK);
+		} else {
+			response.setStatus(400);
+			response.setMessage("data not recorded");
+			response.setDescription("data recording failed");
+			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+
+		}
+
+	}
+	
+	@RequestMapping("/teacherschedule/listofworksheets")
+	public List<WorkSheetsDTO> listOFWorksheets(@RequestBody WorkSheetsDTO data){
+		
+		return service.listWorkSheetsbasedOn(data);
+	}
+
+	@RequestMapping("/assignassignment")
+	public ResponseEntity<Response> assignmentAssigning(@RequestBody AssignmentDTO assigning) {
+
+		int rowEffected = service.assignAssignment(assigning);
+		if (rowEffected > 0) {
+			response.setStatus(200);
+			response.setMessage("Assigned successfuly");
+			response.setDescription("Assigned successfuly");
+			return new ResponseEntity<Response>(response, HttpStatus.OK);
+		} else {
+			response.setStatus(400);
+			response.setMessage("failed to assign");
+			response.setDescription("failed to assign to class");
+			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@RequestMapping("/assignworksheet")
+	public ResponseEntity<Response> worksheetAssigning(@RequestBody WorkSheetsDTO data) {
+
+		int rowEffected = service.worksheetAssign(data);
+		if (rowEffected > 0) {
+			response.setStatus(200);
+			response.setMessage("Assigned successfuly");
+			response.setDescription("Assigned successfuly");
+			return new ResponseEntity<Response>(response, HttpStatus.OK);
+		} else {
+			response.setStatus(400);
+			response.setMessage("failed to assign");
+			response.setDescription("failed to assign to class");
+			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@RequestMapping("/lessonslist")
+	public List<Lessons> listOfLessons(@RequestBody TimelineDTO data){
+		
+		return service.lessonsList(data);
 	}
 	
 }
