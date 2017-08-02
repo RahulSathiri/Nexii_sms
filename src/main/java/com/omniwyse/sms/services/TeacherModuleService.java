@@ -60,7 +60,7 @@ public class TeacherModuleService {
 		db = retrive.getDatabase(tenantId);
 
 		List<ClassSectionTransferObject> list = db
-				.sql("select gradeid, sectionname from classrooms where classteacherid = ? ", moduleDTO.getId())
+				.sql("select id, gradeid, sectionname from classrooms where classteacherid = ? ", moduleDTO.getId())
 				.results(ClassSectionTransferObject.class);
 
 		return list;
@@ -268,6 +268,25 @@ public class TeacherModuleService {
 
 		db = retrive.getDatabase(tenantId);
 		return db.update(worksheets(db, data)).getRowsAffected();
+	}
+
+	public List<TestTransferObject> getListOfClassroomTests(long tenantId, long id) {
+		
+		db = retrive.getDatabase(tenantId);
+		long gradeid = db.where("id=?", id).results(ClassRoom.class).get(0).getGradeid();
+		
+		List<TestTransferObject> testsdetails = db
+				.sql("SELECT  test_syllabus.id,test_syllabus.testid,test_type.testtype,test_mode.testmode,"
+						+ "test_create.startdate,test_create.enddate,"
+						+ "test_syllabus.subjectid,test_create.maxmarks,test_syllabus.syllabus " + "FROM test_create "
+						+ "JOIN test_mode on test_create.modeid = test_mode.id "
+						+ "JOIN test_type on test_create.testtypeid = test_type.id "
+						+ "JOIN test_syllabus on test_syllabus.testid = test_create.id "
+						+ "WHERE test_create.gradeid = ?", gradeid)
+				.results(TestTransferObject.class);
+
+		return testsdetails;
+
 	}
 
 }
