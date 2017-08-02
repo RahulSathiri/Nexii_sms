@@ -21,7 +21,7 @@ public class WorksheetService {
 
 	public List<WorkSheetsDTO> listingWorksheetsOfStdLib(long tenantId, WorkSheetsDTO worksheets) {
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		List<WorkSheetsDTO> list = db
 				.sql("select worksheets.worksheetname, worksheets.createdby, worksheets.description,"
 						+ " worksheets.gradeid, worksheets.worksheetpath, subjects.subjectname, degreeofdifficulty.description"
@@ -33,7 +33,7 @@ public class WorksheetService {
 
 	public List<WorkSheetsDTO> listingWorksheetsOfTenant(long tenantId, WorkSheetsDTO worksheets) {
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		String subjectname = worksheets.getSubjectname();
 		long gradeid = worksheets.getGradeid();
 		String level = worksheets.getDegreeofdifficulty();
@@ -52,34 +52,34 @@ public class WorksheetService {
 
 			long subjectid = db.where("subjectname = ?", subjectname).results(Subjects.class).get(0).getId();
 
-			return db.sql(query + " where subjectid = ?", subjectid).results(WorkSheetsDTO.class);
+			return db.sql(query + " where subjects.subjectid = ?", subjectid).results(WorkSheetsDTO.class);
 
 		} else if (subjectname != null && gradeid != 0 && level == null) {
 
 			long subjectid = db.where("subjectname = ?", subjectname).results(Subjects.class).get(0).getId();
 
-			return db.sql(query + " where subjectid = ? and gradeid = ?", subjectid, gradeid)
+			return db.sql(query + " where subjects.subjectid = ? and worksheets.gradeid = ?", subjectid, gradeid)
 					.results(WorkSheetsDTO.class);
 		} else if (subjectname != null && gradeid != 0 && level != null) {
 
 			long subjectid = db.where("subjectname = ?", subjectname).results(Subjects.class).get(0).getId();
-			long levelid = db.where("degreeofdifficulty = ?", level).results(Degreeofdifficulty.class).get(0).getId();
+			long levelid = db.where("worksheets.degreeofdifficulty = ?", level).results(Degreeofdifficulty.class).get(0).getId();
 
-			return db.sql(query + " where subjectid = ? and gradeid = ? and degreeofdifficultyid = ?", subjectid,
+			return db.sql(query + " where subjects.subjectid = ? and worksheets.gradeid = ? and worksheets.degreeofdifficultyid = ?", subjectid,
 					gradeid, levelid).results(WorkSheetsDTO.class);
 		} else if (subjectname == null && gradeid != 0 && level == null) {
 
 			return db.sql(query + " where gradeid = ?", gradeid).results(WorkSheetsDTO.class);
 		} else if (subjectname == null && gradeid != 0 && level != null) {
 			
-			long levelid = db.where("degreeofdifficulty = ?", level).results(Degreeofdifficulty.class).get(0).getId();
-			return db.sql(query + " where gradeid = ? and degreeofdifficultyid = ?", gradeid, levelid)
+			long levelid = db.where("worksheets.degreeofdifficulty = ?", level).results(Degreeofdifficulty.class).get(0).getId();
+			return db.sql(query + " where worksheets.gradeid = ? and worksheets.degreeofdifficultyid = ?", gradeid, levelid)
 					.results(WorkSheetsDTO.class);
 		}else if(subjectname == null && gradeid == 0 && level != null){
 			
-			long levelid = db.where("degreeofdifficulty = ?", level).results(Degreeofdifficulty.class).get(0).getId();
+			long levelid = db.where("worksheets.degreeofdifficulty = ?", level).results(Degreeofdifficulty.class).get(0).getId();
 			
-			return db.sql(query + " where degreeofdifficultyid = ?", levelid)
+			return db.sql(query + " where worksheets.degreeofdifficultyid = ?", levelid)
 					.results(WorkSheetsDTO.class);
 		}else {
 			return null;

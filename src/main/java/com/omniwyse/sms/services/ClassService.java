@@ -48,7 +48,7 @@ public class ClassService {
 		teachername = createclass.getTeachername();
 		gradename = createclass.getGradename();
 		syllabustype = createclass.getSyllabustype();
-		db = retrieve.getDatabase(1);
+		db = retrieve.getDatabase(tenantId);
 		List<Grades> record = db.where("gradename=? and syllabustype=?", gradename, syllabustype).results(Grades.class);
 		if (record.isEmpty()) {
 			return -5;
@@ -128,11 +128,16 @@ public class ClassService {
 
 	}
 
-	public List<ClassSectionTransferObject> getClassRoomsByYearAndSyllabustype(long tenantId, long academicyear, String syllabustype) {
+	public List<ClassSectionTransferObject> getClassRoomsByYearAndSyllabustype(long tenantId, long academicyear,
+			String syllabustype) {
 		db = retrieve.getDatabase(tenantId);
 
 		return db
-				.sql("select classrooms.id,classrooms.academicyear,classrooms.gradeid,grades.gradenumber,grades.gradename,classrooms.sectionname,grades.syllabustype,teachers.teachername from classrooms inner join grades on classrooms.academicyear=? and grades.syllabustype=? INNER JOIN teachers ON classrooms.classteacherid = teachers.id where classrooms.gradeid=grades.id",
+				.sql("select classrooms.id,classrooms.academicyear,classrooms.gradeid,"
+						+ "grades.gradenumber,grades.gradename,classrooms.sectionname,grades.syllabustype,"
+						+ "teachers.teachername from classrooms inner join grades on classrooms.academicyear=? "
+						+ "and grades.syllabustype=? INNER JOIN teachers ON classrooms.classteacherid = teachers.id"
+						+ " where classrooms.gradeid=grades.id",
 						academicyear, syllabustype)
 				.results(ClassSectionTransferObject.class);
 
@@ -142,7 +147,10 @@ public class ClassService {
 		db = retrieve.getDatabase(tenantId);
 
 		return db
-				.sql("select classrooms.id,classrooms.academicyear,classrooms.gradeid,grades.gradenumber,grades.gradename,classrooms.sectionname,grades.syllabustype,teachers.teachername from classrooms inner join grades INNER JOIN teachers ON classrooms.classteacherid = teachers.id where classrooms.gradeid=grades.id")
+				.sql("select classrooms.id,classrooms.academicyear,classrooms.gradeid,"
+						+ "grades.gradenumber,grades.gradename,classrooms.sectionname,grades.syllabustype,"
+						+ "teachers.teachername from classrooms inner join grades INNER JOIN teachers"
+						+ " ON classrooms.classteacherid = teachers.id where classrooms.gradeid=grades.id")
 				.results(ClassSectionTransferObject.class);
 
 	}
@@ -150,10 +158,12 @@ public class ClassService {
 	public List<ClassSectionTransferObject> getClassRoomsByYear(long tenantId, long academicyear) {
 
 		db = retrieve.getDatabase(tenantId);
-		List<ClassSectionTransferObject> classes = db
-				.sql("select classrooms.id,classrooms.academicyear,classrooms.gradeid,grades.gradenumber,grades.gradename,classrooms.sectionname,grades.syllabustype,teachers.teachername from classrooms inner join grades on classrooms.academicyear=? INNER JOIN teachers ON classrooms.classteacherid = teachers.id where classrooms.gradeid=grades.id",
-						academicyear)
-				.results(ClassSectionTransferObject.class);
+		List<ClassSectionTransferObject> classes = db.sql(
+				"select classrooms.id,classrooms.academicyear,classrooms.gradeid,grades.gradenumber"
+						+ ",grades.gradename,classrooms.sectionname,grades.syllabustype,teachers.teachername "
+						+ "from classrooms inner join grades on classrooms.academicyear=? INNER JOIN teachers"
+						+ " ON classrooms.classteacherid = teachers.id where classrooms.gradeid=grades.id",
+				academicyear).results(ClassSectionTransferObject.class);
 
 		return classes;
 	}

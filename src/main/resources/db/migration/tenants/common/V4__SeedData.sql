@@ -66,4 +66,36 @@ INSERT INTO classroom_attendance (classroomid,studentid, dateofattendance, atten
   		(2, 4, '2017-08-01', 1);
  --*******************************------
 
-  		
+ INSERT INTO worksheets (worksheetname, gradeid,subjectid, degreeofdifficultyid, tags, 
+ 				description, worksheetpath, createdby)
+ 				values ('Simple Calculations', 2, 4, 2, 'Excer-1,Excer-2', 'Calculations based on Addition and Subtraction', 'iSchool/2/4/M20','Ramesh Rangam'),
+ 					   ('Reading Comprehension', 2, 3, 3, 'Excer-1', 'Story of WorldWar-2 at Dunkirk', 'iSchool/2/3/E10', 'Rahul Sathiri'),
+ 					   ('Rhymes', 1, 1, 1, 'Exer-1', 'Reading Rhymes', 'iSchool/1/1/T1', 'Tejaswini'),
+ 					   ('Sounds', 1, 2, 2, 'Excer-2', 'Listen Sounds', 'iSchool/1/2/H5', 'Khan');
+ 					   
+ --*******************************------
+ 
+ INSERT INTO lessons (lessonname, lessonstartdate, status, tags, subjectid, classroomid)
+ 		values ('Lesson-1', '2017-06-25', 'Completed', 'Simple Poems', 1, 1),
+ 			   ('Lesson-1', '2017-06-22', 'Completed', 'Verbs', 2, 2),
+ 			   ('Lesson-2', '2017-06-30', 'in-Progress', 'Sounds', 2, 1),
+ 			   ('Lesson-2', '2017-06-28', 'in-Progress', 'Sounds', 3, 2);
+ 				
+--*******************************------
+ 			   
+ INSERT INTO assignments (assignmentname, dateofassigned, assignmentduedate, classroomid, subjectid, lessonsid)
+ 			values ('Assignment-1', '2017-06-26', '2017-06-28', 1, 1, 1),
+ 				   ('Assignment-2', '2017-06-28', '2017-06-30', 1, 2, 3),
+ 				   ('Assignment-1', '2017-06-26', '2017-06-28', 2, 1, 2),
+ 				   ('Assignment-2', '2017-06-28', '2017-06-30', 2, 2, 4);
+ 				   
+ 				   
+ 				
+--*******************************------
+
+ INSERT INTO classroom_worksheets (worksheetsid, dateofassigned, worksheetduedate, classroomid, subjectid, lessonsid)
+ 		values (3, '2017-06-26', '2017-06-28', 1, 1, 1),
+ 				(4,'2017-06-28', '2017-06-30', 1, 2, 3),
+ 				(1,'2017-06-26', '2017-06-28', 2, 1, 2),
+ 				(2, '2017-06-28', '2017-06-30', 2, 2, 4);
+ 
