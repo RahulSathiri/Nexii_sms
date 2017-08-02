@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 import com.omniwyse.sms.utils.MyAccessDeniedHandler;
 
@@ -18,15 +17,9 @@ import com.omniwyse.sms.utils.MyAccessDeniedHandler;
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	HttpAuthenticationEntryPoint authenticationEntryPoint;
-	
     @Autowired
     @Qualifier("userDetailsService")
     UserDetailsService userDetailsService;
-    
-    @Autowired
-    AuthenticationSuccessHandler authsuccesshandler;
     
     @Autowired
     private MyAccessDeniedHandler accesshandler;
@@ -36,43 +29,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         try {
             httpsecurity.csrf().disable();
             
-            httpsecurity.authorizeRequests().anyRequest().fullyAuthenticated();
+            httpsecurity.authorizeRequests().antMatchers("/", "/home").permitAll().anyRequest().fullyAuthenticated();
+
             httpsecurity.httpBasic();
             
-//            httpsecurity.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).
-//            and().authorizeRequests().
-//            antMatchers("/admin**").authenticated().
-//            and()
-//            .formLogin()
-//            .successHandler(authsuccesshandler)
-//            .failureHandler(new SimpleUrlAuthenticationFailureHandler())
-//            .and()
-//            .logout();
-//            
-            
-//            httpsecurity.authorizeRequests().
-//            antMatchers("/admin**").access("hasRole('ROLE_ADMIN')").
-//            and().formLogin().permitAll();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        // try {
-        // httpsecurity.authorizeRequests().antMatchers("/", "/home", "/about",
-        // "/superadmin").permitAll()
-        // .anyRequest().authenticated().antMatchers("**/admin/**").access("hasRole('ADMIN')")
-        // // hasAnyRole("SUPERADMIN").antMatchers("/admin/**")
-        // //
-        // .hasAnyRole("ADMIN").antMatchers("/teacher/**").hasAnyRole("TEACHER").antMatchers("/parent/**")
-        // //
-        // .hasAnyRole("PARENT").antMatchers("/student/**").hasAnyRole("STUDENT").anyRequest().authenticated()
-        // .and().formLogin().permitAll().and().logout().permitAll().and()
-        // .exceptionHandling().accessDeniedHandler(accesshandler).and().csrf();
-        // } catch (Exception e) {
-        // // TODO Auto-generated catch block
-        // e.printStackTrace();
-        // }
-        //
     }
     
     @Autowired
