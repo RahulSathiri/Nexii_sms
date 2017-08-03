@@ -15,6 +15,7 @@ public class StudentTransferObject {
 	private String Syllabustype;
 	private String admissionnumber;
 	private String emailid;
+	
 	private long gradeid;
 	public long getGradeid() {
 		return gradeid;
