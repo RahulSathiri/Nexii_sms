@@ -15,6 +15,13 @@ public class StudentTransferObject {
 	private String Syllabustype;
 	private String admissionnumber;
 	private String emailid;
+	private long gradeid;
+	public long getGradeid() {
+		return gradeid;
+	}
+	public void setGradeid(long gradeid) {
+		this.gradeid = gradeid;
+	}
 	private long id;
 	private String housename;
 		public String getName() {
