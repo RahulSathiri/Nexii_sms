@@ -1,6 +1,3 @@
---************Temp. Login*********
-update schools set url='dps.omniwyse.co.in' where id =2;
---**************
 INSERT INTO academicyears(passingyear,academicyearstarting,academicyearending,active) 
 values(2019,'2018-06-12','2018-03-20',0);
 
