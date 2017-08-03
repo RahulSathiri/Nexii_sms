@@ -80,11 +80,11 @@ public class LoginService {
             Tenants tenant = database.getSchoolDb().where("id=?", id).results(Tenants.class).get(0);
             response.setStatus(200);
             response.setDescription("success");
-            response.setTenantId(tenantId);
-            response.setTenantName(tenant.getSname());
-            response.setDateofestblishment(tenant.getDateofestablishment());
-            response.setTenantstatus(tenant.getStatusid());
-            response.setUserandroles(userandroles);
+            // response.setTenantId(tenantId);
+            // response.setTenantName(tenant.getSname());
+            // response.setDateofestblishment(tenant.getDateofestablishment());
+            // response.setTenantstatus(tenant.getStatusid());
+            // response.setUserandroles(userandroles);
             return new ResponseEntity<LoginResponse>(response, HttpStatus.OK);
         }
     }

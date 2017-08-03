@@ -18,4 +18,8 @@ public class TenantService extends BaseService {
         return getSmsDB().insert(school).getRowsAffected();
     }
 
+    public Tenants getTenant(String name) {
+        return getSmsDB().where("code=?", name.toUpperCase()).first(Tenants.class);
+    }
+
 }

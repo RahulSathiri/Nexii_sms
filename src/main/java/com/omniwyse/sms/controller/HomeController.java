@@ -17,13 +17,13 @@ public class HomeController {
         return "home";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMIN','ROLE_ADMIN')")
     @RequestMapping(value = "/admin**", method = RequestMethod.GET)
     public String privatepage() {
         return "privatepage";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMIN','ROLE_ADMIN')")
     @RequestMapping(value = "/{tenantId}/superadmin**", method = RequestMethod.POST, produces = "application/json")
     public String superprivatepage(@PathVariable("tenantId") long tenantId, @RequestBody UserAndRoles user) {
         return "superprivatepage";
