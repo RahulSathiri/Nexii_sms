@@ -33,10 +33,10 @@ public class RecordsService {
 
 	public List<StudentTransferObject> getAllStudents(long tenantId) {
 		db = retrive.getDatabase(tenantId);
-		List<StudentTransferObject> students = db.sql("select grades.gradename,houses.housename,students.gradeid,grades.syllabustype,students.name,students.fathername,students.dateofbirth, "
+		List<StudentTransferObject> students = db.sql("select grades.gradename,houses.housename,students.houseid,students.gradeid,grades.syllabustype,students.name,students.fathername,students.dateofbirth, "
 		        +"students.dateofjoining,students.id,students.gender,students.contactnumber,students.mothername,students.admissionnumber,students.emailid, "
-		       +"students.address,students.id from students inner join grades on students.gradeid=grades.id "
-               + "join houses on houses.id=students.houseid").results(StudentTransferObject.class);
+		       +"students.address,students.id from students left join grades on students.gradeid=grades.id "
+               + " left join houses on houses.id=students.houseid").results(StudentTransferObject.class);
 		return students;
 	}
 
