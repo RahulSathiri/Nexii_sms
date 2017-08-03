@@ -35,22 +35,6 @@ INSERT INTO test_syllabus (testid, subjectid, maxmarks, syllabus)
 			   
 --*******************************------
 
-INSERT INTO classroom_testresult (classid, studentid, testid, resultorgrade)
-	values (1,1,1,'A'),
-		   (2,2,3,'C'),
-		   (2,4,3,'B'),
-		   (1,3,1,'B');
-		   
---*******************************------
-
-INSERT INTO student_testresult	(classid, testid, studentid, subjectid, marks)   
-	values(1, 1, 1, 1, 85),
-		  (2, 3, 2, 2, 65),
-		  (2, 3, 4, 1, 72),
-		  (1, 1, 3, 3, 78);
-
---*******************************------
-	
 INSERT INTO classroom_periods (periodfrom,periodto,subjectid,classroomid,classroomweekdayid,dateofassigning)
   values('08:30', '09:30', 1, 1, 2, '2017-08-01'),
   		('10:30', '11:30', 2, 2, 2, '2017-08-01'),
