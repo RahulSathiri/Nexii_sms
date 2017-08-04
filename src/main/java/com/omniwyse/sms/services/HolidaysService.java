@@ -1,5 +1,6 @@
 package com.omniwyse.sms.services;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class HolidaysService {
 
 	public int postHoliday(Holidays holiday, long tenantId) {
 		db = retrive.getDatabase(tenantId);
-		String date = holiday.getFromdate();
+		Date date = holiday.getFromdate();
 		List<Holidays> holidays = db.where("fromdate=?", date).results(Holidays.class);
 		if (holidays.isEmpty()) {
 			return db.insert(holiday).getRowsAffected();
