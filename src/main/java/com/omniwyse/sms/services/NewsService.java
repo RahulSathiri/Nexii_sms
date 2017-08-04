@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.dieselpoint.norm.Database;
 import com.omniwyse.sms.models.NewsFeed;
-import com.omniwyse.sms.utils.UserAndRoles;
 
 @Service
 public class NewsService {
@@ -16,7 +15,7 @@ public class NewsService {
     com.omniwyse.sms.db.DatabaseRetrieval retrieve;
 	private Database db;
 
-    public int postNews(long tenantId, UserAndRoles user, NewsFeed news) {
+    public int postNews(long tenantId,NewsFeed news) {
         db = retrieve.getDatabase(tenantId);
 		return db.insert(news).getRowsAffected();
 

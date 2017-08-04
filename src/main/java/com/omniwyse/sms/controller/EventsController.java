@@ -62,11 +62,21 @@ public class EventsController {
 
 	@RequestMapping("/deleteevent")
 	public ResponseEntity<Response> listOfEvents(@PathVariable("tenantId") long tenantId,@RequestBody Events event) {
-		service.deleteEvent(event,tenantId);
+		int rowEffected=service.deleteEvent(event,tenantId);
+		if(rowEffected>0)
+		{
 		response.setStatus(200);
 		response.setMessage("event deleted");
 		response.setDescription("event deleted successfuly");
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
+		}
+		else
+		{
+			response.setStatus(400);
+			response.setMessage("there is no such record to delete");
+			response.setDescription("there is no such record to delete");
+			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);	
+		}
 
 	}
 }

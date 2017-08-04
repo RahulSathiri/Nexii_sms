@@ -325,30 +325,30 @@ FOREIGN KEY(noticeid) references grades(id)
 CREATE TABLE holidays(
 id bigint(8) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 occassion VARCHAR(50) NOT NULL,
-fromdate VARCHAR(30) NOT NULL,
-todate VARCHAR(30) NOT NULL
+fromdate date NOT NULL,
+todate date NOT NULL
 );
 
 
-insert into holidays (occassion,fromdate,todate) values('Ramzan','26-06-2017','27-06-2017'),('Dussera','04-09-2017','12-09-2017'),('Diwali','10-10-2017','11-10-2017'), 
-                                                        ('Christmas','25-12-2017','25-12-2017'),('Pongal','09-01-2018','16-01-2018'); 
+insert into holidays (occassion,fromdate,todate) values('Ramzan','2017-06-26','2017-06-27'),('Dussera','2017-09-04','2017-09-12'),('Diwali','2017-10-10','2017-10-11'), 
+                                                        ('Christmas','2017-12-25','2017-12-26'),('Pongal','2018-01-09','2018-01-16'); 
                                                          
 
 --******************** EVENTS TABLES ************************************************************
 
 CREATE TABLE events(
 id bigint(8) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-eventdate VARCHAR(30) NOT NULL,
+eventdate date NOT NULL,
 eventname VARCHAR(50) NOT NULL,
 chiefguest VARCHAR(50) NOT NULL,
 description VARCHAR(100) NOT NULL
 );
 
-insert into events(eventdate,eventname,chiefguest,description) values('15-08-2017','Independence Day','Former tamilnadu governor K.Rosaiah','flag hosting Ceremony at 8:30 A.M by chief guest and Prize distribution'), 
-                                                                    ('14-11-2017','Childrens Day','Sri Prashanthi, IAS Joint Collector,Hyderabad','Cycles distribution'), 
-                                                                    ('26-01-2018','Republic Day','Indian Navy Admiral Sunil Lanba','flag hosting Ceremony at 8:30 A.M and speech by chief admiral at 9:00 A.M'), 
-                                                                    ('28-02-2018','Science Day','ISRO Chief A.S Kiran Kumar','Prize distribution by chief guest at 10:00 A.M'), 
-                                                                    ('03/03/2018','School Anniversary','Super Star Mahesh babu','Speech by guest at 5:30 P.M and then culturel activities'); 
+insert into events(eventdate,eventname,chiefguest,description) values('2017-08-15','Independence Day','Former tamilnadu governor K.Rosaiah','flag hosting Ceremony at 8:30 A.M by chief guest and Prize distribution'), 
+                                                                    ('2017-11-14','Childrens Day','Sri Prashanthi, IAS Joint Collector,Hyderabad','Cycles distribution'), 
+                                                                    ('2018-01-26','Republic Day','Indian Navy Admiral Sunil Lanba','flag hosting Ceremony at 8:30 A.M and speech by chief admiral at 9:00 A.M'), 
+                                                                    ('2018-02-28','Science Day','ISRO Chief A.S Kiran Kumar','Prize distribution by chief guest at 10:00 A.M'), 
+                                                                    ('2018-03-03','School Anniversary','Super Star Mahesh babu','Speech by guest at 5:30 P.M and then culturel activities'); 
  
 
 --******************** NEWS TABLES ************************************************************
@@ -356,13 +356,13 @@ insert into events(eventdate,eventname,chiefguest,description) values('15-08-201
 CREATE TABLE newsfeed(
 id bigint(8) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 headline VARCHAR(50) NOT NULL,
-releasedate VARCHAR(30) NOT NULL,
+releasedate date NOT NULL,
 description VARCHAR(150) NOT NULL
 );
 
 
-insert into newsfeed (headline,releasedate,description) values('Dinesh and Raju selected for Distric Kabaddi team','20-06-2017','From the Kabaddi team sent to School Zonals these two are selected for Distric team'), 
-                                                             ('Sheela got 2nd Prize in Science exhibition','03-06-2017','Sheela who is studying 8th class got 2nd prize in district level Science exhibition held in Bhashyam Schools'); 
+insert into newsfeed (headline,releasedate,description) values('Dinesh and Raju selected for Distric Kabaddi team','2017-06-20','From the Kabaddi team sent to School Zonals these two are selected for Distric team'), 
+                                                             ('Sheela got 2nd Prize in Science exhibition','2017-06-03','Sheela who is studying 8th class got 2nd prize in district level Science exhibition held in Bhashyam Schools'); 
 
 --******************** TIMETABLE TABLES ************************************************************
 
