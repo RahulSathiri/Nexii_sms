@@ -26,7 +26,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(corsInterceptor);
-        registry.addInterceptor(reqInterceptor);
+        registry.addInterceptor(reqInterceptor).excludePathPatterns("/tenant/for/**");
         registry.addInterceptor(secInterceptor);
     }
 

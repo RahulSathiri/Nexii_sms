@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.omniwyse.sms.utils.MyAccessDeniedHandler;
@@ -34,6 +35,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
             httpsecurity.httpBasic();
             
+            httpsecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
