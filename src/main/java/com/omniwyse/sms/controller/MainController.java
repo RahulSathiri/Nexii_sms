@@ -1,5 +1,6 @@
 package com.omniwyse.sms.controller;
 
+import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,6 +19,7 @@ public class MainController {
     @Autowired
     MainService mainservice;
 
+    @PermitAll
     @RequestMapping(value = "/tenant/for/{domain}")
     public @ResponseBody Tenants getTenant(@PathVariable("domain") String domain, HttpServletRequest request,
             HttpServletResponse response) {
