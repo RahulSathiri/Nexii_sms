@@ -96,8 +96,8 @@ CREATE TABLE teachers(
 	qualification VARCHAR(30) NOT NULL,
 	about LONGTEXT NOT NULL,
 	subjects VARCHAR(30) NOT NULL,
-	dateofbirth VARCHAR(12) NOT NULL,
-	dateofjoining VARCHAR(12) NOT NULL,
+	dateofbirth date NOT NULL,
+	dateofjoining date NOT NULL,
 	gender VARCHAR(10) NOT NULL,
 	noofperiods bigint(8) NOT NULL,
 	UNIQUE (emailid),
@@ -106,25 +106,25 @@ CREATE TABLE teachers(
 
 	insert into teachers(teachername,lname,contactnumber,emailid,address,qualification,about,subjects,dateofbirth,dateofjoining,gender,noofperiods)
 	values('Ramesh',' Rangam','9555544449','ramesh@gmail.com','plot no:14-15-456,Madhapur,hyd-500074','B.Ed',
-			'He have 10+ years of experience in chemistry and physics','chemistry,physics','01-01-1985','01-06-2006','male',4),
+			'He have 10+ years of experience in chemistry and physics','chemistry,physics','1985-01-01','2006-06-01','male',4),
 		('Tejaswi','Chava','9666655559','tejaswi.chava@gmail.com','plot no:12-13-420,Gachibowli,Hyd-500073','B.Ed',
-			'She have 9+ years of experience in social ','social','01-02-1988','05-06-2008','female',5),
+			'She have 9+ years of experience in social ','social','1988-02-01','2008-06-05','female',5),
 		('Rahul','Sathiri','9640242289','rahul@gmail.com','plot no:18-14-97/328,LB nagar,Hyd-500097',
-			'B.Ed','He have 7+ years of experience in Mathematics','Mathematics','01-07-1990','10-06-2010','male',4),
+			'B.Ed','He have 7+ years of experience in Mathematics','Mathematics','1990-07-01','2010-06-10','male',4),
 		('Mahendar','Vengala','9000011119','mahendar@gmail.com','plot no:1-2-143/341,Madhapur,Hyd-500074',
-			'B.Ed','He have 5+ years of experience in English','English','01-01-1987','15-06-2012','male',5),
+			'B.Ed','He have 5+ years of experience in English','English','1987-01-01','2012-06-15','male',5),
 		('Venkateshwar Reddy','Varkala','9111155559','venkateshwarreddy@gmail.com','flat no:201,srinivasa aprtments,dilsukh nagar,Hyderabad-500090',
-			'B.Ed','He have 15+ years of experience in mathematics','Mathematics','02-02-1975','10-07-2002','male',4),
+			'B.Ed','He have 15+ years of experience in mathematics','Mathematics','1975-02-02','2002-07-10','male',4),
 		('Matheen ali','Mohammed','8977690789','matheenali@gmail.com',
-			'flat no:101,wasim apartments,atthapur,Mehdipatnam,hyd-500085','B.Ed','He have 12+ years of experience in Hindi','Hindi','11-04-1978','14-06-2005','Male',5),
+			'flat no:101,wasim apartments,atthapur,Mehdipatnam,hyd-500085','B.Ed','He have 12+ years of experience in Hindi','Hindi','1978-04-11','2005-06-14','Male',5),
 		('Vijaya','kandimalla','8889991110','vijaya@gmail.com','plot no:1-2-302/95,road no:8A,meerpet,Hyd-500074',
-			'B.Ed','She have 18+ years of experience in social','social','05-05-1970','09-06-1999','Female',5),
+			'B.Ed','She have 18+ years of experience in social','social','1970-05-05','1999-06-09','Female',5),
 		('Anitha','korrapti','9999911110','anitha@gmail.com','flat no:401,Anjanadri apartments,saroor nagar,Hyd-500096',
-			'B.Ed','She have 11+ years of experince in biology','Biology','06-06-1980','20-07-2006','Female',5),
+			'B.Ed','She have 11+ years of experince in biology','Biology','1980-06-06','2006-07-20','Female',5),
 		('Harbhajan','Singh','8887776665','harbhajan@gmail.com','plot no:1-4-341/1,punjagutta,Hyd-500084',
-			'B.Ed','He have 7+ years of experience in English','English','01-12-1984','25-07-2009','Male',4),
+			'B.Ed','He have 7+ years of experience in English','English','1984-12-01','2009-07-25','Male',4),
 		('Prasad','Gattu','7778889990','prasad@gmail.com','plot no:3-21-321/100,Hanuman nagar,Ameerpet,Hyd-500099',
-			'B.Ed','He have 10+ years of experience in physics and chemistry','physics and chemistry','06-06-1980','01-07-2006','Male',5);
+			'B.Ed','He have 10+ years of experience in physics and chemistry','physics and chemistry','1980-06-06','2006-07-01','Male',5);
 
 			
 -- ***************************************** CLASSROOM TABLES *******************************************************************************************

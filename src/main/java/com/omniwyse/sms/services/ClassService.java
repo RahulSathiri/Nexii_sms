@@ -118,6 +118,7 @@ public class ClassService {
 			classes.setAcademicyear(updateclass.getAcademicyear());
 			classes.setSectionname(updateclass.getSectionname());
 			classes.setId(updateclass.getId());
+			classes.setGradeid(updateclass.getGradeid());
 			classes.setClassteacherid(teacherid);
 			db.update(classes).execute();
 
