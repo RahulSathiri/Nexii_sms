@@ -1,5 +1,8 @@
 package com.omniwyse.sms.utils;
-import java.util.Date;
+
+
+
+import java.sql.Date;
 import java.util.List;
 
 import com.omniwyse.sms.models.ClassroomAttendance;
@@ -16,6 +19,24 @@ public class ClassAttendenceTransferObject {
 	private long noofstudents;
 	private long noofpresents;
 	private long noofabsents;
+	private String subjectname;
+	private String attendance_type;
+	public String getAttendance_type() {
+		return attendance_type;
+	}
+
+	public void setAttendance_type(String attendance_type) {
+		this.attendance_type = attendance_type;
+	}
+
+	public String getSubjectname() {
+		return subjectname;
+	}
+
+	public void setSubjectname(String subjectname) {
+		this.subjectname = subjectname;
+	}
+
 	private List<Students> students;
 	private List<ClassroomAttendance> studentattendance;
 	private List<ClassRoomStudents> studentsOfClassRoom;

@@ -1,5 +1,11 @@
 package com.omniwyse.sms.models;
-import java.util.Date;
+
+
+
+
+
+
+import java.sql.Date;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
