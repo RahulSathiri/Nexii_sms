@@ -1,5 +1,6 @@
 package com.omniwyse.sms.services;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -208,19 +209,25 @@ public class TeacherModuleService {
 		return db.insert(assignments(db, assigning)).getRowsAffected();
 	}
 	
-	private Assignments assignments(Database db, AssignmentDTO assigning){
-		
-		long lessonid = db.where("lessonname = ?", assigning.getLessonname()).results(Lessons.class).get(0).getId();
+	private Assignments assignments(Database db, AssignmentDTO assigning) {
+
 		Assignments assignment = new Assignments();
-
-		assignment.setClassroomid(assigning.getId());
-		assignment.setAssignmentname(assigning.getAssignmentname());
-		assignment.setDateofassigned(assigning.getDateofassigned());
-		assignment.setAssignmentduedate(assigning.getDuedate());
-		assignment.setSubjectid(
-				db.where("subjectname = ?", assigning.getSubjectname()).results(Subjects.class).get(0).getId());
+		long classroomid = assigning.getId();
+		String assignmentname = assigning.getAssignmentname();
+		Date dateofassigned = assigning.getDateofassigned();
+		Date assignmentduedate = assigning.getDuedate();
+		assignment.setClassroomid(classroomid);
+		assignment.setAssignmentname(assignmentname);
+		assignment.setDateofassigned(dateofassigned);
+		assignment.setAssignmentduedate(assignmentduedate);
+		long subjectid = db.where("subjectname = ?", assigning.getSubjectname()).results(Subjects.class).get(0).getId();
+		assignment.setSubjectid(subjectid);
+		long lessonid = db.where("lessonname = ?", assigning.getLessonname()).results(Lessons.class).get(0).getId();
 		assignment.setLessonsid(lessonid);
-
+		long assinmentid = db
+				.where("classroomid=? and subjectid=? and lessonsid=? and dateofassigned=? and assignmentduedate=?",classroomid,subjectid,lessonid,dateofassigned,assignmentduedate)
+				.results(Assignments.class).get(0).getId();
+		assignment.setId(assinmentid);
 		return assignment;
 	}
 
@@ -236,15 +243,21 @@ public class TeacherModuleService {
 		long lessonid = db.where("lessonname = ?", data.getLessonname()).results(Lessons.class).get(0).getId();
 
 		ClassroomWorksheets worksheet = new ClassroomWorksheets();
-
-		worksheet.setClassroomid(data.getId());
-		worksheet.setWorksheetsid(
-				db.where("worksheetname = ?", data.getWorksheetname()).results(Worksheets.class).get(0).getId());
+		long classroomid = data.getId();
+		worksheet.setClassroomid(classroomid);
+		long worksheetsid = db.where("worksheetname = ?", data.getWorksheetname()).results(Worksheets.class).get(0)
+				.getId();
+		worksheet.setWorksheetsid(worksheetsid);
 		worksheet.setDateofassigned(data.getDateofassigned());
 		worksheet.setWorksheetduedate(data.getDuedate());
-		worksheet.setSubjectid(
-				db.where("subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId());
+		long subjectid = db.where("subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId();
+		worksheet.setSubjectid(subjectid);
 		worksheet.setLessonsid(lessonid);
+		long classroomworksheetid = db
+				.where("classroomid=? and subjectid=? and lessonsid=? and dateofassigned=? and worksheetduedate=?",
+						classroomid, subjectid, lessonid, data.getDateofassigned(), data.getDuedate())
+				.results(ClassroomWorksheets.class).get(0).getId();
+		worksheet.setId(classroomworksheetid);
 
 		return worksheet;
 	}
