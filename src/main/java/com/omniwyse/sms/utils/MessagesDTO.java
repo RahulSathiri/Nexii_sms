@@ -1,48 +1,38 @@
 package com.omniwyse.sms.utils;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import com.omniwyse.sms.models.Students;
-import com.omniwyse.sms.models.Teachers;
 
 public class MessagesDTO {
 	private long id;
-	private long teacherid;
-	private long studentid;
-	private ArrayList<Long> students;
-	private ArrayList<Long> teachers;
+	private long senderid;
+	private long recieverid;
+	private ArrayList<Long> recievers;
 	private String message;
-	public long getStudentid() {
-		return studentid;
-	}
-	public void setStudentid(long studentid) {
-		this.studentid = studentid;
-	}
-	public ArrayList<Long> getTeachers() {
-		return teachers;
-	}
-	public void setTeachers(ArrayList<Long> teachers) {
-		this.teachers = teachers;
-	}
 	
-	public ArrayList<Long> getStudents() {
-		return students;
-	}
-	public void setStudents(ArrayList<Long> students) {
-		this.students = students;
-	}
 	public long getId() {
 		return id;
 	}
 	public void setId(long id) {
 		this.id = id;
 	}
-	public long getTeacherid() {
-		return teacherid;
+	
+	public long getSenderid() {
+		return senderid;
 	}
-	public void setTeacherid(long teacherid) {
-		this.teacherid = teacherid;
+	public void setSenderid(long senderid) {
+		this.senderid = senderid;
+	}
+	public long getRecieverid() {
+		return recieverid;
+	}
+	public void setRecieverid(long recieverid) {
+		this.recieverid = recieverid;
+	}
+	public ArrayList<Long> getRecievers() {
+		return recievers;
+	}
+	public void setRecievers(ArrayList<Long> recievers) {
+		this.recievers = recievers;
 	}
 	public String getMessage() {
 		return message;

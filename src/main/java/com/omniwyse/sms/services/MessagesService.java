@@ -22,8 +22,8 @@ public class MessagesService {
 
 	public int sendMessage(MessagesDTO messagesDTO, long tenantId, String sentflag) {
 		if (messagesDTO.getMessage() != null) {
-			if (messagesDTO.getStudents()!= null || messagesDTO.getTeachers() != null
-					|| messagesDTO.getStudentid() != 0 || messagesDTO.getTeacherid() != 0) {
+			if (messagesDTO.getSenderid()!=0 || messagesDTO.getRecievers() != null
+					|| messagesDTO.getRecieverid()!= 0) {
 				db = retrive.getDatabase(tenantId);
 				Timestamp today = new Timestamp(System.currentTimeMillis());
 				Messages message = new Messages();
@@ -31,30 +31,30 @@ public class MessagesService {
 				message.setMessage(messagesDTO.getMessage());
 				message.setSentflag(sentflag);
 				if (sentflag == "T") {
-					message.setTeacherid(messagesDTO.getTeacherid());
+					message.setSenderid(messagesDTO.getSenderid());
 					if (messagesDTO.getId() != 0) {
-						message.setStudentid(messagesDTO.getStudentid());
+						message.setRecieverid(messagesDTO.getRecieverid());
 						message.setRootmessageid(messagesDTO.getId());
 						return db.insert(message).getRowsAffected();
 					}
-					ArrayList<Long> studentslist = messagesDTO.getStudents();
-					for (Long studentid : studentslist) {
-						message.setStudentid(studentid);
+					ArrayList<Long> recievers = messagesDTO.getRecievers();
+					for (Long reciever : recievers) {
+						message.setRecieverid(reciever);
 						db.insert(message);
 
 					}
 				} else {
 
-					message.setStudentid(messagesDTO.getStudentid());
+					message.setSenderid(messagesDTO.getSenderid());
 					if (messagesDTO.getId() != 0) {
-						message.setTeacherid(messagesDTO.getStudentid());
+						message.setRecieverid(messagesDTO.getRecieverid());
 						message.setRootmessageid(messagesDTO.getId());
 						return db.insert(message).getRowsAffected();
 					}
-					ArrayList<Long> teachers = messagesDTO.getTeachers();
+					ArrayList<Long> recievers = messagesDTO.getRecievers();
 
-					for (Long teacher : teachers) {
-						message.setTeacherid(teacher);
+					for (Long reciever : recievers) {
+						message.setRecieverid(reciever);
 						db.insert(message);
 					}
 				}
@@ -73,14 +73,14 @@ public class MessagesService {
 
 		List<MessagesDetails> messages = db.sql(
 				"select messages.id,messages.message,messages.messagedate,students.name,students.fathername,students.mothername "
-						+ "from messages " + " join students on students.id=messages.studentid "
-						+ " where messages.sentflag='T' and messages.teacherid=? order by messages.messagedate desc ",
-				messagesDTO.getTeacherid()).results(MessagesDetails.class);
+						+ "from messages " + " join students on students.id=messages.recieverid "
+						+ " where messages.sentflag='T' and messages.senderid=? order by messages.messagedate desc ",
+				messagesDTO.getSenderid()).results(MessagesDetails.class);
 		for (MessagesDetails message : messages) {
 			List<MessagesDetails> replymessages = db
-					.sql("select messages.id,messages.messagedate,messages.message,messages.studentid,messages.teacherid,"
+					.sql("select messages.id,messages.messagedate,messages.message,messages.senderid,messages.recieverid,"
 							+ "students.name,students.fathername,students.mothername " + "from messages "
-							+ "join students on students.id=messages.studentid "
+							+ "join students on students.id=messages.senderid "
 							+ "where messages.sentflag='P' and messages.rootmessageid=?", message.getId())
 					.results(MessagesDetails.class);
 
@@ -95,14 +95,14 @@ public class MessagesService {
 		db = retrive.getDatabase(tenantId);
 
 		List<MessagesDetails> messages = db.sql(
-				"select messages.id,messages.message,messages.messagedate,messages.teacherid,messages.studentid,teachers.teachername "
-						+ "from messages " + "join teachers on teachers.id=messages.teacherid "
-						+ "where messages.sentflag='P' and messages.studentid=? order by messages.messagedate desc",
-				messagesDTO.getStudentid()).results(MessagesDetails.class);
+				"select messages.id,messages.message,messages.messagedate,messages.recieverid,messages.senderid,teachers.teachername "
+						+ "from messages " + "join teachers on teachers.id=messages.recieverid "
+						+ "where messages.sentflag='P' and messages.senderid=? order by messages.messagedate desc",
+				messagesDTO.getSenderid()).results(MessagesDetails.class);
 		for (MessagesDetails message : messages) {
 			List<MessagesDetails> replymessages = db
-					.sql(" select messages.id,messages.messagedate,messages.message,messages.studentid,messages.teacherid,teachers.teachername "
-							+ "from messages " + "join teachers on teachers.id=messages.teacherid "
+					.sql(" select messages.id,messages.messagedate,messages.message,messages.senderid,messages.recieverid,teachers.teachername "
+							+ "from messages " + "join teachers on teachers.id=messages.senderid "
 							+ "where messages.sentflag='T' and messages.rootmessageid=?", message.getId())
 					.results(MessagesDetails.class);
 			message.setReplymessages(replymessages);
@@ -113,18 +113,18 @@ public class MessagesService {
 	public List<MessagesDetails> teacherRecievedMessages(MessagesDTO messagesDTO, long tenantId) {
 		db = retrive.getDatabase(tenantId);
 		return db.sql(
-				"select messages.id,messages.message,messages.messagedate,messages.rootmessageid,messages.studentid,messages.teacherid,"
+				"select messages.id,messages.message,messages.messagedate,messages.rootmessageid,messages.senderid,messages.recieverid,"
 						+ "students.name,students.fathername,students.mothername " + " from messages "
-						+ "join students on students.id=messages.studentid " + " where sentflag='p' and teacherid=?",
-				messagesDTO.getTeacherid()).results(MessagesDetails.class);
+						+ "join students on students.id=messages.senderid " + " where sentflag='p' and recieverid=?",
+				messagesDTO.getRecieverid()).results(MessagesDetails.class);
 	}
 
 	public List<MessagesDetails> parentRecievedMessages(MessagesDTO messagesDTO, long tenantId) {
 		db = retrive.getDatabase(tenantId);
 		return db
-				.sql("select messages.id,messages.message,messages.messagedate,messages.rootmessageid,messages.studentid,messages.teacherid,teachers.teachername "
-						+ "from messages " + "join teachers on teachers.id=messages.teacherid "
-						+ " where sentflag='T' and studentid=?", messagesDTO.getStudentid())
+				.sql("select messages.id,messages.message,messages.messagedate,messages.rootmessageid,messages.senderid,messages.recieverid,teachers.teachername "
+						+ "from messages " + "join teachers on teachers.id=messages.senderid "
+						+ " where sentflag='T' and recieverid=?", messagesDTO.getRecieverid())
 				.results(MessagesDetails.class);
 	}
 

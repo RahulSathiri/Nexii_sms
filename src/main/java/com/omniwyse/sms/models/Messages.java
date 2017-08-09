@@ -11,8 +11,8 @@ public class Messages {
 	private long id; 
 	private String message; 
 	private Timestamp messagedate; 
-	private long teacherid; 
-	private long studentid; 
+	private long senderid; 
+	private long recieverid; 
 	 private String sentflag;  
 	private long rootmessageid;
 	
@@ -36,18 +36,18 @@ public class Messages {
 	public void setMessagedate(Timestamp messagedate) {
 		this.messagedate = messagedate;
 	}
-	public long getTeacherid() {
-		return teacherid;
-	}
-	public void setTeacherid(long teacherid) {
-		this.teacherid = teacherid;
-	}
 	
-	public long getStudentid() {
-		return studentid;
+	public long getSenderid() {
+		return senderid;
 	}
-	public void setStudentid(long studentid) {
-		this.studentid = studentid;
+	public void setSenderid(long senderid) {
+		this.senderid = senderid;
+	}
+	public long getRecieverid() {
+		return recieverid;
+	}
+	public void setRecieverid(long recieverid) {
+		this.recieverid = recieverid;
 	}
 	public String getSentflag() {
 		return sentflag;

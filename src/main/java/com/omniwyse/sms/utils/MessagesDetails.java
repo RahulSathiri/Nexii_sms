@@ -8,8 +8,8 @@ import com.omniwyse.sms.models.Teachers;
 
 public class MessagesDetails {
 	private String message;
-	private long studentid;
-	private long teacherid;
+	private long senderid;
+	private long recieverid;
 	private String name;
 	private long id;
 	private long rootmessageid;
@@ -46,11 +46,18 @@ public class MessagesDetails {
 		this.teachername = teachername;
 	}
 	
-	public long getTeacherid() {
-		return teacherid;
+	
+	public long getSenderid() {
+		return senderid;
 	}
-	public void setTeacherid(long teacherid) {
-		this.teacherid = teacherid;
+	public void setSenderid(long senderid) {
+		this.senderid = senderid;
+	}
+	public long getRecieverid() {
+		return recieverid;
+	}
+	public void setRecieverid(long recieverid) {
+		this.recieverid = recieverid;
 	}
 	public String getMothername() {
 		return mothername;
@@ -78,12 +85,7 @@ public class MessagesDetails {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public long getStudentid() {
-		return studentid;
-	}
-	public void setStudentid(long studentid) {
-		this.studentid = studentid;
-	}
+
 	public String getName() {
 		return name;
 	}
