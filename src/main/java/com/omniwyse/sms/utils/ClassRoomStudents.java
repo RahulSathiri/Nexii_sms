@@ -11,6 +11,14 @@ public class ClassRoomStudents {
 	private String name;
 	private String fathername;
 	private String admissionnumber;
+	private boolean status=true; 
+	
+	public boolean isStatus() {
+		return status;
+	}
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
 	public String getFathername() {
 		return fathername;
 	}
