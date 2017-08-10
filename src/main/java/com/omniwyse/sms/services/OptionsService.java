@@ -3,12 +3,12 @@ package com.omniwyse.sms.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.dieselpoint.norm.Database;
 import com.omniwyse.sms.db.DatabaseRetrieval;
-import com.omniwyse.sms.models.AttendanceMode;
 import com.omniwyse.sms.models.Options;
-
+@Service
 public class OptionsService {
 	@Autowired
     private DatabaseRetrieval retrive;
@@ -19,12 +19,7 @@ public class OptionsService {
 		if(record.isEmpty())
 		{
 		return	db.insert(option).getRowsAffected();
-		db = retrive.getDatabase(tenantId);
-		String attendancetype=option.getOptionvalue();
-		List<AttendanceMode> status = db.where("status=1").results(AttendanceMode.class);
-		if (status.isEmpty()){
-		db.sql("update school_attendance set status=1 where attendance_type=?",attendancetype).execute();
-		return "updated";
+		
 		}
 		else
 		{
@@ -38,6 +33,10 @@ public class OptionsService {
 	public int deleteOption(Options option, long tenantId) {
 		db=retrive.getDatabase(tenantId);
 		return db.delete(option).getRowsAffected();
+	}
+	public List<Options> getOptions(long tenantId) {
+		db=retrive.getDatabase(tenantId);
+	return 	db.sql("select * from options").results(Options.class);
 	}
 	
 	
