@@ -7,7 +7,7 @@ id bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
 attendance_type VARCHAR(20) NOT NULL,
 status INT);
 
-INSERT INTO school_attendance (attendance_type) values ('SUBJECTWISE'),('ONETIME');
+INSERT INTO school_attendance (attendance_type,status) values ('SUBJECTWISE',0),('ONETIME',1);
 
 
 --********************ATTENDANCE SUBJECTWISE  TABLE ************************************************************
