@@ -1,4 +1,4 @@
-package com.omniwyse.sms.authenticationfilter;
+package com.omniwyse.sms.filter;
 
 import java.io.IOException;
 

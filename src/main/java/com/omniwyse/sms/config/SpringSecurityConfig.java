@@ -12,7 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-import com.omniwyse.sms.authenticationfilter.MyAuthenticationFilter;
+import com.omniwyse.sms.filter.MyAuthenticationFilter;
 import com.omniwyse.sms.utils.MyAccessDeniedHandler;
 
 @EnableGlobalMethodSecurity(prePostEnabled = true)
