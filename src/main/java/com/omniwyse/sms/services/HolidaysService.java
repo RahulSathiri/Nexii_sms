@@ -26,7 +26,7 @@ public class HolidaysService {
 
 	}
 
-	public List<Holidays> listOfHolidays() {
+    public List<Holidays> listOfHolidays(long tenantId) {
 		db = retrive.getDatabase(1);
 		return db.sql("select * from holidays").results(Holidays.class);
 	}

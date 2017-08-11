@@ -2,8 +2,6 @@ package com.omniwyse.sms.controller;
 
 import java.util.List;
 
-import javax.annotation.security.RolesAllowed;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +18,7 @@ import com.omniwyse.sms.utils.Response;
 import com.omniwyse.sms.utils.UserAndRoles;
 
 @RestController
+@RequestMapping(value = "/{tenantId}")
 public class NewsController {
 	@Autowired
 	private NewsService service;
@@ -27,8 +26,8 @@ public class NewsController {
 	@Autowired
 	private Response response;
 
-    @RolesAllowed("hasAuthority('SUPERADMIN','ADMIN')")
-    @RequestMapping(value = "/{tenantId}/postnews", method = RequestMethod.POST, produces = "application/json")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN','ROLE_ADMIN')")
+    @RequestMapping(value = "/postnews", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<Response> postNews(@PathVariable("tenantId") long tenantId, @RequestBody UserAndRoles user,
             @RequestBody NewsFeed news) {
 
@@ -48,16 +47,17 @@ public class NewsController {
 
 	}
 
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN','ROLE_ADMIN')")
 	@RequestMapping("/news")
-	public List<NewsFeed> listOfNews() {
+    public List<NewsFeed> listOfNews(@PathVariable("tenantId") long tenantId) {
 
-		List<NewsFeed> list = service.listNews();
+        List<NewsFeed> list = service.listNews(tenantId);
 
 		return list;
 
 	}
 
-    @PreAuthorize("hasRole('SUPERADMIN','ADMIN')")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN','ROLE_ADMIN')")
 	@RequestMapping("/editnews")
 	public ResponseEntity<Response> editNews(@RequestBody NewsFeed newsfeed) {
 
@@ -69,7 +69,7 @@ public class NewsController {
 
 	}
 
-    @PreAuthorize("hasRole('SUPERADMIN','ADMIN')")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN','ROLE_ADMIN')")
 	@RequestMapping("/deletenews")
 	public ResponseEntity<Response> deleteNews(@RequestBody NewsFeed newsfeed) {
 

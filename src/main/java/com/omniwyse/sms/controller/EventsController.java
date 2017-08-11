@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ public class EventsController {
 	@Autowired
 	private Response response;
 
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMIN','ROLE_ADMIN')")
     @RequestMapping(value = "/{tenantId}/postevent", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<Response> postEvent(@PathVariable("tenantId") long tenantId, @RequestBody Events events) {
 
@@ -42,14 +44,16 @@ public class EventsController {
 
 	}
 
-	@RequestMapping("/events")
-	public List<Events> listOfEvents() {
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @RequestMapping("/{tenantId}/events")
+    public List<Events> listOfEvents(@PathVariable("tenantId") long tenantId) {
 
-		List<Events> list = service.listEvents();
+        List<Events> list = service.listEvents(tenantId);
 		return list;
 
 	}
 
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMIN','ROLE_ADMIN')")
 	@RequestMapping("/editevent")
 	public ResponseEntity<Response> editEvent(@RequestBody Events event) {
 		service.editEvent(event);
@@ -59,6 +63,7 @@ public class EventsController {
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMIN','ROLE_ADMIN')")
 	@RequestMapping("/deleteevent")
 	public ResponseEntity<Response> listOfEvents(@RequestBody Events event) {
 		service.deleteEvent(event);

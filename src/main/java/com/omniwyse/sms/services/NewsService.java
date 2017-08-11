@@ -22,8 +22,8 @@ public class NewsService {
 
 	}
 
-	public List<NewsFeed> listNews() {
-		db = retrieve.getDatabase(1);
+    public List<NewsFeed> listNews(long tenantId) {
+        db = retrieve.getDatabase(tenantId);
 		return db.sql("select * from newsfeed").results(NewsFeed.class);
 	}
 

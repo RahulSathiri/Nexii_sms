@@ -20,7 +20,11 @@ public class CorsInterCeptor implements HandlerInterceptor {
             response.addHeader("Access-Control-Request-Headers", "Authorization, Content-Type, Accept, tenant, caller");
             response.addHeader("Access-Control-Max-Age", "86400");
         }
-        return !request.getMethod().equalsIgnoreCase(RequestMethod.OPTIONS.name());
+        if (request.getMethod().equalsIgnoreCase(RequestMethod.OPTIONS.name())) {
+            response.setStatus(200);
+            return false;
+        }
+        return true;
     }
 
     @Override

@@ -10,7 +10,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import com.omniwyse.sms.authenticationfilter.MyAuthenticationFilter;
 import com.omniwyse.sms.utils.MyAccessDeniedHandler;
 
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -30,8 +32,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         try {
             httpsecurity.csrf().disable();
             
-            httpsecurity.authorizeRequests().antMatchers("/", "/home", "/tenant/for/**").permitAll().anyRequest()
-                    .fullyAuthenticated();
+            httpsecurity.addFilterBefore(new MyAuthenticationFilter(), BasicAuthenticationFilter.class);
+
+            httpsecurity.authorizeRequests().antMatchers("/", "/home", "/tenant/for/**").permitAll().anyRequest().fullyAuthenticated();
 
             httpsecurity.httpBasic();
             

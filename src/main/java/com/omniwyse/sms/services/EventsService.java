@@ -21,9 +21,9 @@ public class EventsService {
 		return db.insert(event).getRowsAffected();
 	}
 
-	public List<Events> listEvents() {
+    public List<Events> listEvents(long tenantId) {
 
-		db = retrive.getDatabase(1);
+        db = retrive.getDatabase(tenantId);
 
 		return db.sql("select * from events").results(Events.class);
 	}
