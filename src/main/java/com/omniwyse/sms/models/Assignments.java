@@ -16,7 +16,14 @@ public class Assignments {
 	private long classroomid;
 	private long subjectid;
 	private long lessonsid;
+	private String tags;
 	
+	public String getTags() {
+		return tags;
+	}
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
 	@Id
 	@GeneratedValue
 	public long getId() {

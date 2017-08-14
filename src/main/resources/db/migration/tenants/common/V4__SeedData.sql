@@ -31,8 +31,8 @@ INSERT INTO test_syllabus (testid, subjectid, maxmarks, syllabus)
 		values (1,1,100,'Unit-1,Unit-2'),
 			   (1,2,100,'Unit-1,Unit-2'),
 			   (2,1,100,'Unit-3,Unit-4'),
-			   (2,2,100,'Unit-3,Unit-4');
-			   
+			   (2,2,100,'Unit-3,Unit-4'),
+			   (1,3,100,'Unit-1,Unit-2');
 --*******************************------
 
 INSERT INTO classroom_periods (periodfrom,periodto,subjectid,classroomid,classroomweekdayid,dateofassigning)
@@ -59,7 +59,7 @@ INSERT INTO classroom_attendance (classroomid,studentid, dateofattendance, atten
  					   
  --*******************************------
  
- INSERT INTO lessons (lessonname, lessonstartdate, status, tags, subjectid, classroomid)
+ INSERT INTO lessons (lessondescription, lessonstartdate, status, lessonname, subjectid, classroomid)
  		values ('Lesson-1', '2017-06-25', 'Completed', 'Simple Poems', 1, 1),
  			   ('Lesson-1', '2017-06-22', 'Completed', 'Verbs', 2, 2),
  			   ('Lesson-2', '2017-06-30', 'in-Progress', 'Sounds', 2, 1),
@@ -67,11 +67,11 @@ INSERT INTO classroom_attendance (classroomid,studentid, dateofattendance, atten
  				
 --*******************************------
  			   
- INSERT INTO assignments (assignmentname, dateofassigned, assignmentduedate, classroomid, subjectid, lessonsid)
- 			values ('Assignment-1', '2017-06-26', '2017-06-28', 1, 1, 1),
- 				   ('Assignment-2', '2017-06-28', '2017-06-30', 1, 2, 3),
- 				   ('Assignment-1', '2017-06-26', '2017-06-28', 2, 1, 2),
- 				   ('Assignment-2', '2017-06-28', '2017-06-30', 2, 2, 4);
+ INSERT INTO assignments (assignmentname, dateofassigned, tags, assignmentduedate, classroomid, subjectid, lessonsid)
+ 			values ('Assignment-1', '2017-06-26', 'Simple Calculation', '2017-06-28', 1, 1, 1),
+ 				   ('Assignment-2', '2017-06-28', 'History of Madivel India', '2017-06-30', 1, 2, 3),
+ 				   ('Assignment-1', '2017-06-26', 'Photosynthesis', '2017-06-28', 2, 1, 2),
+ 				   ('Assignment-2', '2017-06-28', 'Dolphin Story', '2017-06-30', 2, 2, 4);
  				   
  				   
  				
