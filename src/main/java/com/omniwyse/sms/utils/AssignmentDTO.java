@@ -9,6 +9,15 @@ public class AssignmentDTO {
 	private Date dateofassigned;
 	private Date duedate;
 	private Date assignmentduedate;
+	private String tags;
+	
+	
+	public String getTags() {
+		return tags;
+	}
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
 	public Date getAssignmentduedate() {
 		return assignmentduedate;
 	}

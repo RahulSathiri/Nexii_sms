@@ -19,7 +19,6 @@ import com.omniwyse.sms.models.Subjects;
 import com.omniwyse.sms.models.Teachers;
 import com.omniwyse.sms.models.Worksheets;
 import com.omniwyse.sms.utils.AssignmentDTO;
-import com.omniwyse.sms.models.TestSyllabus;
 import com.omniwyse.sms.utils.ClassRoomDetails;
 import com.omniwyse.sms.utils.ClassSectionTransferObject;
 import com.omniwyse.sms.utils.TeacherModuleDTO;
@@ -157,19 +156,19 @@ public class TeacherModuleService {
 		long subjectid = db.where("subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId();
 
 		List<TimelineDTO> lessons = db
-				.sql("select lessons.id,lessons.lessonname,lessons.status,lessons.tags,lessons.lessonstartdate from lessons " + "where classroomid=? and subjectid=?",
+				.sql("select lessons.id,lessons.lessonname,lessons.status,lessons.lessondescription,lessons.lessonstartdate from lessons " + "where classroomid=? and subjectid=?",
 						classroomid, subjectid)
 				.results(TimelineDTO.class);
 		for (TimelineDTO lesson : lessons) {
-			List<WorkSheetsDTO> worksheets=db.sql("select worksheets.worksheetname,worksheets.createdby,worksheets.worksheetpath,classroom_worksheets.id,"
-					+ "classroom_worksheets.dateofassigned,classroom_worksheets.worksheetduedate as duedate "
-					+ "from worksheets "
-					+ "join classroom_worksheets on classroom_worksheets.worksheetsid=worksheets.id "
+			List<WorkSheetsDTO> worksheets=db.sql("select lessons.lessonname, worksheets.tags, worksheets.worksheetname,worksheets.createdby,worksheets.worksheetpath,classroom_worksheets.id,"
+					+ "classroom_worksheets.dateofassigned,classroom_worksheets.worksheetduedate "
+					+ "from worksheets join classroom_worksheets on classroom_worksheets.worksheetsid=worksheets.id "
+					+ " JOIN lessons ON lessons.id = classroom_worksheets.lessonsid "
 					+ "where classroom_worksheets.classroomid=? and classroom_worksheets.subjectid=? and classroom_worksheets.lessonsid=?",
 					classroomid, subjectid, lesson.getId()).results(WorkSheetsDTO.class);
 			lesson.setWorksheets(worksheets);
-			List<AssignmentDTO> assignments=db.sql("select assignments.id,assignments.assignmentname,assignments.dateofassigned,assignments.assignmentduedate "
-					+ "from assignments "
+			List<AssignmentDTO> assignments=db.sql("select lessons.lessonname, assignments.tags, assignments.id,assignments.assignmentname,assignments.dateofassigned,assignments.assignmentduedate "
+					+ "from assignments  JOIN lessons ON lessons.id = assignments.lessonsid "
 					+ "where assignments.classroomid=? and assignments.subjectid=? and assignments.lessonsid=?",
 					classroomid, subjectid, lesson.getId()).results(AssignmentDTO.class);
 			
@@ -187,11 +186,11 @@ public class TeacherModuleService {
 		Transaction transact = db.startTransaction();
 		try {
 			lesson.setClassroomid(data.getId());
-			lesson.setLessonname(data.getLessonname());
+			lesson.setLessondescription(data.getLessondescription());
 			lesson.setLessonstartdate(data.getLessonstartdate());
 			lesson.setSubjectid(
 					db.where("subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId());
-			lesson.setTags(data.getTags());
+			lesson.setLessonname(data.getLessonname());
 			lesson.setStatus(data.getStatus());
 
 			rowEffected = db.transaction(transact).insert(lesson).getRowsAffected();
@@ -231,6 +230,7 @@ public class TeacherModuleService {
 		assignment.setAssignmentname(assignmentname);
 		assignment.setDateofassigned(dateofassigned);
 		assignment.setAssignmentduedate(assignmentduedate);
+		assignment.setTags(assigning.getTags());
 		long subjectid = db.where("subjectname = ?", assigning.getSubjectname()).results(Subjects.class).get(0).getId();
 		assignment.setSubjectid(subjectid);
 		long lessonid = db.where("lessonname = ?", assigning.getLessonname()).results(Lessons.class).get(0).getId();

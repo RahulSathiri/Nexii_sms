@@ -8,16 +8,25 @@ public class TimelineDTO {
 	private long id;
 	private String assignmentname;
 	private String worksheetname;
-	private String lessonname;
+	private String lessondescription;
 	private String subjectname;
 	private String tags;
 	private Date lessonstartdate;
 	private String status;
 	private Date assignmentduedate;
 	private Date worksheetduedate;
+	private String lessonname;
 	List<WorkSheetsDTO> worksheets;
 	List<AssignmentDTO> assignments;
 	
+ 	public String getLessonname() {
+		return lessonname;
+	}
+
+	public void setLessonname(String lessonname) {
+		this.lessonname = lessonname;
+	}
+
 	public List<WorkSheetsDTO> getWorksheets() {
 		return worksheets;
 	}
@@ -74,12 +83,13 @@ public class TimelineDTO {
 		this.tags = tags;
 	}
 
-	public String getLessonname() {
-		return lessonname;
+
+	public String getLessondescription() {
+		return lessondescription;
 	}
 
-	public void setLessonname(String lessonname) {
-		this.lessonname = lessonname;
+	public void setLessondescription(String lessondescription) {
+		this.lessondescription = lessondescription;
 	}
 
 	public String getSubjectname() {
