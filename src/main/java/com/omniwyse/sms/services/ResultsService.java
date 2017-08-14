@@ -1,5 +1,6 @@
 package com.omniwyse.sms.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,40 @@ import com.omniwyse.sms.utils.StudentSubjectMarks;
 
 @Service
 public class ResultsService {
+
     @Autowired
     private DatabaseRetrieval retrieve;
+
     private Database db;
+
+    public List<ResultsTransferObject> viewSubjectMarks(ResultsTransferObject resultstransferobject, long tenantId) {
+
+        if (!testResultList(resultstransferobject, tenantId).isEmpty()){
+
+            db = retrieve.getDatabase(tenantId);
+    
+            long classid = resultstransferobject.getClassid();
+            long gradeid = db.where("id=?", classid).results(ClassRoom.class).get(0).getGradeid();
+    
+            String testtype = resultstransferobject.getTesttype();
+            long testid = db.where("testtype=?", testtype).results(TestType.class).get(0).getId();
+    
+            String subjectname = resultstransferobject.getSubjectname();
+            long subjectid = db.where("subjectname=? ", subjectname).results(Subjects.class).get(0).getId();
+    
+            List<TestCreate> testcreaterecords = db.where("gradeid=? and testtypeid=?", gradeid, testid).results(TestCreate.class);
+    
+            long testcreateid = testcreaterecords.get(0).getId();
+    
+            return db.sql("select distinct str.studentid as studentid,str.testid,str.subjectid,str.id,str.marks,st.name as studentname, ts.maxmarks,str.classid from student_testresult str "
+                            + "left join classroom_testresult cltrs on str.testid = cltrs.testid left join test_create tc on tc.testtypeid = str.testid "
+                            + "left join grade_subjects gs on gs.gradeid = tc.gradeid left join students st on str.studentid=st.id "
+                            + "left join test_syllabus ts on ts.subjectid = gs.subjectid left join test_type tt on tt.id = str.testid "
+                            + "where ts.testid=? and str.subjectid=? and cltrs.classid=?", testcreateid, subjectid, classid).results(ResultsTransferObject.class);
+        } else {
+            return new ArrayList<ResultsTransferObject>();
+        }
+    }
 
     public MainResultsTransferObject viewResults(ResultsTransferObject resultstransferobject,long tenantId) {
         db = retrieve.getDatabase(tenantId);
@@ -57,27 +89,31 @@ public class ResultsService {
 
     public List<ResultsTransferObject> enterMarks(ResultsTransferObject resultstransferobject,long tenantId) {
 
-        db = retrieve.getDatabase(tenantId);
-
-        long classid = resultstransferobject.getId();
-        long gradeid = db.where("id=?", classid).results(ClassRoom.class).get(0).getGradeid();
-
-        String testtype = resultstransferobject.getTesttype();
-        long testid = db.where("testtype=?", testtype).results(TestType.class).get(0).getId();
-
-        String subjectname = resultstransferobject.getSubjectname();
-
-        List<TestCreate> testcreaterecords = db.where("gradeid=? and testtypeid=?", gradeid, testid).results(
-                TestCreate.class);
-
-        long testcreateid = testcreaterecords.get(0).getId();
-
-        List<ResultsTransferObject> resulttransferobj = db.sql("select distinct cstud.studentid,stud.name as studentname,gsub.subjectid,tsyl.maxmarks,tsyl.testid,cstud.classid from classrooms croom "
-                        + "left join classroom_students cstud on croom.id = cstud.classid left join students stud on cstud.studentid = stud.id "
-                        + "left join grade_subjects gsub on croom.gradeid = gsub.gradeid left join subjects sub on gsub.subjectid = sub.id "
-                        + "left join grades g on croom.gradeid = g.id left join test_create test on g.id = test.gradeid left join test_syllabus tsyl on gsub.subjectid = tsyl.subjectid "
-                        + "where sub.subjectname=? and test.testtypeid=? and croom.id=?  group by cstud.studentid", subjectname, testcreateid, classid).results(ResultsTransferObject.class);
-        return resulttransferobj;
+        if (testResultList(resultstransferobject, tenantId).isEmpty()){
+        
+            db = retrieve.getDatabase(tenantId);
+    
+            long classid = resultstransferobject.getClassid();
+            long gradeid = db.where("id=?", classid).results(ClassRoom.class).get(0).getGradeid();
+    
+            String testtype = resultstransferobject.getTesttype();
+            long testid = db.where("testtype=?", testtype).results(TestType.class).get(0).getId();
+    
+            String subjectname = resultstransferobject.getSubjectname();
+    
+            List<TestCreate> testcreaterecords = db.where("gradeid=? and testtypeid=?", gradeid, testid).results(TestCreate.class);
+    
+            long testcreateid = testcreaterecords.get(0).getId();
+    
+            List<ResultsTransferObject> resulttransferobj = db.sql("select distinct cstud.studentid,stud.name as studentname,gsub.subjectid,tsyl.maxmarks,tsyl.testid,cstud.classid from classrooms croom "
+                            + "left join classroom_students cstud on croom.id = cstud.classid left join students stud on cstud.studentid = stud.id "
+                            + "left join grade_subjects gsub on croom.gradeid = gsub.gradeid left join subjects sub on gsub.subjectid = sub.id "
+                            + "left join grades g on croom.gradeid = g.id left join test_create test on g.id = test.gradeid left join test_syllabus tsyl on gsub.subjectid = tsyl.subjectid "
+                            + "where sub.subjectname=? and test.testtypeid=? and croom.id=?  group by cstud.studentid", subjectname, testcreateid, classid).results(ResultsTransferObject.class);
+            return resulttransferobj;
+        }else{
+            return new ArrayList<ResultsTransferObject>();
+        }
 
     }
 
@@ -144,5 +180,24 @@ public class ResultsService {
             return 0;
         }
 
+    }
+
+    private List<ResultsTransferObject> testResultList(ResultsTransferObject resultstransferobject, long tenantId) {
+        db = retrieve.getDatabase(tenantId);
+
+        long classid = resultstransferobject.getClassid();
+        long gradeid = db.where("id=?", classid).results(ClassRoom.class).get(0).getGradeid();
+
+        String testtype = resultstransferobject.getTesttype();
+        long testid = db.where("testtype=?", testtype).results(TestType.class).get(0).getId();
+
+        String subjectname = resultstransferobject.getSubjectname();
+        long subjectid = db.where("subjectname=? ", subjectname).results(Subjects.class).get(0).getId();
+
+        List<TestCreate> testcreaterecords = db.where("gradeid=? and testtypeid=?", gradeid, testid).results(TestCreate.class);
+
+        long testcreateid = testcreaterecords.get(0).getId();
+
+        return db.where("classid=? and testid=? and subjectid?", classid, testcreateid, subjectid).results(ResultsTransferObject.class);
     }
 }
