@@ -6,7 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dieselpoint.norm.Database;
+import com.dieselpoint.norm.Transaction;
 import com.omniwyse.sms.models.Teachers;
+import com.omniwyse.sms.models.UserCredentials;
+import com.omniwyse.sms.models.UserRoleMaintain;
+import com.omniwyse.sms.models.UserRoles;
+import com.omniwyse.sms.utils.TeachersDTO;
 
 @Service
 public class TeacherService {
@@ -15,30 +20,64 @@ public class TeacherService {
     private com.omniwyse.sms.db.DatabaseRetrieval retrive;
 	private Database db;
 
-	public int addTeacher( long tenantId, Teachers teacher) {
+	public int addTeacher(long tenantId, TeachersDTO addTeacher) {
 
 		db = retrive.getDatabase(tenantId);
 
-		String email = teacher.getEmailid();
-		String teachername = teacher.getTeachername();
-		if (isValidTeacherName(teachername)) {
+		String email = addTeacher.getEmailid();
+		if (isValidTeacher(email)) {
+			Teachers teachers=new Teachers();
+			teachers.setTeachername(addTeacher.getTeachername());
+			teachers.setLname(addTeacher.getLname());
+			teachers.setDateofbirth(addTeacher.getDateofbirth());
+			teachers.setDateofjoining(addTeacher.getDateofjoining());
+			teachers.setContactnumber(addTeacher.getContactnumber());
+			teachers.setGender(addTeacher.getGender());
+			teachers.setAbout(addTeacher.getAbout());
+			teachers.setAddress(addTeacher.getAddress());
+			teachers.setQualification(addTeacher.getQualification());
+			teachers.setSubjects(addTeacher.getSubjects());
+			teachers.setEmailid(addTeacher.getEmailid());
+			teachers.setNoofperiods(addTeacher.getNoofperiods());
+			
+			Transaction transaction = db.startTransaction();
+			try {
+		
+				db.transaction(transaction).insert(teachers).getRowsAffected();
+				UserCredentials userCredentials = new UserCredentials();
+				List<UserCredentials> mail = db.where("mail=?", addTeacher.getEmailid()).results(UserCredentials.class);
+				if (mail.isEmpty()) {
+					userCredentials.setMail(addTeacher.getEmailid());
+					userCredentials.setPassword(addTeacher.getPassword());
+					userCredentials.setStatusid(1);
 
-			if (isValidTeacher(email)) {
-				return db.insert(teacher).getRowsAffected();
-			} else
+					db.transaction(transaction).insert(userCredentials);
+
+					UserRoleMaintain userRoleMaintain = new UserRoleMaintain();
+					userRoleMaintain.setUserid(userCredentials.getId());
+					long roleid = db.sql("select id from roles where role='TEACHER'").results(UserRoles.class).get(0)
+							.getId();
+					userRoleMaintain.setRoleid(roleid);
+					db.transaction(transaction).insert(userRoleMaintain);
+					transaction.commit();
+					return 1;
+				} else {
+					return -5;
+				}
+			} catch (Throwable tw) {
+				tw.printStackTrace();
+				transaction.rollback();
 				return 0;
+			}
 		}
-		return -1;
+
+		else {
+			return -1;
+
+		}
 	}
 
-	private boolean isValidTeacherName(String teachername) {
-
-		List<Teachers> teachers = db.where("teachername = ?", teachername).results(Teachers.class);
-		if (teachers.isEmpty()) {
-			return true;
-		}
-		return false;
-	}
+	
 
 	private boolean isValidTeacher(String email) {
 
