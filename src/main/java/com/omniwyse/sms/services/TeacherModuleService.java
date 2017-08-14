@@ -28,7 +28,6 @@ import com.omniwyse.sms.utils.TestTransferObject;
 import com.omniwyse.sms.utils.TimelineDTO;
 import com.omniwyse.sms.utils.WorkSheetsDTO;
 
-
 @Service
 public class TeacherModuleService {
 
@@ -39,7 +38,7 @@ public class TeacherModuleService {
 
 	@Autowired
 	private WorksheetService workSheetService;
-	
+
 	private Database db;
 
 	public List<TeacherModuleDTO> listAllSubjectsAlongWithClassRooms(long tenantId,
@@ -74,6 +73,7 @@ public class TeacherModuleService {
 		return teacher;
 
 	}
+
 	@SuppressWarnings("deprecation")
 	public List<TeacherScheduleDTO> getSchedule(long tenantId, ClassSectionTransferObject dataObject, String date) {
 
@@ -102,31 +102,31 @@ public class TeacherModuleService {
 		return list;
 
 	}
-	public  ClassRoomDetails  teacherModuleList(long tenantId, long id, String subjectname) {
-		
+
+	public ClassRoomDetails teacherModuleList(long tenantId, long id, String subjectname) {
+
 		db = retrive.getDatabase(tenantId);
-		ClassRoomDetails classroom=new ClassRoomDetails();
-		classroom.setStudentsOfClassRoom(studentService.getStudentsOfClassRoom(tenantId,id));
-		
-		
-		long subjectid = db.where("subjectname=?",subjectname).results(Subjects.class).get(0).getId();
-		long gradeid=db.where("id=?", id).results(ClassRoom.class).get(0).getGradeid();
+		ClassRoomDetails classroom = new ClassRoomDetails();
+		classroom.setStudentsOfClassRoom(studentService.getStudentsOfClassRoom(tenantId, id));
+
+		long subjectid = db.where("subjectname=?", subjectname).results(Subjects.class).get(0).getId();
+		long gradeid = db.where("id=?", id).results(ClassRoom.class).get(0).getGradeid();
 		List<TestTransferObject> listTetss = db
 				.sql("select test_type.testtype,test_create.startdate, test_create.enddate from "
 						+ "test_create join test_syllabus on test_create.gradeid=?"
 						+ " and test_syllabus.subjectid=? and test_create.id=test_syllabus.testid join test_type on"
 						+ " test_create.testtypeid=test_type.id ", gradeid, subjectid)
 				.results(TestTransferObject.class);
-		
+
 		classroom.setTests(listTetss);
-		
+
 		return classroom;
 	}
-		
-	public  ClassRoomDetails teacherModulestudentsList(long tenantId,long id, String subjectname) {
-	
+
+	public ClassRoomDetails teacherModulestudentsList(long tenantId, long id, String subjectname) {
+
 		db = retrive.getDatabase(tenantId);
-		ClassRoomDetails classroom=new ClassRoomDetails();
+		ClassRoomDetails classroom = new ClassRoomDetails();
 		classroom.setStudentsOfClassRoom(studentService.getStudentsOfClassRoom(id, tenantId));
 		return classroom;
 	}
@@ -156,15 +156,26 @@ public class TeacherModuleService {
 		long classroomid = data.getId();
 		long subjectid = db.where("subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId();
 
-		List<TimelineDTO> list = db
-				.sql("select lessons.lessonstartdate, lessons.lessonname, lessons.tags, classroom_worksheets.worksheetduedate,"
-						+ "assignments.assignmentduedate, worksheets.worksheetname, assignments.assignmentname from lessons LEFT OUTER JOIN assignments "
-						+ "ON assignments.lessonsid = lessons.id LEFT OUTER JOIN classroom_worksheets  ON "
-						+ "classroom_worksheets.lessonsid = lessons.id LEFT OUTER JOIN worksheets ON "
-						+ "classroom_worksheets.worksheetsid = worksheets.id where"
-						+ " lessons.subjectid = ? and lessons.classroomid = ?;", subjectid, classroomid)
+		List<TimelineDTO> lessons = db
+				.sql("select lessons.id,lessons.lessonname,lessons.status,lessons.tags,lessons.lessonstartdate from lessons " + "where classroomid=? and subjectid=?",
+						classroomid, subjectid)
 				.results(TimelineDTO.class);
-		return list;
+		for (TimelineDTO lesson : lessons) {
+			List<WorkSheetsDTO> worksheets=db.sql("select worksheets.worksheetname,worksheets.createdby,worksheets.worksheetpath,classroom_worksheets.id,"
+					+ "classroom_worksheets.dateofassigned,classroom_worksheets.worksheetduedate as duedate "
+					+ "from worksheets "
+					+ "join classroom_worksheets on classroom_worksheets.worksheetsid=worksheets.id "
+					+ "where classroom_worksheets.classroomid=? and classroom_worksheets.subjectid=? and classroom_worksheets.lessonsid=?",
+					classroomid, subjectid, lesson.getId()).results(WorkSheetsDTO.class);
+			lesson.setWorksheets(worksheets);
+			List<AssignmentDTO> assignments=db.sql("select assignments.id,assignments.assignmentname,assignments.dateofassigned,assignments.assignmentduedate "
+					+ "from assignments "
+					+ "where assignments.classroomid=? and assignments.subjectid=? and assignments.lessonsid=?",
+					classroomid, subjectid, lesson.getId()).results(AssignmentDTO.class);
+			
+			lesson.setAssignments(assignments);
+		}
+		return lessons; 
 	}
 
 	public int addingLesson(long tenantId, TimelineDTO data) {
@@ -184,7 +195,7 @@ public class TeacherModuleService {
 			lesson.setStatus(data.getStatus());
 
 			rowEffected = db.transaction(transact).insert(lesson).getRowsAffected();
-			
+
 			transact.commit();
 		} catch (Exception e) {
 
@@ -198,17 +209,17 @@ public class TeacherModuleService {
 
 		long gradeid = db.where("id = ?", data.getId()).results(ClassRoom.class).get(0).getGradeid();
 		data.setGradeid(gradeid);
-		List<WorkSheetsDTO> list = workSheetService.listingWorksheetsOfTenant(tenantId,data);
+		List<WorkSheetsDTO> list = workSheetService.listingWorksheetsOfTenant(tenantId, data);
 		return list;
 	}
 
 	public int assignAssignment(long tenantId, AssignmentDTO assigning) {
 
 		db = retrive.getDatabase(tenantId);
-		
+
 		return db.insert(assignments(db, assigning)).getRowsAffected();
 	}
-	
+
 	private Assignments assignments(Database db, AssignmentDTO assigning) {
 
 		Assignments assignment = new Assignments();
@@ -224,22 +235,12 @@ public class TeacherModuleService {
 		assignment.setSubjectid(subjectid);
 		long lessonid = db.where("lessonname = ?", assigning.getLessonname()).results(Lessons.class).get(0).getId();
 		assignment.setLessonsid(lessonid);
-		long assinmentid = db
-				.where("classroomid=? and subjectid=? and lessonsid=? and dateofassigned=? and assignmentduedate=?",classroomid,subjectid,lessonid,dateofassigned,assignmentduedate)
-				.results(Assignments.class).get(0).getId();
-		assignment.setId(assinmentid);
+
 		return assignment;
 	}
 
-	public int worksheetAssign(long tenantId, WorkSheetsDTO data) {
-
+	public int worksheets(long tenantId, WorkSheetsDTO data) {
 		db = retrive.getDatabase(tenantId);
-		return db.insert(worksheets(db, data)).getRowsAffected();
-
-	}
-
-	private ClassroomWorksheets worksheets(Database db, WorkSheetsDTO data) {
-
 		long lessonid = db.where("lessonname = ?", data.getLessonname()).results(Lessons.class).get(0).getId();
 
 		ClassroomWorksheets worksheet = new ClassroomWorksheets();
@@ -253,15 +254,16 @@ public class TeacherModuleService {
 		long subjectid = db.where("subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId();
 		worksheet.setSubjectid(subjectid);
 		worksheet.setLessonsid(lessonid);
-		long classroomworksheetid = db
-				.where("classroomid=? and subjectid=? and lessonsid=? and dateofassigned=? and worksheetduedate=?",
-						classroomid, subjectid, lessonid, data.getDateofassigned(), data.getDuedate())
-				.results(ClassroomWorksheets.class).get(0).getId();
-		worksheet.setId(classroomworksheetid);
-
-		return worksheet;
+		List<ClassroomWorksheets> worksheets = db
+				.where("classroomid=? and subjectid=? and  lessonsid=? and  worksheetsid=?", classroomid, subjectid,
+ 						lessonid,worksheetsid)
+				.results(ClassroomWorksheets.class);
+		if (worksheets.isEmpty()) {
+			return db.insert(worksheet).getRowsAffected();
+		} else
+			return 0;
 	}
-	
+
 	public List<Lessons> lessonsList(long tenantId, TimelineDTO data) {
 
 		db = retrive.getDatabase(tenantId);
@@ -271,23 +273,12 @@ public class TeacherModuleService {
 		return db.where("classroomid = ? and subjectid = ?", data.getId(), subjectid).results(Lessons.class);
 	}
 
-	public int updateAssignedAssignment(long tenantId, AssignmentDTO assigning) {
-
-		db = retrive.getDatabase(tenantId);
-		return db.update(assignments(db, assigning)).getRowsAffected();
-	}
-
-	public int updaetWorksheetAssigned(long tenantId, WorkSheetsDTO data) {
-
-		db = retrive.getDatabase(tenantId);
-		return db.update(worksheets(db, data)).getRowsAffected();
-	}
-
+	
 	public List<TestTransferObject> getListOfClassroomTests(long tenantId, long id) {
-		
+
 		db = retrive.getDatabase(tenantId);
 		long gradeid = db.where("id=?", id).results(ClassRoom.class).get(0).getGradeid();
-		
+
 		List<TestTransferObject> testsdetails = db
 				.sql("SELECT  test_syllabus.id,test_syllabus.testid,test_type.testtype,test_mode.testmode,"
 						+ "test_create.startdate,test_create.enddate,"
@@ -302,4 +293,16 @@ public class TeacherModuleService {
 
 	}
 
+	public int deleteAssignedWorksheet(ClassroomWorksheets data, long tenantId) {
+		db = retrive.getDatabase(tenantId);
+		return db.delete(data).getRowsAffected();
+	}
+
+	public int deleteAssignedAssignment(Assignments data, long tenantId) {
+		db = retrive.getDatabase(tenantId);
+		return db.delete(data).getRowsAffected();
+
+	}
+
+	
 }

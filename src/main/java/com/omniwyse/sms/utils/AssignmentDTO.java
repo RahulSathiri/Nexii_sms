@@ -8,6 +8,13 @@ public class AssignmentDTO {
 	private String assignmentname;
 	private Date dateofassigned;
 	private Date duedate;
+	private Date assignmentduedate;
+	public Date getAssignmentduedate() {
+		return assignmentduedate;
+	}
+	public void setAssignmentduedate(Date assignmentduedate) {
+		this.assignmentduedate = assignmentduedate;
+	}
 	private String subjectname;
 	private long id;
 	private long assignedid;

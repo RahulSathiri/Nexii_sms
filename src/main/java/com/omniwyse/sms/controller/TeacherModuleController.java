@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.omniwyse.sms.models.Assignments;
+import com.omniwyse.sms.models.ClassroomWorksheets;
 import com.omniwyse.sms.models.Lessons;
 import com.omniwyse.sms.models.Teachers;
 import com.omniwyse.sms.services.TeacherModuleService;
@@ -123,26 +125,28 @@ public class TeacherModuleController {
 		}
 	}
 	
-	@RequestMapping("/updateassignassignment")
-	public ResponseEntity<Response> updateAssignmentAssigned(@PathVariable("tenantId") long tenantId, @RequestBody AssignmentDTO assigning) {
-
-		int rowEffected = service.updateAssignedAssignment(tenantId, assigning);
+	
+	@RequestMapping("/deleteassignment")
+	public ResponseEntity<Response> deleteAssignedAssignment(@PathVariable("tenantId") long tenantId, @RequestBody Assignments data) {
+		int rowEffected=service.deleteAssignedAssignment(data,tenantId);
 		if (rowEffected > 0) {
 			response.setStatus(200);
-			response.setMessage("updated successfuly");
-			response.setDescription("Assigned successfuly");
+			response.setMessage("deleted successfuly");
+			response.setDescription("deleted successfuly");
 			return new ResponseEntity<Response>(response, HttpStatus.OK);
 		} else {
 			response.setStatus(400);
-			response.setMessage("failed to update");
-			response.setDescription("failed to update assign to class");
+			response.setMessage("try again");
+			response.setDescription("try again");
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		}
+
 	}
+	
 	@RequestMapping("/assignworksheet")
 	public ResponseEntity<Response> worksheetAssigning(@PathVariable("tenantId") long tenantId, @RequestBody WorkSheetsDTO data) {
 
-		int rowEffected = service.worksheetAssign(tenantId, data);
+		int rowEffected = service.worksheets(tenantId, data);
 		if (rowEffected > 0) {
 			response.setStatus(200);
 			response.setMessage("Assigned successfuly");
@@ -150,34 +154,35 @@ public class TeacherModuleController {
 			return new ResponseEntity<Response>(response, HttpStatus.OK);
 		} else {
 			response.setStatus(400);
-			response.setMessage("failed to assign");
-			response.setDescription("failed to assign to class");
+			response.setMessage("already assigned");
+			response.setDescription("already assigned");
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	
-	@RequestMapping("/updateassignworksheet")
-	public ResponseEntity<Response> updatseWorksheetAssigned(@PathVariable("tenantId") long tenantId, @RequestBody WorkSheetsDTO data) {
-
-		int rowEffected = service.updaetWorksheetAssigned(tenantId, data);
+	@RequestMapping("/deleteworksheet")
+	public ResponseEntity<Response> deleteAssignedWorksheet(@PathVariable("tenantId") long tenantId, @RequestBody ClassroomWorksheets data) {
+		int rowEffected=service.deleteAssignedWorksheet(data,tenantId);
 		if (rowEffected > 0) {
 			response.setStatus(200);
-			response.setMessage("updated successfuly");
-			response.setDescription("Assigned successfuly");
+			response.setMessage("deleted successfuly");
+			response.setDescription("deleted successfuly");
 			return new ResponseEntity<Response>(response, HttpStatus.OK);
 		} else {
 			response.setStatus(400);
-			response.setMessage("failed to update");
-			response.setDescription("failed to update to class");
+			response.setMessage("try again");
+			response.setDescription("try again");
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		}
+
 	}
+
+	
 	
 	@RequestMapping("/lessonslist")
 	public List<Lessons> listOfLessons(@PathVariable("tenantId") long tenantId, @RequestBody TimelineDTO data){
 		
 		return service.lessonsList(tenantId, data);
 	}
+	
 	
 }

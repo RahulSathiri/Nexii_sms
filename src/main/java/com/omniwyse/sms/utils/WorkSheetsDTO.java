@@ -16,6 +16,15 @@ public class WorkSheetsDTO {
 	private String createdby;
 	private Date dateofassigned;
 	private Date duedate;
+	private Date worksheetduedate;
+	public Date getWorksheetduedate() {
+		return worksheetduedate;
+	}
+
+	public void setWorksheetduedate(Date worksheetduedate) {
+		this.worksheetduedate = worksheetduedate;
+	}
+
 	private String lessonname;
 	private long worksheetid;
 	

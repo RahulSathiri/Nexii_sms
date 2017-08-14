@@ -1,6 +1,7 @@
 package com.omniwyse.sms.utils;
 
 import java.sql.Date;
+import java.util.List;
 
 public class TimelineDTO {
 
@@ -14,7 +15,25 @@ public class TimelineDTO {
 	private String status;
 	private Date assignmentduedate;
 	private Date worksheetduedate;
+	List<WorkSheetsDTO> worksheets;
+	List<AssignmentDTO> assignments;
 	
+	public List<WorkSheetsDTO> getWorksheets() {
+		return worksheets;
+	}
+
+	public void setWorksheets(List<WorkSheetsDTO> worksheets) {
+		this.worksheets = worksheets;
+	}
+
+	public List<AssignmentDTO> getAssignments() {
+		return assignments;
+	}
+
+	public void setAssignments(List<AssignmentDTO> assignments) {
+		this.assignments = assignments;
+	}
+
 	public Date getAssignmentduedate() {
 		return assignmentduedate;
 	}
