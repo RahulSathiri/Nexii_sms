@@ -38,14 +38,21 @@ public class StudentsController {
 			return new ResponseEntity<Response>(response, HttpStatus.OK);
 		} else if (rowEffected == 0) {
 			response.setStatus(400);
-			response.setMessage("Student already exist");
-			response.setDescription("Student already Exists");
+			response.setMessage("invalid admissionnumber");
+			response.setDescription("Student already registered");
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
-		} else {
+		} else if(rowEffected==-5){
 			response.setStatus(400);
-			response.setMessage("Invalid ClassRoom");
-			response.setDescription("ClassRoom does't exist");
+			response.setMessage("enter valid emailid of parent");
+			response.setDescription("enter valid emailid of parent");
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+		}
+		else
+		{
+			response.setStatus(400);
+			response.setMessage("try again");
+			response.setDescription("try again");
+			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);	
 		}
 	}
 

@@ -161,31 +161,51 @@ INSERT INTO houses(housename,description) VALUES
 		('Chhatrapati Shivaji','Shivaji is a house of the hero of Maharashtra known as Chhatrapati Shivaji . An icon in Freedom Fight  teaches us how to be an able administrator.'),
 		('Subhash Chandra Bose','Subhash house is a house of Subhash Chandra Bose, popularly known as Netaji  a freedom fighter.It teaches us never to give up in life.');
 
+--************************* PARENTS TABLE ************************
+
+CREATE TABLE parents(
+id bigint(8) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+mothername VARCHAR(50) NOT NULL,
+fathername VARCHAR(50) NOT NULL,
+emailid VARCHAR(50) NOT NULL,
+contactnumber bigint NOT NULL,
+address VARCHAR(200) NOT NULL,
+UNIQUE(emailid)
+);
+
+
+INSERT INTO parents(mothername,fathername,emailid,contactnumber,address) VALUES('srinivas','sunitha','srinivas@gmail.com',9345666666,'hno:5-2-203, Janagaon,Telangana,508203'),
+('koteshwar rao','padma','koteswarrao@gmail.com',9721666666,'plot no:12-14-97,patancheruvu,Hyd -500045'),
+('suresh','devi','suresh@gmail.com',9277327323,'hno:5-203,kr nagar, mancheryal,Telangana-504203'),
+('kamal','vimala','kamal@gmail.com',7330123423,'plot no:12-5-50,anakapally,vizag-500085');
+		
+		
+		
+		
 -- ********** STUDENTS TABLES ******************************
 
 CREATE TABLE students(
 	id bigint(8) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	gradeid bigint(8) NOT null,
 	name VARCHAR(30) NOT NULL,
-	fathername VARCHAR(60) NOT NULL,
-	mothername VARCHAR(60) NOT NULL,
-	contactnumber VARCHAR(12) NOT NULL,
+	parentid bigint NOT NULL,
 	address VARCHAR(100) NOT NULL,
 	dateofbirth date NOT NULL,
 	dateofjoining date NOT NULL,
 	gender VARCHAR(10) NOT NULL,
-	emailid VARCHAR(30) NOT NULL,
+	emailid VARCHAR(30),
 	admissionnumber VARCHAR(20) NOT NULL,
 	houseid bigint(8),
 	UNIQUE(admissionnumber),
-	FOREIGN KEY(gradeid) references grades(id)
+	FOREIGN KEY(gradeid) references grades(id),
+	FOREIGN KEY(parentid) references parents(id)
 );
 
-insert into students(houseid,gradeid,name,fathername,mothername,contactnumber,address,dateofbirth,dateofjoining,gender,emailid,admissionnumber)
-	values (3,1,'vikram','srinivas','sunitha','8977646503','hno:5-2-203, Janagaon,Telangana,508203','2005-07-26','2010-06-10','male','vikram@gmail.com','7011'),
-	(2,2,'kalpana','koteshwar rao','padma','9977765623','plot no:12-14-97,patancheruvu,Hyd -500045','2003-07-25','2008-01-01','female','kalpana@gmail.com','90111'),
-	(2,2,'srinadh','suresh','devi','8977690734','hno:5-203,kr nagar, mancheryal,Telangana-504203','2002-07-25','2006-06-06','male','srinadh@gmail.com','10111'),
-	(1,1,'yamini','kamal','vimala','9955544499','plot no:12-5-50,anakapally,vizag-500085','2007-01-01','2012-06-19','female','yamini@gmail.com','50111');
+insert into students(parentid,houseid,gradeid,name,address,dateofbirth,dateofjoining,gender,emailid,admissionnumber)
+	values (1,3,1,'vikram','hno:5-2-203, Janagaon,Telangana,508203','2005-07-26','2010-06-10','male','vikram@gmail.com','7011'),
+	(2,2,2,'kalpana','plot no:12-14-97,patancheruvu,Hyd -500045','2003-07-25','2008-01-01','female','kalpana@gmail.com','90111'),
+	(3,2,2,'srinadh','hno:5-203,kr nagar, mancheryal,Telangana-504203','2002-07-25','2006-06-06','male','srinadh@gmail.com','10111'),
+	(4,1,1,'yamini','plot no:12-5-50,anakapally,vizag-500085','2007-01-01','2012-06-19','female','yamini@gmail.com','50111');
 
 CREATE TABLE classroom_students(
 	id bigint(8) NOT NULL AUTO_INCREMENT PRIMARY KEY,
