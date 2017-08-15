@@ -33,7 +33,7 @@ public class ResultsService {
 
             db = retrieve.getDatabase(tenantId);
     
-            long classid = resultstransferobject.getClassid();
+            long classid = resultstransferobject.getId();
             long gradeid = db.where("id=?", classid).results(ClassRoom.class).get(0).getGradeid();
     
             String testtype = resultstransferobject.getTesttype();
@@ -93,7 +93,7 @@ public class ResultsService {
         
             db = retrieve.getDatabase(tenantId);
     
-            long classid = resultstransferobject.getClassid();
+            long classid = resultstransferobject.getId();
             long gradeid = db.where("id=?", classid).results(ClassRoom.class).get(0).getGradeid();
     
             String testtype = resultstransferobject.getTesttype();
@@ -182,10 +182,10 @@ public class ResultsService {
 
     }
 
-    private List<ResultsTransferObject> testResultList(ResultsTransferObject resultstransferobject, long tenantId) {
+    private List<StudentTestResult> testResultList(ResultsTransferObject resultstransferobject, long tenantId) {
         db = retrieve.getDatabase(tenantId);
 
-        long classid = resultstransferobject.getClassid();
+        long classid = resultstransferobject.getId();
         long gradeid = db.where("id=?", classid).results(ClassRoom.class).get(0).getGradeid();
 
         String testtype = resultstransferobject.getTesttype();
@@ -198,6 +198,7 @@ public class ResultsService {
 
         long testcreateid = testcreaterecords.get(0).getId();
 
-        return db.where("classid=? and testid=? and subjectid?", classid, testcreateid, subjectid).results(ResultsTransferObject.class);
+        return db.where("classid=? and testid=? and subjectid=?", classid, testcreateid, subjectid).results(
+                StudentTestResult.class);
     }
 }
