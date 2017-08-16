@@ -152,7 +152,7 @@ public class ClassroomAttendenceService {
 			
  			long classroomid = db.where("gradeid=? and sectionname=?",gradeid,
 					sectionname).results(ClassRoom.class).get(0).getId();
-			List<ClassroomAttendance> onetimedates=db.sql("select distinct dateofattendance from classroom_attendance").results(ClassroomAttendance.class);
+			List<ClassroomAttendance> onetimedates=db.sql("select distinct dateofattendance from classroom_attendance where classroomid=? order by dateofattendance desc",classroomid).results(ClassroomAttendance.class);
 		for(ClassroomAttendance date:onetimedates){
 			ClassAttendenceTransferObject attendancereport = new ClassAttendenceTransferObject();
 			attendancereport.setDateofattendance(date.getDateofattendance());
@@ -194,9 +194,10 @@ public class ClassroomAttendenceService {
 		else {
 			long classroomid = db.where("gradeid=? and sectionname=?",gradeid,
 					sectionname).results(ClassRoom.class).get(0).getId();
-			List<AttendanceSubjectwise> subjectwisedates=db.sql("select distinct dateofattendance from attendance_subjectwise").results(AttendanceSubjectwise.class);
+			
 			long subjectid = db.sql("select * from subjects where subjectname=?", subjectname).results(Subjects.class)
 					.get(0).getId();
+			List<AttendanceSubjectwise> subjectwisedates=db.sql("select distinct dateofattendance from attendance_subjectwise where classroomid=? and subjectid=? order by dateofattendance desc",classroomid,subjectid).results(AttendanceSubjectwise.class);
 			for(AttendanceSubjectwise date:subjectwisedates){
 				ClassAttendenceTransferObject attendancereport = new ClassAttendenceTransferObject();
 
