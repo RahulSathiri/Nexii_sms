@@ -184,5 +184,4 @@ public class TeacherModuleController {
 		return service.lessonsList(tenantId, data);
 	}
 	
-	
 }
