@@ -8,11 +8,8 @@ import javax.persistence.Table;
 
 @Table(name = "students")
 public class Students {
-
+	private long id;
 	private String name;
-	private String fathername;
-	private String mothername;
-	private String contactnumber;
 	private String address;
 	private Date dateofbirth;
 	private Date dateofjoining;
@@ -21,6 +18,16 @@ public class Students {
 	private String admissionnumber;
 	private String emailid;
 	private long houseid;
+	private long parentid;
+
+	public long getParentid() {
+		return parentid;
+	}
+
+	public void setParentid(long parentid) {
+		this.parentid = parentid;
+	}
+
 	public long getHouseid() {
 		return houseid;
 	}
@@ -29,9 +36,8 @@ public class Students {
 		this.houseid = houseid;
 	}
 
+	
 
-
-	private long id;
 	public Date getDateofbirth() {
 		return dateofbirth;
 	}
@@ -56,8 +62,6 @@ public class Students {
 		this.gradeid = gradeid;
 	}
 
-	
-
 	public String getEmailid() {
 		return emailid;
 	}
@@ -65,7 +69,6 @@ public class Students {
 	public void setEmailid(String emailid) {
 		this.emailid = emailid;
 	}
-
 
 	public String getAdmissionnumber() {
 		return admissionnumber;
@@ -83,35 +86,10 @@ public class Students {
 		this.name = name;
 	}
 
-	
 	@Id
 	@GeneratedValue
 	public long getId() {
 		return id;
-	}
-
-	public String getFathername() {
-		return fathername;
-	}
-
-	public void setFathername(String fathername) {
-		this.fathername = fathername;
-	}
-
-	public String getMothername() {
-		return mothername;
-	}
-
-	public void setMothername(String mothername) {
-		this.mothername = mothername;
-	}
-
-	public String getContactnumber() {
-		return contactnumber;
-	}
-
-	public void setContactnumber(String contactnumber) {
-		this.contactnumber = contactnumber;
 	}
 
 	public String getAddress() {
@@ -122,8 +100,6 @@ public class Students {
 		this.address = address;
 	}
 
-	
-
 	public String getGender() {
 		return gender;
 	}
@@ -131,8 +107,6 @@ public class Students {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-
-	
 
 	public void setId(long id) {
 		this.id = id;

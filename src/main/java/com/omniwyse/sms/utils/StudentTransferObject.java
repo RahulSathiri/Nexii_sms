@@ -1,49 +1,42 @@
 package com.omniwyse.sms.utils;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class StudentTransferObject {
 	private String name;
+	private String emailid;
+	private String parentemailid;
+	private String username;
+	private String password;
+	private String parentaddress;
+	private long parentcontactnumber;
 	private String fathername;
 	private String mothername;
-	private String contactnumber;
 	private String address;
 	private Date dateofbirth;
 	private Date dateofjoining;
 	private String gender;
 	private String gradename;
-	private String Syllabustype;
+	private String syllabustype;
 	private String admissionnumber;
 	private long houseid;
-	public long getHouseid() {
-		return houseid;
-	}
-	public void setHouseid(long houseid) {
-		this.houseid = houseid;
-	}
-	private String emailid;
-	
-	private long gradeid;
-	public long getGradeid() {
-		return gradeid;
-	}
-	public void setGradeid(long gradeid) {
-		this.gradeid = gradeid;
-	}
 	private long id;
 	private String housename;
-		public String getName() {
-		return name;
+	private long gradeid;
+	public String getEmailid() {
+		return emailid;
 	}
-	public String getHousename() {
-			return housename;
-		}
-		public void setHousename(String housename) {
-			this.housename = housename;
-		}
-	public void setName(String name) {
-		this.name = name;
+	public void setEmailid(String emailid) {
+		this.emailid = emailid;
 	}
+	
+	public long getParentcontactnumber() {
+		return parentcontactnumber;
+	}
+	public void setParentcontactnumber(long parentcontactnumber) {
+		this.parentcontactnumber = parentcontactnumber;
+	}
+	
 	public String getFathername() {
 		return fathername;
 	}
@@ -56,12 +49,70 @@ public class StudentTransferObject {
 	public void setMothername(String mothername) {
 		this.mothername = mothername;
 	}
-	public String getContactnumber() {
-		return contactnumber;
+	
+	public String getUsername() {
+		return username;
 	}
-	public void setContactnumber(String contactnumber) {
-		this.contactnumber = contactnumber;
+	public void setUsername(String username) {
+		this.username = username;
 	}
+	public String getSyllabustype() {
+		return syllabustype;
+	}
+	public void setSyllabustype(String syllabustype) {
+		this.syllabustype = syllabustype;
+	}
+	
+	public String getParentemailid() {
+		return parentemailid;
+	}
+	public void setParentemailid(String parentemailid) {
+		this.parentemailid = parentemailid;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getParentaddress() {
+		return parentaddress;
+	}
+	public void setParentaddress(String parentaddress) {
+		this.parentaddress = parentaddress;
+	}
+	
+	
+	public long getHouseid() {
+		return houseid;
+	}
+	public void setHouseid(long houseid) {
+		this.houseid = houseid;
+	}
+	
+	
+	public long getGradeid() {
+		return gradeid;
+	}
+	public void setGradeid(long gradeid) {
+		this.gradeid = gradeid;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	public String getHousename() {
+			return housename;
+		}
+	public void setHousename(String housename) {
+			this.housename = housename;
+		}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
+	
 	public String getAddress() {
 		return address;
 	}
@@ -92,12 +143,7 @@ public class StudentTransferObject {
 	public void setGradename(String gradename) {
 		this.gradename = gradename;
 	}
-	public String getSyllabustype() {
-		return Syllabustype;
-	}
-	public void setSyllabustype(String syllabustype) {
-		Syllabustype = syllabustype;
-	}
+	
 	
 	public String getAdmissionnumber() {
 		return admissionnumber;
@@ -105,13 +151,7 @@ public class StudentTransferObject {
 	public void setAdmissionnumber(String admissionnumber) {
 		this.admissionnumber = admissionnumber;
 	}
-	public String getEmailid() {
-		return emailid;
-	}
-	public void setEmailid(String emailid) {
-		this.emailid = emailid;
-	}
-	public long getId() {
+		public long getId() {
 		return id;
 	}
 	public void setId(long id) {
