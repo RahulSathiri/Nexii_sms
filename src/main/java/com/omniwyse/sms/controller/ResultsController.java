@@ -25,11 +25,6 @@ public class ResultsController {
 	private Response response;
 	
 	
-    @RequestMapping(value = "/viewsubjectwiseresult", method = RequestMethod.POST, produces = "application/json")
-	public List<ResultsTransferObject> viewSubjectWiseResult(@PathVariable("tenantId") long tenantId,@RequestBody ResultsTransferObject resultstransferobject){
-        return service.viewSubjectMarks(resultstransferobject, tenantId);
-	}
-	
 	@RequestMapping(value = "/viewresults", method = RequestMethod.POST, produces = "application/json")
     public MainResultsTransferObject viewResults(@PathVariable("tenantId") long tenantId,@RequestBody ResultsTransferObject resultstransferobject) {
 		return service.viewResults(resultstransferobject,tenantId);
@@ -49,7 +44,7 @@ public class ResultsController {
             response.setDescription("added successfully");
             return new ResponseEntity<Response>(response, HttpStatus.CREATED);
         } else {
-            response.setStatus(201);
+            response.setStatus(500);
             response.setMessage("problem adding");
             response.setDescription("marks not added");
             return new ResponseEntity<Response>(response, HttpStatus.NOT_MODIFIED);

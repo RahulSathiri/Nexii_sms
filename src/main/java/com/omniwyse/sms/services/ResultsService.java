@@ -1,6 +1,5 @@
 package com.omniwyse.sms.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,35 +25,6 @@ public class ResultsService {
     private DatabaseRetrieval retrieve;
 
     private Database db;
-
-    public List<ResultsTransferObject> viewSubjectMarks(ResultsTransferObject resultstransferobject, long tenantId) {
-
-        if (!testResultList(resultstransferobject, tenantId).isEmpty()){
-
-            db = retrieve.getDatabase(tenantId);
-    
-            long classid = resultstransferobject.getId();
-            long gradeid = db.where("id=?", classid).results(ClassRoom.class).get(0).getGradeid();
-    
-            String testtype = resultstransferobject.getTesttype();
-            long testid = db.where("testtype=?", testtype).results(TestType.class).get(0).getId();
-    
-            String subjectname = resultstransferobject.getSubjectname();
-            long subjectid = db.where("subjectname=? ", subjectname).results(Subjects.class).get(0).getId();
-    
-            List<TestCreate> testcreaterecords = db.where("gradeid=? and testtypeid=?", gradeid, testid).results(TestCreate.class);
-    
-            long testcreateid = testcreaterecords.get(0).getId();
-    
-            return db.sql("select distinct str.studentid as studentid,str.testid,str.subjectid,str.id,str.marks,st.name as studentname, ts.maxmarks,str.classid from student_testresult str "
-                            + "left join classroom_testresult cltrs on str.testid = cltrs.testid left join test_create tc on tc.testtypeid = str.testid "
-                            + "left join grade_subjects gs on gs.gradeid = tc.gradeid left join students st on str.studentid=st.id "
-                            + "left join test_syllabus ts on ts.subjectid = gs.subjectid left join test_type tt on tt.id = str.testid "
-                            + "where ts.testid=? and str.subjectid=? and cltrs.classid=?", testcreateid, subjectid, classid).results(ResultsTransferObject.class);
-        } else {
-            return new ArrayList<ResultsTransferObject>();
-        }
-    }
 
     public MainResultsTransferObject viewResults(ResultsTransferObject resultstransferobject,long tenantId) {
         db = retrieve.getDatabase(tenantId);
@@ -89,9 +59,29 @@ public class ResultsService {
 
     public List<ResultsTransferObject> enterMarks(ResultsTransferObject resultstransferobject,long tenantId) {
 
-        if (testResultList(resultstransferobject, tenantId).isEmpty()){
-        
-            db = retrieve.getDatabase(tenantId);
+        db = retrieve.getDatabase(tenantId);
+
+        if (!testResultList(resultstransferobject, tenantId).isEmpty()) {
+
+            long classid = resultstransferobject.getId();
+            long gradeid = db.where("id=?", classid).results(ClassRoom.class).get(0).getGradeid();
+
+            String testtype = resultstransferobject.getTesttype();
+            long testid = db.where("testtype=?", testtype).results(TestType.class).get(0).getId();
+
+            String subjectname = resultstransferobject.getSubjectname();
+            long subjectid = db.where("subjectname=? ", subjectname).results(Subjects.class).get(0).getId();
+
+            List<TestCreate> testcreaterecords = db.where("gradeid=? and testtypeid=?", gradeid, testid).results(TestCreate.class);
+
+            long testcreateid = testcreaterecords.get(0).getId();
+
+            return db.sql("select distinct str.classid,str.studentid as studentid,st.name as studentname,str.testid,tt.testtype,str.subjectid,ts.maxmarks,str.marks from student_testresult str "
+                            + "left join classroom_testresult cltrs on str.testid = cltrs.testid left join test_create tc on tc.testtypeid = str.testid"
+                            + " left join grade_subjects gs on gs.gradeid = tc.gradeid left join students st on str.studentid=st.id "
+                            + "left join test_syllabus ts on ts.subjectid = gs.subjectid left join test_type tt on tt.id = str.testid "
+                            + "where ts.testid=? and str.subjectid=? and cltrs.classid=?", testcreateid, subjectid, classid).results(ResultsTransferObject.class);
+        } else {
     
             long classid = resultstransferobject.getId();
             long gradeid = db.where("id=?", classid).results(ClassRoom.class).get(0).getGradeid();
@@ -105,16 +95,14 @@ public class ResultsService {
     
             long testcreateid = testcreaterecords.get(0).getId();
     
-            List<ResultsTransferObject> resulttransferobj = db.sql("select distinct cstud.studentid,stud.name as studentname,gsub.subjectid,tsyl.maxmarks,tsyl.testid,cstud.classid from classrooms croom "
-                            + "left join classroom_students cstud on croom.id = cstud.classid left join students stud on cstud.studentid = stud.id "
-                            + "left join grade_subjects gsub on croom.gradeid = gsub.gradeid left join subjects sub on gsub.subjectid = sub.id "
-                            + "left join grades g on croom.gradeid = g.id left join test_create test on g.id = test.gradeid left join test_syllabus tsyl on gsub.subjectid = tsyl.subjectid "
-                            + "where sub.subjectname=? and test.testtypeid=? and croom.id=?  group by cstud.studentid", subjectname, testcreateid, classid).results(ResultsTransferObject.class);
-            return resulttransferobj;
-        }else{
-            return new ArrayList<ResultsTransferObject>();
-        }
+            List<ResultsTransferObject> resulttransferobj = db.sql("select distinct cstud.classid,cstud.studentid,stud.name as studentname,tsyl.testid,tt.testtype,gsub.subjectid,tsyl.maxmarks from classrooms croom"
+                            + " left join classroom_students cstud on croom.id = cstud.classid  left join students stud on cstud.studentid = stud.id left join grade_subjects gsub on croom.gradeid = gsub.gradeid "
+                            + "left join subjects sub on gsub.subjectid = sub.id left join grades g on croom.gradeid = g.id left join test_create test on g.id = test.gradeid "
+                            + "left join test_syllabus tsyl on gsub.subjectid = tsyl.subjectid left join test_type tt on tt.id = tsyl.testid "
+                            + "where sub.subjectname=? and test.testtypeid=? and croom.id=?  group by cstud.studentid",subjectname, testcreateid, classid).results(ResultsTransferObject.class);
 
+            return resulttransferobj;
+        }
     }
 
     public int addMarks(List<ResultsTransferObject> resultstransferobject,long tenantId) {
@@ -139,10 +127,8 @@ public class ResultsService {
                     marksenteredsubjectcount = markseneteredsubjectslist.size();
                 }
 
-                List<StudentTestResult> studenttestresultlist = db.where(
-                        "classid=? and subjectid=? and testid=? and studentid=?", classid, subjectid, testid,
-                        resultobj.getStudentid()).results(StudentTestResult.class);
-                List<ClassroomTestResult> classresultlist = db.results(ClassroomTestResult.class);
+                List<StudentTestResult> studenttestresultlist = db.where("classid=? and subjectid=? and testid=? and studentid=?", classid, subjectid, testid,resultobj.getStudentid()).results(StudentTestResult.class);
+                List<ClassroomTestResult> classresultlist = db.where("classid=? and testid=?", classid,testid).results(ClassroomTestResult.class);
 
                 StudentTestResult studenttestresult = new StudentTestResult();
                 ClassroomTestResult classroomtestresult = new ClassroomTestResult();
@@ -169,7 +155,9 @@ public class ResultsService {
                 } else {
                     if (existingsubjectcount == marksenteredsubjectcount) {
                         ClassroomTestResult classresult = db.where("classid=? and studentid=? and testid=?", classid, resultobj.getStudentid(),testid).results(ClassroomTestResult.class).get(0);
+
                         classresult.setResultorgrade("A");
+
                         db.update(classresult);
                     }
                 }
@@ -198,7 +186,6 @@ public class ResultsService {
 
         long testcreateid = testcreaterecords.get(0).getId();
 
-        return db.where("classid=? and testid=? and subjectid=?", classid, testcreateid, subjectid).results(
-                StudentTestResult.class);
+        return db.where("classid=? and testid=? and subjectid=?", classid, testcreateid, subjectid).results(StudentTestResult.class);
     }
 }
