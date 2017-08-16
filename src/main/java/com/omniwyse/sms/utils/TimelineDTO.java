@@ -16,10 +16,29 @@ public class TimelineDTO {
 	private Date assignmentduedate;
 	private Date worksheetduedate;
 	private String lessonname;
-	List<WorkSheetsDTO> worksheets;
-	List<AssignmentDTO> assignments;
+	private List<WorkSheetsDTO> worksheets;
+	private List<AssignmentDTO> assignments;
+	private Date datefrom;
+	private Date dateto;
 	
- 	public String getLessonname() {
+	
+ 	public Date getDatefrom() {
+		return datefrom;
+	}
+
+	public void setDatefrom(Date datefrom) {
+		this.datefrom = datefrom;
+	}
+
+	public Date getDateto() {
+		return dateto;
+	}
+
+	public void setDateto(Date dateto) {
+		this.dateto = dateto;
+	}
+
+	public String getLessonname() {
 		return lessonname;
 	}
 

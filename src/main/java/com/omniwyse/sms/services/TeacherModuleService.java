@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dieselpoint.norm.Database;
+import com.dieselpoint.norm.Query;
 import com.dieselpoint.norm.Transaction;
 import com.omniwyse.sms.db.DatabaseRetrieval;
 import com.omniwyse.sms.models.Assignments;
@@ -148,7 +149,6 @@ public class TeacherModuleService {
 	public List<TimelineDTO> viewTimeline(long tenantId, TimelineDTO data) {
 
 		db = retrive.getDatabase(tenantId);
-
 		List<TimelineDTO> lessons = null;
 		List<WorkSheetsDTO> worksheets = null;
 		List<AssignmentDTO> assignments = null;
@@ -166,42 +166,59 @@ public class TeacherModuleService {
 
 		long classroomid = data.getId();
 		if (data.getSubjectname() != null) {
+
 			long subjectid = db.where("subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId();
+			queryForLessons = queryForLessons + " from lessons where classroomid=? and subjectid=? ";
+			queryForWorksheets = queryForWorksheets
+					+ " where classroom_worksheets.classroomid=? and classroom_worksheets.subjectid=? "
+					+ "and classroom_worksheets.lessonsid=?";
+			queryForAssignments = queryForAssignments
+					+ " where assignments.classroomid=? and assignments.subjectid=? and assignments.lessonsid=?";
 
-			lessons = db.sql(queryForLessons + " from lessons where classroomid=? and subjectid=?", classroomid, subjectid)
-					.results(TimelineDTO.class);
+			if (data.getDatefrom() != null && data.getDateto() != null) {
+				queryForLessons = dateFilterbasedTime(data, queryForLessons);
+				lessons = db.sql(queryForLessons, classroomid, subjectid, data.getDatefrom(), data.getDateto())
+						.results(TimelineDTO.class);
+			} else {
+				lessons = db.sql(queryForLessons, classroomid, subjectid).results(TimelineDTO.class);
+			}
 			for (TimelineDTO lesson : lessons) {
-				worksheets = db.sql(
-						queryForWorksheets
-								+ " where classroom_worksheets.classroomid=? and classroom_worksheets.subjectid=? and classroom_worksheets.lessonsid=?",
-						classroomid, subjectid, lesson.getId()).results(WorkSheetsDTO.class);
+				worksheets = db.sql(queryForWorksheets, classroomid, subjectid, lesson.getId())
+						.results(WorkSheetsDTO.class);
 				lesson.setWorksheets(worksheets);
-				assignments = db.sql(
-						queryForAssignments
-								+ " where assignments.classroomid=? and assignments.subjectid=? and assignments.lessonsid=?",
-						classroomid, subjectid, lesson.getId()).results(AssignmentDTO.class);
-
+				assignments = db.sql(queryForAssignments, classroomid, subjectid, lesson.getId())
+						.results(AssignmentDTO.class);
 				lesson.setAssignments(assignments);
+
 			}
 		} else {
-			lessons = db.sql(queryForLessons+subjectSelectQuery + " from lessons JOIN subjects on "
-					+ "subjects.id = lessons.subjectid where classroomid=? ", classroomid).results(TimelineDTO.class);
+			queryForLessons = queryForLessons + subjectSelectQuery + " from lessons JOIN subjects on "
+					+ "subjects.id = lessons.subjectid where classroomid=? ";
+			queryForWorksheets = queryForWorksheets
+					+ "where classroom_worksheets.classroomid=? and classroom_worksheets.lessonsid=? ";
+			queryForAssignments = queryForAssignments + "where assignments.classroomid=? and assignments.lessonsid=? ";
+			if (data.getDatefrom() != null && data.getDateto() != null) {
+				queryForLessons = dateFilterbasedTime(data, queryForLessons);
+				lessons = db.sql(queryForLessons, classroomid, data.getDatefrom(), data.getDateto()).results(TimelineDTO.class);
+			} else {
+				lessons = db.sql(queryForLessons, classroomid).results(TimelineDTO.class);
+			}
 			for (TimelineDTO lesson : lessons) {
-				worksheets = db.sql(
-						queryForWorksheets
-								+ "where classroom_worksheets.classroomid=? and classroom_worksheets.lessonsid=?",
-						classroomid, lesson.getId()).results(WorkSheetsDTO.class);
+				worksheets = db.sql(queryForWorksheets, classroomid, lesson.getId()).results(WorkSheetsDTO.class);
 				lesson.setWorksheets(worksheets);
-				assignments = db
-						.sql(queryForAssignments + "where assignments.classroomid=? and assignments.lessonsid=?",
-								classroomid, lesson.getId())
-						.results(AssignmentDTO.class);
-
+				assignments = db.sql(queryForAssignments, classroomid, lesson.getId()).results(AssignmentDTO.class);
 				lesson.setAssignments(assignments);
 			}
 		}
 
 		return lessons;
+	}
+
+	private String dateFilterbasedTime(TimelineDTO data, String queryForLessons) {
+
+			queryForLessons = queryForLessons
+					+ " and lessonstartdate between ? and ? order by lessonstartdate desc";
+			return queryForLessons;
 	}
 
 	public int addingLesson(long tenantId, TimelineDTO data) {
