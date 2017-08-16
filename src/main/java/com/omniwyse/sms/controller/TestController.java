@@ -99,9 +99,9 @@ public class TestController {
 	
 	
 
-	@RequestMapping(value = "/addsyllabus", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/addoreditsyllabus", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> addSyllabus(@PathVariable("tenantId") long tenantId, @RequestBody TestSyllabus testsyllabus) {
-		int rowEffected = service.addSyllabus(tenantId, testsyllabus);
+        int rowEffected = service.addorEditSyllabus(tenantId, testsyllabus);
 		if(rowEffected > 0){
 		response.setStatus(202);
 		response.setMessage("syllubs added successfully");

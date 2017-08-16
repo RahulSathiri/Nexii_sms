@@ -89,9 +89,8 @@ public class TestService {
 
 		db = retrieve.getDatabase(tenantId);
 
-		return db
-				.sql("select test_type.testtype, test_create.startdate, test_create.enddate, test_mode.testmode, test_create.maxmarks from test_type JOIN test_create ON test_type.id = test_create.testtypeid JOIN test_mode ON test_mode.id = test_create.modeid")
-				.results(TestTransferObject.class);
+		return db.sql("select test_type.testtype, test_create.startdate, test_create.enddate, test_mode.testmode, test_create.maxmarks from test_type JOIN test_create ON test_type.id = test_create.testtypeid"
+		        + " JOIN test_mode ON test_mode.id = test_create.modeid").results(TestTransferObject.class);
 	}
 
 	public List<TestTransferObject> getListOfTests(long tenantId, TestTransferObject testtransferobject) {
@@ -99,17 +98,16 @@ public class TestService {
 		db = retrieve.getDatabase(tenantId);
 		long gradeid = testtransferobject.getId();
 
-		List<TestTransferObject> testsdetails = db
-				.sql("select test_type.id,test_type.testtype,test_mode.testmode,test_create.startdate,test_create.enddate,test_create.maxmarks from test_create inner join test_mode on test_create.gradeid=? and  test_create.modeid=test_mode.id inner join test_type on test_create.testtypeid=test_type.id",
-						gradeid)
-				.results(TestTransferObject.class);
+		List<TestTransferObject> testsdetails = db.sql("select test_type.id,test_type.testtype,test_mode.testmode,test_create.startdate,test_create.enddate,test_create.maxmarks from test_create"
+		        + " inner join test_mode on test_create.gradeid=? and  test_create.modeid=test_mode.id inner join test_type on test_create.testtypeid=test_type.id",gradeid).results(TestTransferObject.class);
+
 		long testid;
 		for (TestTransferObject test : testsdetails) {
 			testid = test.getId();
-			List<TestSubjectsDisplay> subjecttestsyllabus = db
-					.sql("select test_syllabus.id,test_syllabus.maxmarks,test_syllabus.testid,test_syllabus.subjectid,test_syllabus.syllabus,subjects.subjectname from test_syllabus  inner join subjects on test_syllabus.testid=? and test_syllabus.subjectid=subjects.id",
-							testid)
-					.results(TestSubjectsDisplay.class);
+
+			List<TestSubjectsDisplay> subjecttestsyllabus = db.sql("select test_syllabus.id,test_syllabus.maxmarks,test_syllabus.testid,test_syllabus.subjectid,test_syllabus.syllabus,subjects.subjectname"
+			        + " from test_syllabus  inner join subjects on test_syllabus.testid=? and test_syllabus.subjectid=subjects.id",testid).results(TestSubjectsDisplay.class);
+			
 			test.setSubjects(subjecttestsyllabus);
 		}
 		return testsdetails;
@@ -127,8 +125,17 @@ public class TestService {
 				.results(TestSubjectsDisplay.class);
 	}
 
-	public int addSyllabus(long tenantId, TestSyllabus testsyllabus) {
+    public int addorEditSyllabus(long tenantId, TestSyllabus testsyllabus) {
 		db = retrieve.getDatabase(tenantId);
+
+        long testid = testsyllabus.getTestid();
+        long subjectid = testsyllabus.getSubjectid();
+
+        TestSyllabus testSyllabus2 = db.where("testid=? and subjectid=?", testid, subjectid).results(TestSyllabus.class).get(0);
+        String syllabus = testSyllabus2.getSyllabus();
+        syllabus = syllabus + testsyllabus.getSyllabus();
+        testSyllabus2.setSyllabus(syllabus);
+
 		return db.update(testsyllabus).getRowsAffected();
 	}
 
