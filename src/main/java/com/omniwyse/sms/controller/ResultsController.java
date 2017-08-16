@@ -37,14 +37,17 @@ public class ResultsController {
 	
 	@RequestMapping(value = "/addmarks", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> addMarks(@PathVariable("tenantId") long tenantId,@RequestBody List<ResultsTransferObject> resultstransferobject) {
-		 service.addMarks(resultstransferobject,tenantId);
-		 response.setStatus(201);
-			response.setMessage("added successfully");
-			response.setDescription("added successfully");
-			return new ResponseEntity<Response>(response, HttpStatus.CREATED);
-		 
-		 
+        int val = service.addMarks(resultstransferobject, tenantId);
+        if (val > 0) {
+            response.setStatus(201);
+            response.setMessage("added successfully");
+            response.setDescription("added successfully");
+            return new ResponseEntity<Response>(response, HttpStatus.CREATED);
+        } else {
+            response.setStatus(500);
+            response.setMessage("problem adding");
+            response.setDescription("marks not added");
+            return new ResponseEntity<Response>(response, HttpStatus.NOT_MODIFIED);
+        }
 	}
-
-
 }
