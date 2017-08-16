@@ -4,13 +4,7 @@ import java.sql.Date;
 
 public class StudentTransferObject {
 	private String name;
-	private String emailid; 
-	public String getEmailid() {
-		return emailid;
-	}
-	public void setEmailid(String emailid) {
-		this.emailid = emailid;
-	}
+	private String emailid;
 	private String parentemailid;
 	private String username;
 	private String password;
@@ -29,6 +23,13 @@ public class StudentTransferObject {
 	private long id;
 	private String housename;
 	private long gradeid;
+	public String getEmailid() {
+		return emailid;
+	}
+	public void setEmailid(String emailid) {
+		this.emailid = emailid;
+	}
+	
 	public long getParentcontactnumber() {
 		return parentcontactnumber;
 	}
