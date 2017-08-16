@@ -128,7 +128,9 @@ public class StudentsService {
 	public List<ClassRoomStudents> getStudentsOfClassRoom(long classid, long tenantId) {
 		db = retrive.getDatabase(tenantId);
 		return db
-				.sql("select students.name,students.id,students.fathername,students.admissionnumber from students inner join classroom_students on classroom_students.classid=? and classroom_students.studentid=students.id",
+				.sql("select students.name,students.id,parents.fathername,students.admissionnumber "
+						+ "from students JOIN parents ON parents.id = students.parentid inner join "
+						+ "classroom_students on classroom_students.classid=? and classroom_students.studentid=students.id",
 						classid)
 				.results(ClassRoomStudents.class);
 
