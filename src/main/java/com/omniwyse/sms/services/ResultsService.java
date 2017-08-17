@@ -79,8 +79,9 @@ public class ResultsService {
             return db.sql("select distinct str.classid,str.studentid as studentid,st.name as studentname,str.testid,tt.testtype,str.subjectid,ts.maxmarks,str.marks from student_testresult str "
                             + "left join classroom_testresult cltrs on str.testid = cltrs.testid left join test_create tc on tc.testtypeid = str.testid"
                             + " left join grade_subjects gs on gs.gradeid = tc.gradeid left join students st on str.studentid=st.id "
-                            + "left join test_syllabus ts on ts.subjectid = gs.subjectid left join test_type tt on tt.id = str.testid "
-                            + "where ts.testid=? and str.subjectid=? and cltrs.classid=?", testcreateid, subjectid, classid).results(ResultsTransferObject.class);
+                            + "left join test_syllabus ts on ts.subjectid = gs.subjectid left join test_type tt on tt.id = tc.testtypeid "
+                            + "where str.testid=? and str.subjectid=? and cltrs.classid=? group by str.studentid",
+                            testcreateid, subjectid, classid).results(ResultsTransferObject.class);
         } else {
     
             long classid = resultstransferobject.getId();
@@ -95,11 +96,12 @@ public class ResultsService {
     
             long testcreateid = testcreaterecords.get(0).getId();
     
-            List<ResultsTransferObject> resulttransferobj = db.sql("select distinct cstud.classid,cstud.studentid,stud.name as studentname,tsyl.testid,tt.testtype,gsub.subjectid,tsyl.maxmarks from classrooms croom"
-                            + " left join classroom_students cstud on croom.id = cstud.classid  left join students stud on cstud.studentid = stud.id left join grade_subjects gsub on croom.gradeid = gsub.gradeid "
-                            + "left join subjects sub on gsub.subjectid = sub.id left join grades g on croom.gradeid = g.id left join test_create test on g.id = test.gradeid "
-                            + "left join test_syllabus tsyl on gsub.subjectid = tsyl.subjectid left join test_type tt on tt.id = tsyl.testid "
-                            + "where sub.subjectname=? and test.testtypeid=? and croom.id=?  group by cstud.studentid",subjectname, testcreateid, classid).results(ResultsTransferObject.class);
+            List<ResultsTransferObject> resulttransferobj = db
+                    .sql("select distinct cstud.classid,cstud.studentid,stud.name as studentname,tsyl.testid as testid,tt.testtype,gsub.subjectid,tsyl.maxmarks from classrooms croom "
+                            + "left join classroom_students cstud on croom.id = cstud.classid left join students stud on cstud.studentid = stud.id"
+                            + " inner join grade_subjects gsub on croom.gradeid = gsub.gradeid inner join subjects sub on gsub.subjectid = sub.id inner join grades g on croom.gradeid = g.id "
+                            + "inner join test_create test on g.id = test.gradeid inner join test_syllabus tsyl on gsub.subjectid = tsyl.subjectid inner join test_type tt on tt.id = test.testtypeid "
+                            + "where sub.subjectname=? and test.id=? and tsyl.testid=? and croom.id=?  group by cstud.studentid",subjectname, testcreateid, testcreateid, classid).results(ResultsTransferObject.class);
 
             return resulttransferobj;
         }
