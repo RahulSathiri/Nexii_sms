@@ -26,6 +26,9 @@ public class ClassroomAttendenceService {
 	private DatabaseRetrieval retrive;
 
 	@Autowired
+	private TeacherModuleService teacherservice;
+	
+	@Autowired
 	private StudentsService studentService;
 
 	private Database db;
@@ -51,14 +54,13 @@ public class ClassroomAttendenceService {
 	public int addingAttendanceStatus(long tenantId,
 			List<ClassAttendenceTransferObject> classattendancetransferobject) {
 
-		db = retrive.getDatabase(tenantId); 
+		db = retrive.getDatabase(tenantId);
 		Transaction transact = db.startTransaction();
 
 		ClassAttendenceTransferObject classattendance = classattendancetransferobject.get(0);
 
 		try {
-			long classroomid = db.where("gradeid=? and sectionname=?", classattendance.getGradeid(),
-					classattendance.getSectionname()).results(ClassRoom.class).get(0).getId();
+			long classroomid = classattendance.getClassroomid();
 			long attendancetypeid = db.sql("select * from school_attendance where status=1")
 					.results(AttendanceMode.class).get(0).getId();
 			if (attendancetypeid != 1) {
@@ -76,12 +78,12 @@ public class ClassroomAttendenceService {
 							.results(ClassroomAttendance.class);
 					if (attendance.isEmpty()) {
 						db.transaction(transact).insert(classroomAttendance);
-						
+
 					} else {
 						return -1;
 					}
 				}
-	
+
 			} else {
 
 				for (ClassAttendenceTransferObject attendencerecords : classattendancetransferobject) {
@@ -91,27 +93,29 @@ public class ClassroomAttendenceService {
 					classroomAttendance.setStudentid(attendencerecords.getId());
 					classroomAttendance.setDateofattendance(attendencerecords.getDateofattendance());
 					classroomAttendance.setAttendancestatus(attendencerecords.getAttendancestatus());
-					long subjectid = db.sql("select * from subjects where subjectname=?", attendencerecords.getSubjectname()).results(Subjects.class)
-							.get(0).getId();
+					long subjectid = db
+							.sql("select * from subjects where subjectname=?", attendencerecords.getSubjectname())
+							.results(Subjects.class).get(0).getId();
 					classroomAttendance.setSubjectid(subjectid);
 					List<AttendanceSubjectwise> attendance = db
 							.sql("select * from attendance_subjectwise where classroomid=? and dateofattendance=? and subjectid=?",
-									classroomid, attendencerecords.getDateofattendance(),subjectid)
+									classroomid, attendencerecords.getDateofattendance(), subjectid)
 							.results(AttendanceSubjectwise.class);
 					if (attendance.isEmpty()) {
 						db.transaction(transact).insert(classroomAttendance);
-						
+
 					} else {
 						return -1;
 					}
-					
+
 				}
-				
+
 			}
 			transact.commit();
 		} catch (Throwable tr) {
 			transact.rollback();
 			tr.printStackTrace();
+			return -3;
 		}
 
 		return 1;
@@ -143,15 +147,15 @@ public class ClassroomAttendenceService {
 	// view attendance
 
 	@SuppressWarnings("null")
-	public List<ClassAttendenceTransferObject> getAttendance(long tenantId,long gradeid,String sectionname, String subjectname) {
+	public List<ClassAttendenceTransferObject> getAttendance(long tenantId,long classroomid,String subjectname) {
 		List<ClassAttendenceTransferObject> attendancedetails=new ArrayList<ClassAttendenceTransferObject>();
 		
 		db = retrive.getDatabase(tenantId);
 		long attendancetypeid = db.sql("select * from school_attendance where status=1").results(AttendanceMode.class).get(0).getId();
 		if (attendancetypeid != 1) {
 			
- 			long classroomid = db.where("gradeid=? and sectionname=?",gradeid,
-					sectionname).results(ClassRoom.class).get(0).getId();
+ 			//long classroomid = db.where("gradeid=? and sectionname=?",gradeid,
+				//	sectionname).results(ClassRoom.class).get(0).getId();
 			List<ClassroomAttendance> onetimedates=db.sql("select distinct dateofattendance from classroom_attendance where classroomid=? order by dateofattendance desc",classroomid).results(ClassroomAttendance.class);
 		for(ClassroomAttendance date:onetimedates){
 			ClassAttendenceTransferObject attendancereport = new ClassAttendenceTransferObject();
@@ -192,8 +196,8 @@ public class ClassroomAttendenceService {
 		return attendancedetails;
 		}
 		else {
-			long classroomid = db.where("gradeid=? and sectionname=?",gradeid,
-					sectionname).results(ClassRoom.class).get(0).getId();
+			//long classroomid = db.where("gradeid=? and sectionname=?",gradeid,
+				//	sectionname).results(ClassRoom.class).get(0).getId();
 			
 			long subjectid = db.sql("select * from subjects where subjectname=?", subjectname).results(Subjects.class)
 					.get(0).getId();
@@ -262,14 +266,11 @@ public class ClassroomAttendenceService {
 		long attendancetypeid = db.sql("select * from school_attendance where status=1").results(AttendanceMode.class).get(0).getId();
 		if (attendancetypeid != 1) {
 			
-			List<TeacherModuleDTO> onetime= db.sql("select classrooms.gradeid,classrooms.sectionname from classrooms where classrooms.classteacherid=?",moduleDTO.getId()).results(TeacherModuleDTO.class);
+			List<TeacherModuleDTO> onetime= db.sql("select classrooms.id,classrooms.gradeid,classrooms.sectionname from classrooms where classrooms.classteacherid=?",moduleDTO.getId()).results(TeacherModuleDTO.class);
 			return onetime;
 	}
 		else{
-			List<TeacherModuleDTO> subjectwise=db.sql("select classrooms.gradeid,classrooms.sectionname,subjects.subjectname from classrooms "
-					 +"join class_subject_teacher on class_subject_teacher.classid=classrooms.id "
-					+"join subjects on subjects.id=class_subject_teacher.subjectid where class_subject_teacher.teacherid=?",moduleDTO.getId()).results(TeacherModuleDTO.class);
-			return subjectwise;
+			return teacherservice.listAllSubjectsAlongWithClassRooms(tenantId, moduleDTO);
 		}
 			
 		}

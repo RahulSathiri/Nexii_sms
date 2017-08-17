@@ -21,6 +21,15 @@ public class ClassAttendenceTransferObject {
 	private long noofabsents;
 	private String subjectname;
 	private String attendance_type;
+	private long classroomid;
+	public long getClassroomid() {
+		return classroomid;
+	}
+
+	public void setClassroomid(long classroomid) {
+		this.classroomid = classroomid;
+	}
+
 	public String getAttendance_type() {
 		return attendance_type;
 	}
