@@ -17,6 +17,7 @@ import com.omniwyse.sms.models.Students;
 import com.omniwyse.sms.models.Subjects;
 import com.omniwyse.sms.utils.ClassAttendenceTransferObject;
 import com.omniwyse.sms.utils.ClassSectionTransferObject;
+import com.omniwyse.sms.utils.StudentTransferObject;
 import com.omniwyse.sms.utils.TeacherModuleDTO;
 
 @Service
@@ -175,12 +176,13 @@ public class ClassroomAttendenceService {
 					.first(Long.class);
 			attendancereport.setNoofabsents(absentiescount);
 
-			List<Students> absentiesnames = db.sql(
-					"select students.id,students.name,students.contactnumber from classroom_attendance "
+			List<StudentTransferObject> absentiesnames = db.sql(
+					"select students.id,students.name,parents.contactnumber from classroom_attendance "
 							+ "join students on classroom_attendance.studentid=students.id "
+							+ "join parents on parents.id=students.parentid "
 							+ "and classroom_attendance.classroomid=? and  classroom_attendance.dateofattendance=? "
 							+ "and classroom_attendance.attendancestatus=?",
-					classroomid, date.getDateofattendance(), status).results(Students.class);
+					classroomid, date.getDateofattendance(), status).results(StudentTransferObject.class);
 
 			attendancereport.setStudents(absentiesnames);
 			status = 1;
@@ -221,12 +223,12 @@ public class ClassroomAttendenceService {
 					.first(Long.class);
 			attendancereport.setNoofabsents(absentiescount);
 
-			List<Students> absentiesnames = db.sql(
+			List<StudentTransferObject> absentiesnames = db.sql(
 					"select students.id,students.name,students.contactnumber from attendance_subjectwise "
 							+ "join students on attendance_subjectwise.studentid=students.id "
 							+ "and attendance_subjectwise.classroomid=? and  attendance_subjectwise.dateofattendance=? "
 							+ "and attendance_subjectwise.attendancestatus=? and subjectid=?",
-					classroomid, date.getDateofattendance(), status,subjectid).results(Students.class);
+					classroomid, date.getDateofattendance(), status,subjectid).results(StudentTransferObject.class);
 
 			attendancereport.setStudents(absentiesnames);
 			status = 1;
