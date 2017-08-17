@@ -1,4 +1,4 @@
-package com.omniwyse.sms.controller;
+ package com.omniwyse.sms.controller;
 
 import java.util.List;
 
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.omniwyse.sms.models.AttendanceMode;
 import com.omniwyse.sms.models.ClassroomAttendance;
 import com.omniwyse.sms.services.ClassroomAttendenceService;
-import com.omniwyse.sms.services.TeacherModuleService;
 import com.omniwyse.sms.utils.ClassAttendenceTransferObject;
 import com.omniwyse.sms.utils.ClassSectionTransferObject;
 import com.omniwyse.sms.utils.Response;
@@ -26,8 +25,6 @@ public class ClassroomAttendenceController {
 
 	@Autowired
 	private ClassroomAttendenceService service;
-	@Autowired
-	private TeacherModuleService teacherService;
 
 	@Autowired
 	private Response response;
@@ -62,7 +59,14 @@ public class ClassroomAttendenceController {
 			response.setMessage("attendance recorded");
 			response.setDescription("attendance record added successfuly");
 			return new ResponseEntity<Response>(response, HttpStatus.OK);
-		} else {
+		}else if(rowEffected == -3) {
+			response.setStatus(403);
+			response.setMessage("Exception occured");
+			response.setDescription("Exception occured please contact Backend Team");
+			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
+
+		} 
+		else {
 			response.setStatus(400);
 			response.setMessage(" attandance already taken");
 			response.setDescription("attandance Record already exist");
@@ -72,15 +76,15 @@ public class ClassroomAttendenceController {
 
 	}
 //view attendance record
-	@RequestMapping("/{gradeid}/{sectionname}/viewattendancedetails")
-	public List<ClassAttendenceTransferObject> getattendance(@PathVariable("tenantId") long tenantId,@PathVariable("gradeid") long gradeid,@PathVariable("sectionname") String sectionname) {
+	@RequestMapping("/{id}/viewattendancedetails")
+	public List<ClassAttendenceTransferObject> getattendance(@PathVariable("tenantId") long tenantId,@PathVariable("id") long classroomid) {
 		String subjectname = null;
-		return service.getAttendance(tenantId,gradeid,sectionname,subjectname);
+		return service.getAttendance(tenantId,classroomid,subjectname);
 
 	}
-	@RequestMapping("/{gradeid}/{sectionname}/{subjectname}/viewattendancedetails")
-	public List<ClassAttendenceTransferObject> getattendance(@PathVariable("tenantId") long tenantId,@PathVariable("gradeid") long gradeid,@PathVariable("sectionname") String sectionname,@PathVariable("subjectname") String subjectname) {
-		return service.getAttendance(tenantId,gradeid,sectionname,subjectname);
+	@RequestMapping("/{id}/{subjectname}/viewattendancedetails")
+	public List<ClassAttendenceTransferObject> getattendance(@PathVariable("tenantId") long tenantId,@PathVariable("id") long classroomid,@PathVariable("subjectname") String subjectname) {
+		return service.getAttendance(tenantId,classroomid,subjectname);
 
 	}
 	@RequestMapping("/listdates")
