@@ -9,7 +9,13 @@ public class StudentTransferObject {
 	private String username;
 	private String password;
 	private String parentaddress;
-	private long parentcontactnumber;
+	private long contactnumber;
+	public long getContactnumber() {
+		return contactnumber;
+	}
+	public void setContactnumber(long contactnumber) {
+		this.contactnumber = contactnumber;
+	}
 	private String fathername;
 	private String mothername;
 	private String address;
@@ -30,13 +36,7 @@ public class StudentTransferObject {
 		this.emailid = emailid;
 	}
 	
-	public long getParentcontactnumber() {
-		return parentcontactnumber;
-	}
-	public void setParentcontactnumber(long parentcontactnumber) {
-		this.parentcontactnumber = parentcontactnumber;
-	}
-	
+		
 	public String getFathername() {
 		return fathername;
 	}
