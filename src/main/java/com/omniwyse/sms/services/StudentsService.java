@@ -40,7 +40,7 @@ public class StudentsService {
 		parent.setMothername(addStudent.getMothername());
 		parent.setFathername(addStudent.getFathername());
 		parent.setEmailid(addStudent.getParentemailid());
-		parent.setContactnumber(addStudent.getParentcontactnumber());
+		parent.setContactnumber(addStudent.getContactnumber());
 		parent.setAddress(addStudent.getParentaddress());
 		try {
 			db.transaction(transaction).insert(parent);
