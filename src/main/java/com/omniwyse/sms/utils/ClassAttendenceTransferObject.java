@@ -46,7 +46,7 @@ public class ClassAttendenceTransferObject {
 		this.subjectname = subjectname;
 	}
 
-	private List<Students> students;
+	private List<StudentTransferObject> students;
 	private List<ClassroomAttendance> studentattendance;
 	private List<ClassRoomStudents> studentsOfClassRoom;
 	
@@ -74,11 +74,11 @@ public class ClassAttendenceTransferObject {
 		this.noofabsents = noofabsents;
 	}
 
-	public List<Students> getStudents() {
+	public List<StudentTransferObject> getStudents() {
 		return students;
 	}
 
-	public void setStudents(List<Students> students) {
+	public void setStudents(List<StudentTransferObject> students) {
 		this.students = students;
 	}
 
