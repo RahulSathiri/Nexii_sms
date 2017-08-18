@@ -10,12 +10,6 @@ public class StudentTransferObject {
 	private String password;
 	private String parentaddress;
 	private long contactnumber;
-	public long getContactnumber() {
-		return contactnumber;
-	}
-	public void setContactnumber(long contactnumber) {
-		this.contactnumber = contactnumber;
-	}
 	private String fathername;
 	private String mothername;
 	private String address;
@@ -29,6 +23,23 @@ public class StudentTransferObject {
 	private long id;
 	private String housename;
 	private long gradeid;
+	private String role;
+	
+	
+	
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
+	public long getContactnumber() {
+		return contactnumber;
+	}
+	public void setContactnumber(long contactnumber) {
+		this.contactnumber = contactnumber;
+	}
+	
 	public String getEmailid() {
 		return emailid;
 	}

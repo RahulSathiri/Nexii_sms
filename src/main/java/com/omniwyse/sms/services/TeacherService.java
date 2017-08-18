@@ -55,7 +55,7 @@ public class TeacherService {
 
 					UserRoleMaintain userRoleMaintain = new UserRoleMaintain();
 					userRoleMaintain.setUserid(userCredentials.getId());
-					long roleid = db.sql("select id from roles where role='TEACHER'").results(UserRoles.class).get(0)
+					long roleid = db.sql("select id from roles where role=?",addTeacher.getRole()).results(UserRoles.class).get(0)
 							.getId();
 					userRoleMaintain.setRoleid(roleid);
 					db.transaction(transaction).insert(userRoleMaintain);

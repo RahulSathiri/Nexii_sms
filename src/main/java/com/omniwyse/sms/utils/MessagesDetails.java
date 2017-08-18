@@ -13,12 +13,6 @@ public class MessagesDetails {
 	private String name;
 	private long id;
 	private long rootmessageid;
-	public long getRootmessageid() {
-		return rootmessageid;
-	}
-	public void setRootmessageid(long rootmessageid) {
-		this.rootmessageid = rootmessageid;
-	}
 	private String fathername;
 	private String mothername;
 	private String teachername;
@@ -26,6 +20,13 @@ public class MessagesDetails {
 	private List<Students> students;
 	private List<Teachers> teachers;
 	private List<MessagesDetails> replymessages;
+	public long getRootmessageid() {
+		return rootmessageid;
+	}
+	public void setRootmessageid(long rootmessageid) {
+		this.rootmessageid = rootmessageid;
+	}
+	
 
 	public List<MessagesDetails> getReplymessages() {
 		return replymessages;
@@ -69,15 +70,17 @@ public class MessagesDetails {
 	public List<Teachers> getTeachers() {
 		return teachers;
 	}
-	public void setTeachers(List<Teachers> teachers) {
-		this.teachers = teachers;
-	}
+	
 	public Timestamp getMessagedate() {
 		return messagedate;
 	}
 	public void setMessagedate(Timestamp messagedate) {
 		this.messagedate = messagedate;
 	}
+	public void setTeachers(List<Teachers> teachers) {
+		this.teachers = teachers;
+	}
+		
 	
 	public String getMessage() {
 		return message;

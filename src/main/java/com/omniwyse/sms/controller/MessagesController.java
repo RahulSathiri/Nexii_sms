@@ -16,6 +16,7 @@ import com.omniwyse.sms.services.MessagesService;
 import com.omniwyse.sms.utils.MessagesDTO;
 import com.omniwyse.sms.utils.MessagesDetails;
 import com.omniwyse.sms.utils.Response;
+import com.omniwyse.sms.utils.StudentTransferObject;
 @RestController
 @RequestMapping("/{tenantId}")
 public class MessagesController {
@@ -157,5 +158,11 @@ public class MessagesController {
 		return service.liststudentclassandclasssubjectteacher(students.getId(),tenantId);
 	}
 	
+	@RequestMapping("/listclassroomstudentsparents")
+
+	public List<StudentTransferObject> listClassroomStudentsParents(@PathVariable("tenantId") long tenantId,
+			@RequestBody Students students) {
+		return service.listClassroomStudentsParents(students.getId(),tenantId);
+	}
 	
 }

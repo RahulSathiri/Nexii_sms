@@ -16,9 +16,16 @@ public class TeachersDTO {
 	private String password;
 	private long id;
 	private long noofperiods;
+	private String role;
 
 	public long getId() {
 		return id;
+	}
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
 	}
 	public void setId(long id) {
 		this.id = id;

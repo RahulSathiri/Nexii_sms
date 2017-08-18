@@ -13,6 +13,7 @@ import com.omniwyse.sms.models.Messages;
 import com.omniwyse.sms.models.Teachers;
 import com.omniwyse.sms.utils.MessagesDTO;
 import com.omniwyse.sms.utils.MessagesDetails;
+import com.omniwyse.sms.utils.StudentTransferObject;
 
 @Service
 public class MessagesService {
@@ -22,8 +23,8 @@ public class MessagesService {
 
 	public int sendMessage(MessagesDTO messagesDTO, long tenantId, String sentflag) {
 		if (messagesDTO.getMessage() != null) {
-			if (messagesDTO.getSenderid()!=0 || messagesDTO.getRecievers() != null
-					|| messagesDTO.getRecieverid()!= 0) {
+			if (messagesDTO.getSenderid() != 0 || messagesDTO.getRecievers() != null
+					|| messagesDTO.getRecieverid() != 0) {
 				db = retrive.getDatabase(tenantId);
 				Timestamp today = new Timestamp(System.currentTimeMillis());
 				Messages message = new Messages();
@@ -72,15 +73,17 @@ public class MessagesService {
 		db = retrive.getDatabase(tenantId);
 
 		List<MessagesDetails> messages = db.sql(
-				"select messages.id,messages.message,messages.messagedate,students.name,students.fathername,students.mothername "
-						+ "from messages " + " join students on students.id=messages.recieverid "
-						+ " where messages.sentflag='T' and messages.senderid=? order by messages.messagedate desc ",
+				"select messages.id,messages.message,messages.messagedate,students.name,parents.fathername,parents.mothername "
+						+ "from messages  join students on students.id=messages.recieverid "
+						+ "join parents on parents.id=students.parentid "
+						+ "where messages.sentflag='T' and messages.senderid=? order by messages.messagedate desc ",
 				messagesDTO.getSenderid()).results(MessagesDetails.class);
 		for (MessagesDetails message : messages) {
 			List<MessagesDetails> replymessages = db
 					.sql("select messages.id,messages.messagedate,messages.message,messages.senderid,messages.recieverid,"
-							+ "students.name,students.fathername,students.mothername " + "from messages "
+							+ "students.name,parents.fathername,parents.mothername from messages "
 							+ "join students on students.id=messages.senderid "
+							+ "join parents on parents.id=students.parentid "
 							+ "where messages.sentflag='P' and messages.rootmessageid=?", message.getId())
 					.results(MessagesDetails.class);
 
@@ -114,8 +117,9 @@ public class MessagesService {
 		db = retrive.getDatabase(tenantId);
 		return db.sql(
 				"select messages.id,messages.message,messages.messagedate,messages.rootmessageid,messages.senderid,messages.recieverid,"
-						+ "students.name,students.fathername,students.mothername " + " from messages "
-						+ "join students on students.id=messages.senderid " + " where sentflag='p' and recieverid=?",
+						+ "students.name,parents.fathername,parents.mothername from messages "
+						+ "join students on students.id=messages.senderid "
+						+ "join parents on parents.id=students.parentid " + "where sentflag='p' and recieverid=?",
 				messagesDTO.getRecieverid()).results(MessagesDetails.class);
 	}
 
@@ -140,6 +144,15 @@ public class MessagesService {
 				+ "where classroom_students.studentid=?", studentid).results(Teachers.class);
 		teachers.add(classteacher);
 		return teachers;
+	}
+
+	public List<StudentTransferObject> listClassroomStudentsParents(long id, long tenantId) {
+		db = retrive.getDatabase(tenantId);
+		return db
+				.sql("select students.parentid,parents.fathername,parents.mothername,students.name,students.id "
+						+ "from classroom_students " + "join students on students.id=classroom_students.studentid "
+						+ "join parents on parents.id=students.parentid " + "where classroom_students.classid=?", id)
+				.results(StudentTransferObject.class);
 	}
 
 }
