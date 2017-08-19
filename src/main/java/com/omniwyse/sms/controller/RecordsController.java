@@ -13,6 +13,7 @@ import com.omniwyse.sms.models.Grades;
 import com.omniwyse.sms.models.Subjects;
 import com.omniwyse.sms.models.Syllabus;
 import com.omniwyse.sms.models.Teachers;
+import com.omniwyse.sms.models.UserRoles;
 import com.omniwyse.sms.services.RecordsService;
 import com.omniwyse.sms.utils.ClassRoomDetails;
 import com.omniwyse.sms.utils.StudentTransferObject;
@@ -73,4 +74,17 @@ public class RecordsController {
         return recordservice.getAcademicYears(tenantId);
 
     }
+    @RequestMapping("/roles")
+    public List<UserRoles> getroles(@PathVariable("tenantId") long tenantId) {
+    	int[] roleid={4,5};
+        return recordservice.getroles(tenantId,roleid);
+
+    }
+    @RequestMapping("/teacherroles")
+    public List<UserRoles> getteacherroles(@PathVariable("tenantId") long tenantId) {
+    	int[] roleid={2,3};
+    	return recordservice.getroles(tenantId,roleid);
+
+    }
+
 }

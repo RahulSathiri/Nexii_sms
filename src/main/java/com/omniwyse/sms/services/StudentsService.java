@@ -84,7 +84,7 @@ public class StudentsService {
 
 			UserRoleMaintain userRoleMaintain = new UserRoleMaintain();
 			userRoleMaintain.setUserid(userCredentials.getId());
-			long roleid = db.sql("select id from roles where role='PARENT'").results(UserRoles.class).get(0).getId();
+			long roleid = db.sql("select id from roles where role=?",addStudent.getRole()).results(UserRoles.class).get(0).getId();
 			userRoleMaintain.setRoleid(roleid);
 			db.transaction(transaction).insert(userRoleMaintain);
 			transaction.commit();
@@ -128,7 +128,7 @@ public class StudentsService {
 	public List<ClassRoomStudents> getStudentsOfClassRoom(long classid, long tenantId) {
 		db = retrive.getDatabase(tenantId);
 		return db
-				.sql("select students.name,students.id,parents.fathername,students.admissionnumber "
+				.sql("select students.name,students.id,parents.fathername,students.parentid,students.admissionnumber "
 						+ "from students JOIN parents ON parents.id = students.parentid inner join "
 						+ "classroom_students on classroom_students.classid=? and classroom_students.studentid=students.id",
 						classid)

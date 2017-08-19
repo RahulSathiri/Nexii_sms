@@ -1,5 +1,6 @@
 package com.omniwyse.sms.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import com.omniwyse.sms.models.Grades;
 import com.omniwyse.sms.models.Subjects;
 import com.omniwyse.sms.models.Syllabus;
 import com.omniwyse.sms.models.Teachers;
+import com.omniwyse.sms.models.UserRoles;
 import com.omniwyse.sms.utils.ClassRoomDetails;
 import com.omniwyse.sms.utils.StudentTransferObject;
 
@@ -84,4 +86,15 @@ public class RecordsService {
 
     }
 
+    public List<UserRoles> getroles(long tenantId, int[] roleid) {		
+		List<UserRoles> roles=new ArrayList<UserRoles>();
+		db = retrive.getDatabase(tenantId);
+		for(int id:roleid)
+		{
+			roles.add(db.where("id=?",id).results(UserRoles.class).get(0));
+		}
+		return roles;
+	}
+
+	
 }
