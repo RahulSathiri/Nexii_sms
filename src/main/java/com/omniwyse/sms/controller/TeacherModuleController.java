@@ -84,7 +84,8 @@ public class TeacherModuleController {
 	}
 	
 	@RequestMapping("/addlesson")
-	public ResponseEntity<Response> addLessonToSubject(@PathVariable("tenantId") long tenantId, @RequestBody TimelineDTO data) {
+	public ResponseEntity<Response> addLessonToSubject(@PathVariable("tenantId") long tenantId,
+			@RequestBody TimelineDTO data) {
 
 		int rowEffected = service.addingLesson(tenantId, data);
 		if (rowEffected > 0) {
@@ -92,14 +93,17 @@ public class TeacherModuleController {
 			response.setMessage("data recorded successfuly");
 			response.setDescription("data recorded");
 			return new ResponseEntity<Response>(response, HttpStatus.OK);
+		} else if (rowEffected == -3) {
+			response.setStatus(403);
+			response.setMessage("Exception occured");
+			response.setDescription("please contact Backend team for resolving");
+			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		} else {
 			response.setStatus(400);
 			response.setMessage("data not recorded");
 			response.setDescription("data recording failed");
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
-
 		}
-
 	}
 	
 	@RequestMapping("/teacherschedule/listofworksheets")

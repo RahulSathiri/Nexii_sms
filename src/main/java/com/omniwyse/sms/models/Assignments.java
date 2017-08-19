@@ -17,7 +17,14 @@ public class Assignments {
 	private long subjectid;
 	private long lessonsid;
 	private String tags;
+	private String publishassignment;
 	
+	public String getPublishassignment() {
+		return publishassignment;
+	}
+	public void setPublishassignment(String publishassignment) {
+		this.publishassignment = publishassignment;
+	}
 	public String getTags() {
 		return tags;
 	}

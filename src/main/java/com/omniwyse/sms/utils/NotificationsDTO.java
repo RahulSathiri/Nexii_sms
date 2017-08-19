@@ -6,8 +6,7 @@ public class NotificationsDTO {
 
 	private long id;
 	private String notificationname;
-	private String shortdescription;
-	private String longdescription;
+	private String description;
 	private Date notificationdate;
 	private String publishedby;
 	private String actioncode;
@@ -38,20 +37,12 @@ public class NotificationsDTO {
 		this.notificationname = notificationname;
 	}
 
-	public String getShortdescription() {
-		return shortdescription;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setShortdescription(String shortdescription) {
-		this.shortdescription = shortdescription;
-	}
-
-	public String getLongdescription() {
-		return longdescription;
-	}
-
-	public void setLongdescription(String longdescription) {
-		this.longdescription = longdescription;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Date getNotificationdate() {

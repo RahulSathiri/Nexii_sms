@@ -17,6 +17,16 @@ public class WorkSheetsDTO {
 	private Date dateofassigned;
 	private Date duedate;
 	private Date worksheetduedate;
+	private long publishworksheet;
+	
+	public long getPublishworksheet() {
+		return publishworksheet;
+	}
+
+	public void setPublishworksheet(long publishworksheet) {
+		this.publishworksheet = publishworksheet;
+	}
+
 	public Date getWorksheetduedate() {
 		return worksheetduedate;
 	}
