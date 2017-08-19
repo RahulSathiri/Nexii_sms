@@ -21,8 +21,17 @@ public class TimelineDTO {
 	private Date datefrom;
 	private Date dateto;
 	private long publish;
+	private String publishtimeline;
 	private Date notificationdate;
 	
+	public String getPublishtimeline() {
+		return publishtimeline;
+	}
+
+	public void setPublishtimeline(String publishtimeline) {
+		this.publishtimeline = publishtimeline;
+	}
+
 	public Date getNotificationdate() {
 		return notificationdate;
 	}
