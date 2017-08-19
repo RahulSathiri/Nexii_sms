@@ -11,11 +11,25 @@ public class Messages {
 	private long id; 
 	private String message; 
 	private Timestamp messagedate; 
+	private long classroomid;
 	private long senderid; 
 	private long recieverid; 
 	 private String sentflag;  
 	private long rootmessageid;
-	
+	private long parentmessageid;
+	private String isreply;
+	public String getIsreply() {
+		return isreply;
+	}
+	public void setIsreply(String isreply) {
+		this.isreply = isreply;
+	}
+	public long getParentmessageid() {
+		return parentmessageid;
+	}
+	public void setParentmessageid(long parentmessageid) {
+		this.parentmessageid = parentmessageid;
+	}
 	@Id
 	@GeneratedValue
 	public long getId() {
@@ -23,6 +37,12 @@ public class Messages {
 	}
 	public void setId(long id) {
 		this.id = id;
+	}
+	public long getClassroomid() {
+		return classroomid;
+	}
+	public void setClassroomid(long classroomid) {
+		this.classroomid = classroomid;
 	}
 	public String getMessage() {
 		return message;

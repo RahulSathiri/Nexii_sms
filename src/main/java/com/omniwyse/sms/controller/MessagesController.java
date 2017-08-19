@@ -10,13 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.omniwyse.sms.models.Students;
-import com.omniwyse.sms.models.Teachers;
 import com.omniwyse.sms.services.MessagesService;
 import com.omniwyse.sms.utils.MessagesDTO;
 import com.omniwyse.sms.utils.MessagesDetails;
 import com.omniwyse.sms.utils.Response;
-import com.omniwyse.sms.utils.StudentTransferObject;
 @RestController
 @RequestMapping("/{tenantId}")
 public class MessagesController {
@@ -151,18 +148,6 @@ public class MessagesController {
 	}
 	}
 	
-	@RequestMapping("/liststudentclassandclasssubjectteacher")
-
-	public List<Teachers> liststudentclassandclasssubjectteacher(@PathVariable("tenantId") long tenantId,
-			@RequestBody Students students) {
-		return service.liststudentclassandclasssubjectteacher(students.getId(),tenantId);
-	}
 	
-	@RequestMapping("/listclassroomstudentsparents")
-
-	public List<StudentTransferObject> listClassroomStudentsParents(@PathVariable("tenantId") long tenantId,
-			@RequestBody Students students) {
-		return service.listClassroomStudentsParents(students.getId(),tenantId);
-	}
 	
 }
