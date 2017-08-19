@@ -32,7 +32,7 @@ public class NotificationService {
 			notifications.setActioncode(data.getActioncode());
 			notifications.setParentactionrequired(data.getParentactionrequired());
 			notifications.setPublishedby(data.getPublishedby());
-
+			notifications.setNotificationdate(data.getNotificationdate());
 			rowEffected = db.transaction(transaction).insert(notifications).getRowsAffected();
 			transaction.commit();
 

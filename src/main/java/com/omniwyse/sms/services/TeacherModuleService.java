@@ -158,7 +158,7 @@ public class TeacherModuleService {
 				+ "from worksheets join classroom_worksheets on classroom_worksheets.worksheetsid=worksheets.id "
 				+ " JOIN lessons ON lessons.id = classroom_worksheets.lessonsid ";
 
-		String queryForLessons = "select lessons.id,lessons.lessonname,lessons.status,lessons.lessondescription,lessons.lessonstartdate ";
+		String queryForLessons = "select lessons.id,lessons.lessonname,lessons.status,lessons.lessondescription,lessons.lessonstartdate, lessons.publishtimeline as publish ";
 		String subjectSelectQuery = ", subjects.subjectname";
 		String queryForAssignments = "select lessons.lessonname, assignments.tags, assignments.id,assignments.assignmentname,"
 				+ "assignments.dateofassigned,assignments.assignmentduedate "
