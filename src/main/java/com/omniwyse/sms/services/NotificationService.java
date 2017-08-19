@@ -21,7 +21,7 @@ public class NotificationService {
 	public int publishNotification(long tenantId, NotificationsDTO data) {
 
 		int rowEffected = 0;
-		retrieve.getDatabase(tenantId);
+		db = retrieve.getDatabase(tenantId);
 
 		Notifications notifications = new Notifications();
 		Transaction transaction = db.startTransaction();
@@ -45,7 +45,7 @@ public class NotificationService {
 
 	public List<NotificationsDTO> listAllPublishednNotifications(long tenantid, NotificationsDTO data) {
 
-		retrieve.getDatabase(tenantid);
+		db = retrieve.getDatabase(tenantid);
 
 		List<NotificationsDTO> list = db.sql("select * from notifications where status = 0")
 				.results(NotificationsDTO.class);
@@ -54,6 +54,8 @@ public class NotificationService {
 	}
 
 	public List<NotificationsDTO> listSentPublishednNotifications(long tenantid, NotificationsDTO data) {
+
+		db = retrieve.getDatabase(tenantid);
 
 		List<NotificationsDTO> list = db.sql("select * from notifications where status = 1")
 				.results(NotificationsDTO.class);
