@@ -2,6 +2,7 @@ package com.omniwyse.sms.services;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -249,7 +250,7 @@ public class TeacherModuleService {
 				notifications.setActioncode("TL");
 				notifications.setParentactionrequired("No");
 				notifications.setPublishedby("Tejaswi Chava");
-				notifications.setNotificationdate(data.getNotificationdate());
+				notifications.setNotificationdate(data.getLessonstartdate());
 
 				rowEffected = db.transaction(transaction).insert(notifications).getRowsAffected();
 			}
