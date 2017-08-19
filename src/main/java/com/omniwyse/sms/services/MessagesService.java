@@ -39,7 +39,7 @@ public class MessagesService {
 					return db.insert(message).getRowsAffected();
 
 				}
-				if (messagesDTO.getTypeofmessage() != null && messagesDTO.getTypeofmessage().equals("all")) {
+				if (messagesDTO.getRecievers().get(0)==-1) {
 					message.setRecieverid(-1);
                     message.setIsreply(false);
 					return db.insert(message).getRowsAffected();

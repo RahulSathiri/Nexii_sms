@@ -1,5 +1,6 @@
 package com.omniwyse.sms.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.omniwyse.sms.services.MessagesService;
+import com.omniwyse.sms.services.StudentsService;
+import com.omniwyse.sms.utils.ClassRoomStudents;
 import com.omniwyse.sms.utils.MessagesDTO;
 import com.omniwyse.sms.utils.MessagesDetails;
 import com.omniwyse.sms.utils.Response;
@@ -21,6 +24,7 @@ public class MessagesController {
 	MessagesService service;
 	@Autowired
 	private Response response;
+	@Autowired StudentsService studentservice;
 
 	@RequestMapping("/sendmessagetoparent")
 
@@ -147,7 +151,15 @@ public class MessagesController {
 	return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);	
 	}
 	}
-	
-	
-	
+	@RequestMapping("/{classroomid}/classroomstudents")
+
+	public List<ClassRoomStudents> replyToTeacherMessages(@PathVariable("tenantId") long tenantId,@PathVariable("classroomid") long classroomid) {
+		ClassRoomStudents classroomstudents=new ClassRoomStudents();
+		classroomstudents.setName("All");
+		classroomstudents.setId(-1);
+		List<ClassRoomStudents> students=new ArrayList<ClassRoomStudents>();
+		students.add(classroomstudents);
+		students.addAll(studentservice.getStudentsOfClassRoom(classroomid,tenantId));
+		return students;
+}
 }
