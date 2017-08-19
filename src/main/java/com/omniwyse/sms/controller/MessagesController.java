@@ -1,5 +1,6 @@
 package com.omniwyse.sms.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.omniwyse.sms.models.Students;
-import com.omniwyse.sms.models.Teachers;
 import com.omniwyse.sms.services.MessagesService;
+import com.omniwyse.sms.services.StudentsService;
+import com.omniwyse.sms.utils.ClassRoomStudents;
 import com.omniwyse.sms.utils.MessagesDTO;
 import com.omniwyse.sms.utils.MessagesDetails;
 import com.omniwyse.sms.utils.Response;
-import com.omniwyse.sms.utils.StudentTransferObject;
 @RestController
 @RequestMapping("/{tenantId}")
 public class MessagesController {
@@ -24,6 +24,7 @@ public class MessagesController {
 	MessagesService service;
 	@Autowired
 	private Response response;
+	@Autowired StudentsService studentservice;
 
 	@RequestMapping("/sendmessagetoparent")
 
@@ -150,19 +151,15 @@ public class MessagesController {
 	return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);	
 	}
 	}
-	
-	@RequestMapping("/liststudentclassandclasssubjectteacher")
+	@RequestMapping("/{classroomid}/classroomstudents")
 
-	public List<Teachers> liststudentclassandclasssubjectteacher(@PathVariable("tenantId") long tenantId,
-			@RequestBody Students students) {
-		return service.liststudentclassandclasssubjectteacher(students.getId(),tenantId);
-	}
-	
-	@RequestMapping("/listclassroomstudentsparents")
-
-	public List<StudentTransferObject> listClassroomStudentsParents(@PathVariable("tenantId") long tenantId,
-			@RequestBody Students students) {
-		return service.listClassroomStudentsParents(students.getId(),tenantId);
-	}
-	
+	public List<ClassRoomStudents> replyToTeacherMessages(@PathVariable("tenantId") long tenantId,@PathVariable("classroomid") long classroomid) {
+		ClassRoomStudents classroomstudents=new ClassRoomStudents();
+		classroomstudents.setName("All");
+		classroomstudents.setId(-1);
+		List<ClassRoomStudents> students=new ArrayList<ClassRoomStudents>();
+		students.add(classroomstudents);
+		students.addAll(studentservice.getStudentsOfClassRoom(classroomid,tenantId));
+		return students;
+}
 }
