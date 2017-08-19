@@ -16,6 +16,7 @@ public class ClassroomWorksheets {
 	private long subjectid;
 	private long classroomid;
 	private long lessonsid;
+	private String publishworksheet;
 	
 	@Id
 	@GeneratedValue
@@ -26,6 +27,12 @@ public class ClassroomWorksheets {
 		this.id = id;
 	}
 	
+	public String getPublishworksheet() {
+		return publishworksheet;
+	}
+	public void setPublishworksheet(String publishworksheet) {
+		this.publishworksheet = publishworksheet;
+	}
 	public long getLessonsid() {
 		return lessonsid;
 	}

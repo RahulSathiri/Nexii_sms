@@ -20,9 +20,26 @@ public class TimelineDTO {
 	private List<AssignmentDTO> assignments;
 	private Date datefrom;
 	private Date dateto;
+	private long publish;
+	private Date notificationdate;
 	
-	
- 	public Date getDatefrom() {
+	public Date getNotificationdate() {
+		return notificationdate;
+	}
+
+	public void setNotificationdate(Date notificationdate) {
+		this.notificationdate = notificationdate;
+	}
+
+	public long getPublish() {
+		return publish;
+	}
+
+	public void setPublish(long publish) {
+		this.publish = publish;
+	}
+
+	public Date getDatefrom() {
 		return datefrom;
 	}
 

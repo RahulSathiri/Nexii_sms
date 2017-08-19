@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dieselpoint.norm.Database;
-import com.dieselpoint.norm.Query;
 import com.dieselpoint.norm.Transaction;
 import com.omniwyse.sms.db.DatabaseRetrieval;
 import com.omniwyse.sms.models.Assignments;
 import com.omniwyse.sms.models.ClassRoom;
 import com.omniwyse.sms.models.ClassroomWorksheets;
 import com.omniwyse.sms.models.Lessons;
+import com.omniwyse.sms.models.Notifications;
 import com.omniwyse.sms.models.SubjectTeacherClass;
 import com.omniwyse.sms.models.Subjects;
 import com.omniwyse.sms.models.Teachers;
@@ -227,26 +227,38 @@ public class TeacherModuleService {
 		db = retrive.getDatabase(tenantId);
 		Lessons lesson = new Lessons();
 
-		Transaction transact = db.startTransaction();
+		Transaction transaction = db.startTransaction();
 		try {
 			lesson.setClassroomid(data.getId());
 			lesson.setLessondescription(data.getLessondescription());
 			lesson.setLessonstartdate(data.getLessonstartdate());
-			
+			lesson.setLessonname(data.getLessonname());
+			lesson.setStatus(data.getStatus());
+			lesson.setPublishtimeline("false");
 			if (data.getSubjectname() != null) {
 				lesson.setSubjectid(
 						db.where("subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId());
 			}
-			lesson.setLessonname(data.getLessonname());
-			lesson.setStatus(data.getStatus());
+			long flag = data.getPublish();
+			if (flag == 0) {
+				lesson.setPublishtimeline("True");
+				Notifications notifications = new Notifications();
 
-			rowEffected = db.transaction(transact).insert(lesson).getRowsAffected();
+				notifications.setNotificationname(data.getLessonname());
+				notifications.setDescription(data.getLessondescription());
+				notifications.setActioncode("TL");
+				notifications.setParentactionrequired("No");
+				notifications.setPublishedby("Tejaswi Chava");
+				notifications.setNotificationdate(data.getNotificationdate());
 
-			transact.commit();
+				rowEffected = db.transaction(transaction).insert(notifications).getRowsAffected();
+			}
+
+			rowEffected = db.transaction(transaction).insert(lesson).getRowsAffected();
+			transaction.commit();
 		} catch (Exception e) {
-
-			transact.rollback();
-			return rowEffected;
+			transaction.rollback();
+			return -3;
 		}
 		return rowEffected;
 	}

@@ -28,8 +28,7 @@ public class NotificationService {
 
 		try {
 			notifications.setNotificationname(data.getNotificationname());
-			notifications.setShortdescription(data.getShortdescription());
-			notifications.setLongdescription(data.getLongdescription());
+			notifications.setDescription(data.getDescription());
 			notifications.setActioncode(data.getActioncode());
 			notifications.setParentactionrequired(data.getParentactionrequired());
 			notifications.setPublishedby(data.getPublishedby());
