@@ -34,7 +34,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             
             httpsecurity.addFilterBefore(new MyAuthenticationFilter(), BasicAuthenticationFilter.class);
 
-            httpsecurity.authorizeRequests().antMatchers("/", "/home", "/tenant/for/**").permitAll().anyRequest().fullyAuthenticated();
+            httpsecurity.authorizeRequests().antMatchers("/tenant/for/**").permitAll().anyRequest().fullyAuthenticated();
 
             httpsecurity.httpBasic();
             

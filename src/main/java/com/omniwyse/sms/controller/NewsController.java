@@ -26,7 +26,7 @@ public class NewsController {
 	@Autowired
 	private Response response;
 
-    @PreAuthorize("hasRole('ROLE_SUPERADMIN','ROLE_ADMIN')")
+
     @RequestMapping(value = "/postnews", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<Response> postNews(@PathVariable("tenantId") long tenantId, @RequestBody UserAndRoles user,
             @RequestBody NewsFeed news) {
@@ -47,7 +47,7 @@ public class NewsController {
 
 	}
 
-    @PreAuthorize("hasRole('ROLE_SUPERADMIN','ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_SUPERADMIN','ROLE_ADMIN')")
 	@RequestMapping("/news")
     public List<NewsFeed> listOfNews(@PathVariable("tenantId") long tenantId) {
 
@@ -57,7 +57,7 @@ public class NewsController {
 
 	}
 
-    @PreAuthorize("hasRole('ROLE_SUPERADMIN','ROLE_ADMIN')")
+
 	@RequestMapping("/editnews")
 	public ResponseEntity<Response> editNews(@RequestBody NewsFeed newsfeed) {
 
@@ -69,7 +69,6 @@ public class NewsController {
 
 	}
 
-    @PreAuthorize("hasRole('ROLE_SUPERADMIN','ROLE_ADMIN')")
 	@RequestMapping("/deletenews")
 	public ResponseEntity<Response> deleteNews(@RequestBody NewsFeed newsfeed) {
 
