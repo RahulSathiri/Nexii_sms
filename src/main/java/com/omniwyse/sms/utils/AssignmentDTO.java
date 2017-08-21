@@ -10,12 +10,12 @@ public class AssignmentDTO {
 	private Date duedate;
 	private Date assignmentduedate;
 	private String tags;
-	private long publishassignment;
+	private String publishassignment;
 	
-	public long getPublishassignment() {
+	public String getPublishassignment() {
 		return publishassignment;
 	}
-	public void setPublishassignment(long publishassignment) {
+	public void setPublishassignment(String publishassignment) {
 		this.publishassignment = publishassignment;
 	}
 	public String getTags() {

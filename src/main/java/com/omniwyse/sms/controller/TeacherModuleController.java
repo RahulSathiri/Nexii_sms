@@ -188,4 +188,17 @@ public class TeacherModuleController {
 		return service.lessonsList(tenantId, data);
 	}
 	
+	@RequestMapping("/assignedassignmentslist")
+	public List<AssignmentDTO> listOfAssignedAssignments(@PathVariable("tenantId") long tenantId,
+			@RequestBody TimelineDTO data) {
+
+		return service.AssignmentsList(tenantId, data);
+	}
+	
+	@RequestMapping("/assignedworksheetslist")
+	public List<WorkSheetsDTO> listOfAssignedWorksheets(@PathVariable("tenantId") long tenantId,
+			@RequestBody TimelineDTO data) {
+
+		return service.AssignedWorksheetsList(tenantId, data);
+	}
 }
