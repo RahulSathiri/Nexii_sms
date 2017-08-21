@@ -1,6 +1,7 @@
 package com.omniwyse.sms.services;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,31 +124,16 @@ public class StudentsService {
 		db = retrive.getDatabase(tenantId);
 		long studentid = db.where("admissionnumber=?", admissionnumber).results(Students.class).get(0).getId();
 		studentclassroom.setClassid(classid);
-		if (isExistingStudent(studentid, classid)) {
 			studentclassroom.setStudentid(studentid);
 			return db.insert(studentclassroom).getRowsAffected();
-		}
-		return -1;
-	}
-
-	private boolean isExistingStudent(long studentid, long classid) {
-		List<StudentClassroom> exist = db.where("studentid = ? and classid = ?", studentid, classid)
-				.results(StudentClassroom.class);
-		if (exist.isEmpty()) {
-			return true;
-		}
-		return false;
 	}
 
 	public List<ClassRoomStudents> getStudentsOfClassRoom(long classid, long tenantId) {
 		db = retrive.getDatabase(tenantId);
 		
-		return db
-				.sql("select students.name,students.id,parents.fathername,students.parentid,students.admissionnumber "
+		return db.sql("select students.name,students.id,parents.fathername,students.parentid,students.admissionnumber "
 						+ "from students JOIN parents ON parents.id = students.parentid inner join "
-						+ "classroom_students on classroom_students.classid=? and classroom_students.studentid=students.id",
-						classid)
-				.results(ClassRoomStudents.class);
+						+ "classroom_students on classroom_students.classid=? and classroom_students.studentid=students.id",classid).results(ClassRoomStudents.class);
 
 	}
 
@@ -159,13 +145,13 @@ public class StudentsService {
 	public List<Students> getStudentsList(long classroomid, long tenantId) {
 		db = retrive.getDatabase(tenantId);
 		long gradeId = db.where("id = ?", classroomid).results(ClassRoom.class).get(0).getGradeid();
-		List<Students> student = getStudentsOfGrade(gradeId, tenantId);
-		List<ClassRoomStudents> studentsOfClassRoom = getStudentsOfClassRoom(classroomid, tenantId);
+		List<Students> gradestudentslist = getStudentsOfGrade(gradeId, tenantId);
+		List<ClassRoomStudents> classstudentslist = getStudentsOfClassRoom(classroomid, tenantId);
 		List<Students> studentslist = new ArrayList<Students>();
-		int count = 0;
-		for (Students stu : student) {
+		int count=0;
+		for (Students stu : gradestudentslist) {
 			count = 0;
-			for (ClassRoomStudents s : studentsOfClassRoom) {
+			for (ClassRoomStudents s : classstudentslist) {
 				if (stu.getId() == s.getId()) {
 					count++;
 					break;
