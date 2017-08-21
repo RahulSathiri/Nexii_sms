@@ -50,7 +50,7 @@ public class NotificationService {
 		long id = data.getId();
 		if (data.getActioncode().equals("Timeline")) {
 
-			db.sql("upadte lessons set publishtimeline = true").where("id = ?", id).results(Lessons.class);
+			db.sql("update lessons set publishtimeline = true where id = ?", id);
 
 		} /*
 			 * else if (data.getActioncode().equals("Tests")) {
