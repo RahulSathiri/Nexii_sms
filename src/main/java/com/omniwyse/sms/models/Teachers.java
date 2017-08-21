@@ -11,6 +11,7 @@ public class Teachers {
 
 	private String teachername;
 	private String lname;
+	private String bloodgroup;
 	private String contactnumber;
 	private String emailid, address;
 	private String qualification;
@@ -19,7 +20,14 @@ public class Teachers {
 	private Date  dateofbirth;
 	private Date dateofjoining;
 	private String gender;
+	
+	public String getBloodgroup() {
+		return bloodgroup;
+	}
 
+	public void setBloodgroup(String bloodgroup) {
+		this.bloodgroup = bloodgroup;
+	}
 
 	public String getContactnumber() {
 		return contactnumber;

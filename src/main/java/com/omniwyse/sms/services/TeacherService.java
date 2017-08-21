@@ -29,6 +29,7 @@ public class TeacherService {
 			Teachers teachers=new Teachers();
 			teachers.setTeachername(addTeacher.getTeachername());
 			teachers.setLname(addTeacher.getLname());
+			teachers.setBloodgroup(addTeacher.getBloodgroup());
 			teachers.setDateofbirth(addTeacher.getDateofbirth());
 			teachers.setDateofjoining(addTeacher.getDateofjoining());
 			teachers.setContactnumber(addTeacher.getContactnumber());
