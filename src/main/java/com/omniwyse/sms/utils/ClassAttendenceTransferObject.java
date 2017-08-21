@@ -1,4 +1,7 @@
 package com.omniwyse.sms.utils;
+
+
+
 import java.sql.Date;
 import java.util.List;
 
@@ -16,7 +19,34 @@ public class ClassAttendenceTransferObject {
 	private long noofstudents;
 	private long noofpresents;
 	private long noofabsents;
-	private List<Students> students;
+	private String subjectname;
+	private String attendance_type;
+	private long classroomid;
+	public long getClassroomid() {
+		return classroomid;
+	}
+
+	public void setClassroomid(long classroomid) {
+		this.classroomid = classroomid;
+	}
+
+	public String getAttendance_type() {
+		return attendance_type;
+	}
+
+	public void setAttendance_type(String attendance_type) {
+		this.attendance_type = attendance_type;
+	}
+
+	public String getSubjectname() {
+		return subjectname;
+	}
+
+	public void setSubjectname(String subjectname) {
+		this.subjectname = subjectname;
+	}
+
+	private List<StudentTransferObject> students;
 	private List<ClassroomAttendance> studentattendance;
 	private List<ClassRoomStudents> studentsOfClassRoom;
 	
@@ -44,11 +74,11 @@ public class ClassAttendenceTransferObject {
 		this.noofabsents = noofabsents;
 	}
 
-	public List<Students> getStudents() {
+	public List<StudentTransferObject> getStudents() {
 		return students;
 	}
 
-	public void setStudents(List<Students> students) {
+	public void setStudents(List<StudentTransferObject> students) {
 		this.students = students;
 	}
 

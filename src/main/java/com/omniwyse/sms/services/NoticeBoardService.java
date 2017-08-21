@@ -17,10 +17,10 @@ public class NoticeBoardService {
 	private NoticeBoard noticeboard;
 	public Database db;
 
-	public int postNotice(NoticeBoardTransferObject noticeboardTransferObject) {
+	public int postNotice(long tenantId, NoticeBoardTransferObject noticeboardTransferObject) {
 		String gradename = noticeboardTransferObject.getGradename();
 		String syllabustype = noticeboardTransferObject.getSyllabustype();
-		db = database.getDatabase(1);
+		db = database.getDatabase(tenantId);
 		List<Grades> grade = db.where("syllabustype=? and gradename=?", syllabustype, gradename).results(Grades.class);
 		if (grade.isEmpty()) {
 			return -1;
@@ -36,14 +36,14 @@ public class NoticeBoardService {
 
 	}
 
-	public int editNotice(NoticeBoard noticeboard) {
-		db = database.getDatabase(1);
+	public int editNotice(long tenantId, NoticeBoard noticeboard) {
+		db = database.getDatabase(tenantId);
 	return	db.update(noticeboard).getRowsAffected();
 		
 	}
 
-	public List<NoticeBoardTransferObject> listNotice() {
-		db = database.getDatabase(1);
+	public List<NoticeBoardTransferObject> listNotice(long tenantId) {
+		db = database.getDatabase(tenantId);
 	return	db.sql("select grades.gradename,noticeboard.date,noticeboard.description from noticeboard inner join grades on noticeboard.noticeid=grades.id").results(NoticeBoardTransferObject.class);
 	}
 	

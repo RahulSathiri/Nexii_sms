@@ -17,6 +17,7 @@ import com.omniwyse.sms.services.EventsService;
 import com.omniwyse.sms.utils.Response;
 
 @RestController
+@RequestMapping("/{tenantId}")
 public class EventsController {
 	@Autowired
 	private EventsService service;
@@ -55,8 +56,8 @@ public class EventsController {
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERADMIN','ROLE_ADMIN')")
 	@RequestMapping("/editevent")
-	public ResponseEntity<Response> editEvent(@RequestBody Events event) {
-		service.editEvent(event);
+	public ResponseEntity<Response> editEvent(@PathVariable("tenantId") long tenantId,@RequestBody Events event) {
+		service.editEvent(event,tenantId);
 		response.setStatus(200);
 		response.setMessage("event updated");
 		response.setDescription("event updated successfuly");
@@ -65,12 +66,22 @@ public class EventsController {
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERADMIN','ROLE_ADMIN')")
 	@RequestMapping("/deleteevent")
-	public ResponseEntity<Response> listOfEvents(@RequestBody Events event) {
-		service.deleteEvent(event);
+	public ResponseEntity<Response> listOfEvents(@PathVariable("tenantId") long tenantId,@RequestBody Events event) {
+		int rowEffected=service.deleteEvent(event,tenantId);
+		if(rowEffected>0)
+		{
 		response.setStatus(200);
 		response.setMessage("event deleted");
 		response.setDescription("event deleted successfuly");
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
+		}
+		else
+		{
+			response.setStatus(400);
+			response.setMessage("there is no such record to delete");
+			response.setDescription("there is no such record to delete");
+			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);	
+		}
 
 	}
 }

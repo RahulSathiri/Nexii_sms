@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ import com.omniwyse.sms.utils.GradeDTO;
 import com.omniwyse.sms.utils.Response;
 
 @RestController
+@RequestMapping("/{tenantId}")
 public class GradeController {
 
 	@Autowired
@@ -25,9 +27,9 @@ public class GradeController {
 	private GradeService service;
 
 	@RequestMapping("/addgrade")
-	public ResponseEntity<Response> addingGrade(@RequestBody GradeDTO addgrade) {
+	public ResponseEntity<Response> addingGrade(@PathVariable("tenantId") long tenantId, @RequestBody GradeDTO addgrade) {
 
-		int rowEffected = service.addGrade(addgrade);
+		int rowEffected = service.addGrade(tenantId, addgrade);
 
 		if (rowEffected > 0) {
 			response.setStatus(200);
@@ -52,21 +54,21 @@ public class GradeController {
 	}
 
 	@RequestMapping("/listgrades")
-	public List<Grades> listOfAllGrades() {
+	public List<Grades> listOfAllGrades(@PathVariable("tenantId") long tenantId) {
 
-		return service.listAllGrades();
+		return service.listAllGrades(tenantId);
 	}
 	
 	@RequestMapping("/listdistinctgrades")
-	public List<Grades> listOfDistinctGrades() {
+	public List<Grades> listOfDistinctGrades(@PathVariable("tenantId") long tenantId) {
 
-		return service.listDistinctGrades();
+		return service.listDistinctGrades(tenantId);
 	}
 	
 	@RequestMapping("/listgradesofsyllabustype")
-	public List<Grades> listGradesOfSyllabusType(@RequestBody ClassSectionTransferObject classtransferobject) {
+	public List<Grades> listGradesOfSyllabusType(@PathVariable("tenantId") long tenantId, @RequestBody ClassSectionTransferObject classtransferobject) {
 		String syllabustype = classtransferobject.getSyllabustype();
-		return service.getListOfGrades(syllabustype);
+		return service.getListOfGrades(tenantId, syllabustype);
 
 	}
 

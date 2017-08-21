@@ -18,11 +18,11 @@ public class ResultsTransferObject {
 	private long admissionnumber;
 	private long gradeid;
 	private long subjectid;
-	private long maxmarks;
 	private Date startdate;
 	private String resultorgrade;
 	private long testid;
 	private long studentid;
+    private long maxmarks;
 	private List<StudentSubjectMarks> studentsubjectmarks;
 	
  
@@ -34,7 +34,15 @@ public class ResultsTransferObject {
 		this.studentsubjectmarks = studentsubjectmarks;
 	}
 
-	public long getClassid() {
+    public long getMaxmarks() {
+        return maxmarks;
+    }
+
+    public void setMaxmarks(long maxmarks) {
+        this.maxmarks = maxmarks;
+    }
+
+    public long getClassid() {
 		return classid;
 	}
 
@@ -126,13 +134,6 @@ public class ResultsTransferObject {
 		this.name = name;
 	}
 
-	public long getMaxmarks() {
-		return maxmarks;
-	}
-
-	public void setMaxmarks(long maxmarks) {
-		this.maxmarks = maxmarks;
-	}
 
 	public void setAcademicyear(long academicyear) {
 		this.academicyear = academicyear;

@@ -96,8 +96,8 @@ CREATE TABLE teachers(
 	qualification VARCHAR(30) NOT NULL,
 	about LONGTEXT NOT NULL,
 	subjects VARCHAR(30) NOT NULL,
-	dateofbirth VARCHAR(12) NOT NULL,
-	dateofjoining VARCHAR(12) NOT NULL,
+	dateofbirth date NOT NULL,
+	dateofjoining date NOT NULL,
 	gender VARCHAR(10) NOT NULL,
 	noofperiods bigint(8) NOT NULL,
 	UNIQUE (emailid),
@@ -106,25 +106,25 @@ CREATE TABLE teachers(
 
 	insert into teachers(teachername,lname,contactnumber,emailid,address,qualification,about,subjects,dateofbirth,dateofjoining,gender,noofperiods)
 	values('Ramesh',' Rangam','9555544449','ramesh@gmail.com','plot no:14-15-456,Madhapur,hyd-500074','B.Ed',
-			'He have 10+ years of experience in chemistry and physics','chemistry,physics','01-01-1985','01-06-2006','male',4),
+			'He have 10+ years of experience in chemistry and physics','chemistry,physics','1985-01-01','2006-06-01','male',4),
 		('Tejaswi','Chava','9666655559','tejaswi.chava@gmail.com','plot no:12-13-420,Gachibowli,Hyd-500073','B.Ed',
-			'She have 9+ years of experience in social ','social','01-02-1988','05-06-2008','female',5),
+			'She have 9+ years of experience in social ','social','1988-02-01','2008-06-05','female',5),
 		('Rahul','Sathiri','9640242289','rahul@gmail.com','plot no:18-14-97/328,LB nagar,Hyd-500097',
-			'B.Ed','He have 7+ years of experience in Mathematics','Mathematics','01-07-1990','10-06-2010','male',4),
+			'B.Ed','He have 7+ years of experience in Mathematics','Mathematics','1990-07-01','2010-06-10','male',4),
 		('Mahendar','Vengala','9000011119','mahendar@gmail.com','plot no:1-2-143/341,Madhapur,Hyd-500074',
-			'B.Ed','He have 5+ years of experience in English','English','01-01-1987','15-06-2012','male',5),
+			'B.Ed','He have 5+ years of experience in English','English','1987-01-01','2012-06-15','male',5),
 		('Venkateshwar Reddy','Varkala','9111155559','venkateshwarreddy@gmail.com','flat no:201,srinivasa aprtments,dilsukh nagar,Hyderabad-500090',
-			'B.Ed','He have 15+ years of experience in mathematics','Mathematics','02-02-1975','10-07-2002','male',4),
+			'B.Ed','He have 15+ years of experience in mathematics','Mathematics','1975-02-02','2002-07-10','male',4),
 		('Matheen ali','Mohammed','8977690789','matheenali@gmail.com',
-			'flat no:101,wasim apartments,atthapur,Mehdipatnam,hyd-500085','B.Ed','He have 12+ years of experience in Hindi','Hindi','11-04-1978','14-06-2005','Male',5),
+			'flat no:101,wasim apartments,atthapur,Mehdipatnam,hyd-500085','B.Ed','He have 12+ years of experience in Hindi','Hindi','1978-04-11','2005-06-14','Male',5),
 		('Vijaya','kandimalla','8889991110','vijaya@gmail.com','plot no:1-2-302/95,road no:8A,meerpet,Hyd-500074',
-			'B.Ed','She have 18+ years of experience in social','social','05-05-1970','09-06-1999','Female',5),
+			'B.Ed','She have 18+ years of experience in social','social','1970-05-05','1999-06-09','Female',5),
 		('Anitha','korrapti','9999911110','anitha@gmail.com','flat no:401,Anjanadri apartments,saroor nagar,Hyd-500096',
-			'B.Ed','She have 11+ years of experince in biology','Biology','06-06-1980','20-07-2006','Female',5),
+			'B.Ed','She have 11+ years of experince in biology','Biology','1980-06-06','2006-07-20','Female',5),
 		('Harbhajan','Singh','8887776665','harbhajan@gmail.com','plot no:1-4-341/1,punjagutta,Hyd-500084',
-			'B.Ed','He have 7+ years of experience in English','English','01-12-1984','25-07-2009','Male',4),
+			'B.Ed','He have 7+ years of experience in English','English','1984-12-01','2009-07-25','Male',4),
 		('Prasad','Gattu','7778889990','prasad@gmail.com','plot no:3-21-321/100,Hanuman nagar,Ameerpet,Hyd-500099',
-			'B.Ed','He have 10+ years of experience in physics and chemistry','physics and chemistry','06-06-1980','01-07-2006','Male',5);
+			'B.Ed','He have 10+ years of experience in physics and chemistry','physics and chemistry','1980-06-06','2006-07-01','Male',5);
 
 			
 -- ***************************************** CLASSROOM TABLES *******************************************************************************************
@@ -142,31 +142,70 @@ CREATE TABLE classrooms(
 
 insert into classrooms(gradeid,academicyear,sectionname,classteacherid)
 	values(1,2017,'A',1),(2,2017,'A',2),(2,2017,'B',3);
+	
+	
+--************ HOUSES TABLES *****************************
 
+CREATE TABLE houses(
+id bigint(8) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+housename VARCHAR(50) NOT NULL,
+UNIQUE (housename),
+description VARCHAR(400) NOT NULL
+);
+
+
+INSERT INTO houses(housename,description) VALUES
+		('DARIYA','passion towards learning'),
+		('C.V.Raman','C.V.Raman was a nobel prize winner for his work on Molecular Diffraction of Light popularly known as Raman Effect . His achievements signify a scientific and rational outlook of the school system.'),
+		('Lal Bhahdur Shastri','Lal Bhahdur Shastri house recalls the memory of Great Indian Politician and Second Prime Minister of India'),
+		('Chhatrapati Shivaji','Shivaji is a house of the hero of Maharashtra known as Chhatrapati Shivaji . An icon in Freedom Fight  teaches us how to be an able administrator.'),
+		('Subhash Chandra Bose','Subhash house is a house of Subhash Chandra Bose, popularly known as Netaji  a freedom fighter.It teaches us never to give up in life.');
+
+--************************* PARENTS TABLE ************************
+
+CREATE TABLE parents(
+id bigint(8) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+mothername VARCHAR(50) NOT NULL,
+fathername VARCHAR(50) NOT NULL,
+emailid VARCHAR(50) NOT NULL,
+contactnumber bigint NOT NULL,
+address VARCHAR(200) NOT NULL,
+UNIQUE(emailid)
+);
+
+
+INSERT INTO parents(mothername,fathername,emailid,contactnumber,address) VALUES('srinivas','sunitha','srinivas@gmail.com',9345666666,'hno:5-2-203, Janagaon,Telangana,508203'),
+('koteshwar rao','padma','koteswarrao@gmail.com',9721666666,'plot no:12-14-97,patancheruvu,Hyd -500045'),
+('suresh','devi','suresh@gmail.com',9277327323,'hno:5-203,kr nagar, mancheryal,Telangana-504203'),
+('kamal','vimala','kamal@gmail.com',7330123423,'plot no:12-5-50,anakapally,vizag-500085');
+		
+		
+		
+		
 -- ********** STUDENTS TABLES ******************************
 
 CREATE TABLE students(
 	id bigint(8) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	gradeid bigint(8) NOT null,
 	name VARCHAR(30) NOT NULL,
-	fathername VARCHAR(60) NOT NULL,
-	mothername VARCHAR(60) NOT NULL,
-	contactnumber VARCHAR(12) NOT NULL,
+	parentid bigint NOT NULL,
 	address VARCHAR(100) NOT NULL,
 	dateofbirth date NOT NULL,
 	dateofjoining date NOT NULL,
 	gender VARCHAR(10) NOT NULL,
-	emailid VARCHAR(30) NOT NULL,
+	emailid VARCHAR(30),
 	admissionnumber VARCHAR(20) NOT NULL,
+	houseid bigint(8),
 	UNIQUE(admissionnumber),
-	FOREIGN KEY(gradeid) references grades(id)
+	FOREIGN KEY(gradeid) references grades(id),
+	FOREIGN KEY(parentid) references parents(id)
 );
 
-insert into students(gradeid,name,fathername,mothername,contactnumber,address,dateofbirth,dateofjoining,gender,emailid,admissionnumber)
-	values (1,'vikram','srinivas','sunitha','8977646503','hno:5-2-203, Janagaon,Telangana,508203','2005-07-26','2010-06-10','male','vikram@gmail.com','7011'),
-	(2,'kalpana','koteshwar rao','padma','9977765623','plot no:12-14-97,patancheruvu,Hyd -500045','2003-07-25','2008-01-01','female','kalpana@gmail.com','90111'),
-	(2,'srinadh','suresh','devi','8977690734','hno:5-203,kr nagar, mancheryal,Telangana-504203','2002-07-25','2006-06-06','male','srinadh@gmail.com','10111'),
-	(1,'yamini','kamal','vimala','9955544499','plot no:12-5-50,anakapally,vizag-500085','2007-01-01','2012-06-19','female','yamini@gmail.com','50111');
+insert into students(parentid,houseid,gradeid,name,address,dateofbirth,dateofjoining,gender,emailid,admissionnumber)
+	values (1,3,1,'vikram','hno:5-2-203, Janagaon,Telangana,508203','2005-07-26','2010-06-10','male','vikram@gmail.com','7011'),
+	(2,2,2,'kalpana','plot no:12-14-97,patancheruvu,Hyd -500045','2003-07-25','2008-01-01','female','kalpana@gmail.com','90111'),
+	(3,2,2,'srinadh','hno:5-203,kr nagar, mancheryal,Telangana-504203','2002-07-25','2006-06-06','male','srinadh@gmail.com','10111'),
+	(4,1,1,'yamini','plot no:12-5-50,anakapally,vizag-500085','2007-01-01','2012-06-19','female','yamini@gmail.com','50111');
 
 CREATE TABLE classroom_students(
 	id bigint(8) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -306,30 +345,30 @@ FOREIGN KEY(noticeid) references grades(id)
 CREATE TABLE holidays(
 id bigint(8) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 occassion VARCHAR(50) NOT NULL,
-fromdate VARCHAR(30) NOT NULL,
-todate VARCHAR(30) NOT NULL
+fromdate date NOT NULL,
+todate date NOT NULL
 );
 
 
-insert into holidays (occassion,fromdate,todate) values('Ramzan','26-06-2017','27-06-2017'),('Dussera','04-09-2017','12-09-2017'),('Diwali','10-10-2017','11-10-2017'), 
-                                                        ('Christmas','25-12-2017','25-12-2017'),('Pongal','09-01-2018','16-01-2018'); 
+insert into holidays (occassion,fromdate,todate) values('Ramzan','2017-06-26','2017-06-27'),('Dussera','2017-09-04','2017-09-12'),('Diwali','2017-10-10','2017-10-11'), 
+                                                        ('Christmas','2017-12-25','2017-12-26'),('Pongal','2018-01-09','2018-01-16'); 
                                                          
 
 --******************** EVENTS TABLES ************************************************************
 
 CREATE TABLE events(
 id bigint(8) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-eventdate VARCHAR(30) NOT NULL,
+eventdate date NOT NULL,
 eventname VARCHAR(50) NOT NULL,
 chiefguest VARCHAR(50) NOT NULL,
 description VARCHAR(100) NOT NULL
 );
 
-insert into events(eventdate,eventname,chiefguest,description) values('15-08-2017','Independence Day','Former tamilnadu governor K.Rosaiah','flag hosting Ceremony at 8:30 A.M by chief guest and Prize distribution'), 
-                                                                    ('14-11-2017','Childrens Day','Sri Prashanthi, IAS Joint Collector,Hyderabad','Cycles distribution'), 
-                                                                    ('26-01-2018','Republic Day','Indian Navy Admiral Sunil Lanba','flag hosting Ceremony at 8:30 A.M and speech by chief admiral at 9:00 A.M'), 
-                                                                    ('28-02-2018','Science Day','ISRO Chief A.S Kiran Kumar','Prize distribution by chief guest at 10:00 A.M'), 
-                                                                    ('03/03/2018','School Anniversary','Super Star Mahesh babu','Speech by guest at 5:30 P.M and then culturel activities'); 
+insert into events(eventdate,eventname,chiefguest,description) values('2017-08-15','Independence Day','Former tamilnadu governor K.Rosaiah','flag hosting Ceremony at 8:30 A.M by chief guest and Prize distribution'), 
+                                                                    ('2017-11-14','Childrens Day','Sri Prashanthi, IAS Joint Collector,Hyderabad','Cycles distribution'), 
+                                                                    ('2018-01-26','Republic Day','Indian Navy Admiral Sunil Lanba','flag hosting Ceremony at 8:30 A.M and speech by chief admiral at 9:00 A.M'), 
+                                                                    ('2018-02-28','Science Day','ISRO Chief A.S Kiran Kumar','Prize distribution by chief guest at 10:00 A.M'), 
+                                                                    ('2018-03-03','School Anniversary','Super Star Mahesh babu','Speech by guest at 5:30 P.M and then culturel activities'); 
  
 
 --******************** NEWS TABLES ************************************************************
@@ -337,13 +376,13 @@ insert into events(eventdate,eventname,chiefguest,description) values('15-08-201
 CREATE TABLE newsfeed(
 id bigint(8) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 headline VARCHAR(50) NOT NULL,
-releasedate VARCHAR(30) NOT NULL,
+releasedate date NOT NULL,
 description VARCHAR(150) NOT NULL
 );
 
 
-insert into newsfeed (headline,releasedate,description) values('Dinesh and Raju selected for Distric Kabaddi team','20-06-2017','From the Kabaddi team sent to School Zonals these two are selected for Distric team'), 
-                                                             ('Sheela got 2nd Prize in Science exhibition','03-06-2017','Sheela who is studying 8th class got 2nd prize in district level Science exhibition held in Bhashyam Schools'); 
+insert into newsfeed (headline,releasedate,description) values('Dinesh and Raju selected for Distric Kabaddi team','2017-06-20','From the Kabaddi team sent to School Zonals these two are selected for Distric team'), 
+                                                             ('Sheela got 2nd Prize in Science exhibition','2017-06-03','Sheela who is studying 8th class got 2nd prize in district level Science exhibition held in Bhashyam Schools'); 
 
 --******************** TIMETABLE TABLES ************************************************************
 

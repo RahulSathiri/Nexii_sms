@@ -19,9 +19,9 @@ public class WorksheetService {
 	private DatabaseRetrieval retrive;
 	private Database db;
 
-	public List<WorkSheetsDTO> listingWorksheetsOfStdLib(WorkSheetsDTO worksheets) {
+	public List<WorkSheetsDTO> listingWorksheetsOfStdLib(long tenantId, WorkSheetsDTO worksheets) {
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		List<WorkSheetsDTO> list = db
 				.sql("select worksheets.worksheetname, worksheets.createdby, worksheets.description,"
 						+ " worksheets.gradeid, worksheets.worksheetpath, subjects.subjectname, degreeofdifficulty.description"
@@ -31,9 +31,9 @@ public class WorksheetService {
 		return list;
 	}
 
-	public List<WorkSheetsDTO> listingWorksheetsOfTenant(WorkSheetsDTO worksheets) {
+	public List<WorkSheetsDTO> listingWorksheetsOfTenant(long tenantId, WorkSheetsDTO worksheets) {
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		String subjectname = worksheets.getSubjectname();
 		long gradeid = worksheets.getGradeid();
 		String level = worksheets.getDegreeofdifficulty();
@@ -46,7 +46,7 @@ public class WorksheetService {
 		//if all are null call get method
 		if (subjectname == null && gradeid == 0 && level == null) {
 
-			return listingWorksheetsOfTenant();
+			return listingWorksheetsOfTenant(tenantId);
 
 		} else if (subjectname != null && gradeid == 0 && level == null) {
 
@@ -87,9 +87,9 @@ public class WorksheetService {
 
 	}
 
-	public List<WorkSheetsDTO> listingWorksheetsOfTenant() {
+	public List<WorkSheetsDTO> listingWorksheetsOfTenant(long tenantId) {
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 
 		String query = "select worksheets.worksheetname, worksheets.createdby, worksheets.description,"
 				+ " worksheets.gradeid, worksheets.worksheetpath,worksheets.tags ,subjects.subjectname, degreeofdifficulty.degreeofdifficulty"
@@ -99,17 +99,17 @@ public class WorksheetService {
 		return db.sql(query).results(WorkSheetsDTO.class);
 	}
 
-	public int uploadNewSheet(WorkSheetsDTO worksheets) {
+	public int uploadNewSheet(long tenantId, WorkSheetsDTO worksheets) {
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 
 		return 0;
 	}
 
-	public int createNewSheet(WorkSheetsDTO worksheets) {
+	public int createNewSheet(long tenantId, WorkSheetsDTO worksheets) {
 
 		int rowEffected = 0;
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		Worksheets sheet = new Worksheets();
 		sheet.setWorksheetname(worksheets.getWorksheetname());
 		sheet.setWorksheetpath(worksheets.getWorksheetpath());
@@ -131,9 +131,9 @@ public class WorksheetService {
 		return rowEffected;
 	}
 
-	public List<WorkSheetsDTO> listDifficulty() {
+	public List<WorkSheetsDTO> listDifficulty(long tenantId) {
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		
 		return db.sql("select * from degreeofdifficulty").results(WorkSheetsDTO.class);
 	}

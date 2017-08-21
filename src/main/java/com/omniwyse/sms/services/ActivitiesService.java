@@ -17,12 +17,12 @@ public class ActivitiesService {
 	@Autowired
 	private EventsService eventsService;
 
-    public DashBoard listOfActivities() {
-		DashBoard dashboard = new DashBoard();
-        dashboard.setEvents(eventsService.listEvents(2));
-        dashboard.setHolidays(holidayService.listOfHolidays(2));
-        dashboard.setNews(newsService.listNews(2));
+	public DashBoard listOfActivities(long tenantId) {
 
+		DashBoard dashboard = new DashBoard();
+		dashboard.setEvents(eventsService.listEvents(tenantId));
+		dashboard.setHolidays(holidayService.listOfHolidays(tenantId));
+		dashboard.setNews(newsService.listNews(tenantId));
 		return dashboard;
 	}
 

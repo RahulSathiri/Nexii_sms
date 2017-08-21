@@ -1,5 +1,7 @@
 package com.omniwyse.sms.models;
 
+import java.sql.Date;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -14,8 +16,8 @@ public class Teachers {
 	private String qualification;
 	private String about;
 	private String subjects;
-	private String dateofbirth;
-	private String dateofjoining;
+	private Date  dateofbirth;
+	private Date dateofjoining;
 	private String gender;
 
 
@@ -67,19 +69,19 @@ public class Teachers {
 		this.subjects = subjects;
 	}
 
-	public String getDateofbirth() {
+	public Date getDateofbirth() {
 		return dateofbirth;
 	}
 
-	public void setDateofbirth(String dateofbirth) {
+	public void setDateofbirth(Date dateofbirth) {
 		this.dateofbirth = dateofbirth;
 	}
 
-	public String getDateofjoining() {
+	public Date getDateofjoining() {
 		return dateofjoining;
 	}
 
-	public void setDateofjoining(String dateofjoining) {
+	public void setDateofjoining(Date dateofjoining) {
 		this.dateofjoining = dateofjoining;
 	}
 

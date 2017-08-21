@@ -15,9 +15,9 @@ public class SubjectService {
 	private Database db;
 	private String subjectname;
 
-	public int addSubject(Subjects subjects) {
+	public int addSubject(long tenantId, Subjects subjects) {
 		subjectname = subjects.getSubjectname();
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		if (isValidSubject(subjectname)) {
 			return db.insert(subjects).getRowsAffected();
 		} else

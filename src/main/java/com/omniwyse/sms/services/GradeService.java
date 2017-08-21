@@ -23,9 +23,9 @@ public class GradeService {
 
 	public Database db;
 
-	public int addGrade(GradeDTO addgrade) {
+	public int addGrade( long tenantId, GradeDTO addgrade) {
 		Grades grade = new Grades();
-		db = database.getDatabase(1);
+		db = database.getDatabase(tenantId);
 		long gradeNumber = addgrade.getGradenumber();
 		grade.setGradenumber(gradeNumber);
 		grade.setGradename(addgrade.getGradename());
@@ -63,20 +63,20 @@ public class GradeService {
 		return false;
 	}
 
-	public List<Grades> listAllGrades() {
+	public List<Grades> listAllGrades( long tenantId) {
 
-		db = database.getDatabase(1);
+		db = database.getDatabase(tenantId);
 		return db.sql("select * from grades").results(Grades.class);
 	}
 
-	public List<Grades> getListOfGrades(String syllabustype) {
-		db = database.getDatabase(1);
+	public List<Grades> getListOfGrades( long tenantId, String syllabustype) {
+		db = database.getDatabase(tenantId);
 		return db.where("syllabustype=?", syllabustype).results(Grades.class);
 
 	}
 
-	public List<Grades> listDistinctGrades() {
-		db = database.getDatabase(1);
+	public List<Grades> listDistinctGrades( long tenantId) {
+		db = database.getDatabase(tenantId);
 		return db.sql("select distinct gradename from grades").results(Grades.class);
 
 	}
