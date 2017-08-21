@@ -36,7 +36,7 @@ public class SubjectTeacherClassService {
 		}
 	}
 
-	public List<ClassSectionTransferObject> listOfSubjectsTeachers( long tenantId, long classid) {
+	public List<ClassSectionTransferObject> listOfSubjectsTeachers( long classid, long tenantId) {
 
 		db = database.getDatabase(tenantId);
 
