@@ -5,6 +5,7 @@ import java.sql.Date;
 public class TeachersDTO {
 	private String teachername;
 	private String lname;
+	private String bloodgroup;
 	private String contactnumber;
 	private String emailid, address;
 	private String qualification;
@@ -17,6 +18,13 @@ public class TeachersDTO {
 	private long id;
 	private long noofperiods;
 	private String role;
+	
+	public String getBloodgroup() {
+		return bloodgroup;
+	}
+	public void setBloodgroup(String bloodgroup) {
+		this.bloodgroup = bloodgroup;
+	}
 
 	public long getId() {
 		return id;
