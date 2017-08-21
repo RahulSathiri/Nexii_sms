@@ -1,6 +1,5 @@
 package com.omniwyse.sms.utils;
 
-import java.sql.Date;
 import java.time.LocalTime;		
 
 public class TimeTableDataTransferObject {
@@ -10,18 +9,9 @@ public class TimeTableDataTransferObject {
 	private String day;
 	private LocalTime periodfrom;
 	private LocalTime periodto;
-	private Date dateofassigning;
 	private String subjectname;
 
 	
-	public Date getDateofassigning() {
-		return dateofassigning;
-	}
-
-	public void setDateofassigning(Date dateofassigning) {
-		this.dateofassigning = dateofassigning;
-	}
-
 	public String getDay() {
 		return day;
 	}
