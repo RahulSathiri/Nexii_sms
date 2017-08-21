@@ -86,5 +86,12 @@ public class StudentsController {
 		return service.getStudentsOfClassRoom(classid,tenantId);
 
 	}
+	
+
+	@RequestMapping(value = "/{classroomid}/studentsofgrade")
+	public List<Students> getStudentsOfGrade(@PathVariable("tenantId") long tenantId,@PathVariable("classroomid") long classroomid) {
+		return service.getStudentsList(classroomid,tenantId);
+
+	}
 
 }
