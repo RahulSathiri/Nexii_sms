@@ -36,19 +36,9 @@ public class MessagesService {
 				message.setClassroomid(messagesDTO.getClassroomid());
 				if (messagesDTO.getId() != 0) {
 					message.setRecieverid(messagesDTO.getRecieverid());
-					if (messagesDTO.getParentmessageid() == 0 && messagesDTO.getRootmessageid() == 0) {
-						message.setRootmessageid(messagesDTO.getId());
-						message.setParentmessageid(messagesDTO.getId());
-					} else if (messagesDTO.getParentmessageid() == 0) {
-						message.setRootmessageid(messagesDTO.getRootmessageid());
-						message.setParentmessageid(messagesDTO.getId());
-					} else if (messagesDTO.getRootmessageid() == 0) {
-						message.setRootmessageid(messagesDTO.getId());
-						message.setParentmessageid(messagesDTO.getParentmessageid());
-					} else {
-						message.setRootmessageid(messagesDTO.getRootmessageid());
-						message.setParentmessageid(messagesDTO.getParentmessageid());
-					}
+					message.setParentmessageid(messagesDTO.getId());
+					message.setRootmessageid(messagesDTO.getRootmessageid());
+					
 					return db.insert(message).getRowsAffected();
 
 				} else {
@@ -81,7 +71,7 @@ public class MessagesService {
 		List<MessagesDetails> messages = db.sql(
 				"select messages.id,messages.message,messages.classroomid,messages.messagedate,messages.senderid,messages.recieverid,messages.parentmessageid,students.name,parents.fathername,parents.mothername "
 						+ "from messages left join students on students.id=messages.recieverid left join parents on parents.id=students.parentid"
-						+ " where messages.sentflag='T' and messages.senderid=? and messages.classroomid=? and (messages.rootmessageid=0 or messages.rootmessageid=messages.parentmessageid) "
+						+ " where messages.sentflag='T' and messages.senderid=? and messages.classroomid=? and messages.rootmessageid=0 "
 						+ "order by messages.messagedate desc ",
 				messagesDTO.getSenderid(), messagesDTO.getClassroomid()).results(MessagesDetails.class);
 
@@ -96,7 +86,7 @@ public class MessagesService {
 		List<MessagesDetails> messages = db.sql(
 				"select messages.id,messages.classroomid,messages.message,messages.messagedate,messages.parentmessageid,messages.recieverid,messages.senderid,teachers.teachername "
 						+ "from messages join teachers on teachers.id=messages.recieverid where messages.sentflag='P' and messages.senderid=? and messages.classroomid=? "
-						+ "and (messages.rootmessageid=0 or messages.rootmessageid=messages.parentmessageid) order by messages.messagedate desc",
+						+ "and messages.rootmessageid=0 order by messages.messagedate desc",
 				messagesDTO.getSenderid(), messagesDTO.getClassroomid()).results(MessagesDetails.class);
 
 		return getReplyMessages(messages);
@@ -107,7 +97,7 @@ public class MessagesService {
 		List<MessagesDetails> messages = db.sql(
 				"select messages.id,messages.message,messages.messagedate,messages.parentmessageid,messages.classroomid,messages.senderid,messages.recieverid,students.name,parents.fathername,parents.mothername "
 						+ "from messages join students on students.id=messages.senderid join parents on parents.id=students.parentid where sentflag='p' and recieverid=? and classroomid=? "
-						+ "and (messages.rootmessageid=0 or messages.rootmessageid=messages.parentmessageid) order by messages.messagedate desc",
+						+ "and messages.rootmessageid=0 order by messages.messagedate desc",
 				messagesDTO.getRecieverid(), messagesDTO.getClassroomid()).results(MessagesDetails.class);
 		return getReplyMessages(messages);
 	}
@@ -117,7 +107,7 @@ public class MessagesService {
 		List<MessagesDetails> messages = db.sql(
 				"select messages.id,messages.message,messages.messagedate,messages.parentmessageid,messages.classroomid,messages.rootmessageid,messages.senderid,messages.recieverid,teachers.teachername "
 						+ "from messages join teachers on teachers.id=messages.senderid where ((sentflag='T' and recieverid=?) or (recieverid=-1 and classroomid=?)) "
-						+ "and (messages.rootmessageid=0 or messages.rootmessageid=messages.parentmessageid) order by messages.messagedate desc",
+						+ "and messages.rootmessageid=0 order by messages.messagedate desc",
 				messagesDTO.getRecieverid(), messagesDTO.getClassroomid()).results(MessagesDetails.class);
 		return getReplyMessages(messages);
 	}
@@ -136,20 +126,13 @@ public class MessagesService {
 	}
 
 	public List<MessagesDetails> getReplyMessages(List<MessagesDetails> messages) {
-		String messagequery = "select messages.id,messages.message,messages.senderid,messages.sentflag,messages.classroomid,messages.recieverid,messages.messagedate from messages ";
-		List<MessagesDetails> replymessages = new ArrayList<MessagesDetails>();
 		for (MessagesDetails message : messages) {
-			if (message.getParentmessageid() == 0) {
-				replymessages = db
-						.sql(messagequery + " where parentmessageid=? order by messagedate asc", message.getId())
+			
+				List<MessagesDetails>	replymessages = db
+						.sql("select messages.id,messages.message,messages.senderid,messages.sentflag,messages.classroomid,messages.recieverid,messages.messagedate from messages  where parentmessageid=? order by messagedate asc", message.getId())
 						.results(MessagesDetails.class);
 
-			} else {
-				replymessages = db
-						.sql(messagequery + " where (id=? or parentmessageid=?) order by messagedate asc",
-								message.getParentmessageid(), message.getParentmessageid())
-						.results(MessagesDetails.class);
-			}
+			
 			message.setReplymessages(getSenderName(replymessages));
 		}
 		return messages;
