@@ -105,7 +105,7 @@ public class MessagesService {
 	public List<MessagesDetails> teacherRecievedMessages(MessagesDTO messagesDTO, long tenantId) {
 		db = retrive.getDatabase(tenantId);
 		List<MessagesDetails> messages = db.sql(
-				"select messages.id,messages.message,messages.messagedate,messages.parentmessageid,messages.senderid,messages.recieverid,students.name,parents.fathername,parents.mothername "
+				"select messages.id,messages.message,messages.messagedate,messages.parentmessageid,messages.classroomid,messages.senderid,messages.recieverid,students.name,parents.fathername,parents.mothername "
 						+ "from messages join students on students.id=messages.senderid join parents on parents.id=students.parentid where sentflag='p' and recieverid=? and classroomid=? "
 						+ "and (messages.rootmessageid=0 or messages.rootmessageid=messages.parentmessageid) order by messages.messagedate desc",
 				messagesDTO.getRecieverid(), messagesDTO.getClassroomid()).results(MessagesDetails.class);
