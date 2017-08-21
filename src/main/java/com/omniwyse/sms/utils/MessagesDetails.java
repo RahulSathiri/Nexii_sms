@@ -10,12 +10,47 @@ public class MessagesDetails {
 	private String name;
 	private long id;
 	private long rootmessageid;
+	private long parentmessageid;
+	private String sentflag;
+	private String sendername;
 	private String fathername;
 	private String mothername;
 	private String teachername;
 	private long classroomid;
 	private Timestamp messagedate;
+	private String dateofmessage=new String();
 	private List<MessagesDetails> replymessages;
+	public String getDateofmessage() {
+		return dateofmessage;
+	}
+
+	public long getParentmessageid() {
+		return parentmessageid;
+	}
+
+	public void setParentmessageid(long parentmessageid) {
+		this.parentmessageid = parentmessageid;
+	}
+
+	public void setDateofmessage(String dateofmessage) {
+		this.dateofmessage = dateofmessage;
+	}
+
+	public String getSentflag() {
+		return sentflag;
+	}
+
+	public void setSentflag(String sentflag) {
+		this.sentflag = sentflag;
+	}
+
+	public String getSendername() {
+		return sendername;
+	}
+
+	public void setSendername(String sendername) {
+		this.sendername = sendername;
+	}
 
 	public long getClassroomid() {
 		return classroomid;
@@ -85,8 +120,10 @@ public class MessagesDetails {
 		return messagedate;
 	}
 
+	@SuppressWarnings("deprecation")
 	public void setMessagedate(Timestamp messagedate) {
 		this.messagedate = messagedate;
+		dateofmessage=messagedate.toLocaleString();
 	}
 
 	public String getMessage() {
