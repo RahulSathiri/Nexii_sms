@@ -17,15 +17,7 @@ public class ClassRoomPeriods {
     private Long classroomweekdayid;
     private Long classroomid;
     private long subjectid;
-    private Date dateofassigning;
 
-    public Date getDateofassigning() {
-        return dateofassigning;
-    }
-
-    public void setDateofassigning(Date dateofassigning) {
-        this.dateofassigning = dateofassigning;
-    }
 
     public long getSubjectid() {
         return subjectid;

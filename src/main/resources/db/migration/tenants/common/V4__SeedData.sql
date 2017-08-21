@@ -35,11 +35,11 @@ INSERT INTO test_syllabus (testid, subjectid, maxmarks, syllabus)
 			   (1,3,100,'Unit-1,Unit-2');
 --*******************************------
 
-INSERT INTO classroom_periods (periodfrom,periodto,subjectid,classroomid,classroomweekdayid,dateofassigning)
-  values('08:30', '09:30', 1, 1, 2, '2017-08-01'),
-  		('10:30', '11:30', 2, 2, 2, '2017-08-01'),
-  		('11:30', '12:30', 1, 1, 3, '2017-08-02'),
-  		('14:00', '15:00', 2, 2, 3, '2017-08-02');
+INSERT INTO classroom_periods (periodfrom,periodto,subjectid,classroomid,classroomweekdayid)
+  values('08:30', '09:30', 1, 1, 2),
+  		('10:30', '11:30', 2, 2, 2),
+  		('11:30', '12:30', 1, 1, 3),
+  		('14:00', '15:00', 2, 2, 3);
 	
 --*******************************------
 

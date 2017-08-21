@@ -175,10 +175,11 @@ UNIQUE(emailid)
 );
 
 
-INSERT INTO parents(mothername,fathername,emailid,contactnumber,address) VALUES('srinivas','sunitha','srinivas@gmail.com',9345666666,'hno:5-2-203, Janagaon,Telangana,508203'),
-('koteshwar rao','padma','koteswarrao@gmail.com',9721666666,'plot no:12-14-97,patancheruvu,Hyd -500045'),
-('suresh','devi','suresh@gmail.com',9277327323,'hno:5-203,kr nagar, mancheryal,Telangana-504203'),
-('kamal','vimala','kamal@gmail.com',7330123423,'plot no:12-5-50,anakapally,vizag-500085');
+INSERT INTO parents(fathername,mothername,emailid,contactnumber,address)
+VALUES('srinivas','sunitha','srinivas@gmail.com',9345666666,'hno:5-2-203, Janagaon,Telangana,508203'),
+      ('koteshwar rao','padma','koteswarrao@gmail.com',9721666666,'plot no:12-14-97,patancheruvu,Hyd -500045'),
+      ('suresh','devi','suresh@gmail.com',9277327323,'hno:5-203,kr nagar, mancheryal,Telangana-504203'),
+      ('kamal','vimala','kamal@gmail.com',7330123423,'plot no:12-5-50,anakapally,vizag-500085');
 		
 		
 		
@@ -204,9 +205,9 @@ CREATE TABLE students(
 
 insert into students(parentid,houseid,gradeid,name,address,dateofbirth,dateofjoining,gender,emailid,admissionnumber)
 	values (1,3,1,'vikram','hno:5-2-203, Janagaon,Telangana,508203','2005-07-26','2010-06-10','male','vikram@gmail.com','7011'),
-	(2,2,2,'kalpana','plot no:12-14-97,patancheruvu,Hyd -500045','2003-07-25','2008-01-01','female','kalpana@gmail.com','90111'),
-	(3,2,2,'srinadh','hno:5-203,kr nagar, mancheryal,Telangana-504203','2002-07-25','2006-06-06','male','srinadh@gmail.com','10111'),
-	(4,1,1,'yamini','plot no:12-5-50,anakapally,vizag-500085','2007-01-01','2012-06-19','female','yamini@gmail.com','50111');
+	       (2,2,2,'kalpana','plot no:12-14-97,patancheruvu,Hyd -500045','2003-07-25','2008-01-01','female','kalpana@gmail.com','90111'),
+	       (3,2,1,'srinadh','hno:5-203,kr nagar, mancheryal,Telangana-504203','2002-07-25','2006-06-06','male','srinadh@gmail.com','10111'),
+	       (4,1,2,'yamini','plot no:12-5-50,anakapally,vizag-500085','2007-01-01','2012-06-19','female','yamini@gmail.com','50111');
 
 CREATE TABLE classroom_students(
 	id bigint(8) NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -216,13 +217,6 @@ CREATE TABLE classroom_students(
 	FOREIGN KEY(studentid) references students(id)
 );
 
---insert into students(classid,name,classname,fathername,mothername,contactnumber,address,dateofbirth,
---dateofjoining,gender,emailid,admissionnumber) values
---(7,'vikram','7','srinivas','sunitha','8977646503','hno:5-2-203, Janagaon,Telangana,508203','27-08-2005','10-06-2010','male',
---'vikram@gmail.com','70111'),(3,'kalpana','9','koteshwar rao','padma','9977765623','plot no:12-14-97,patancheruvu,Hyd -500045',
---'13-07-2003','15-06-2008','female','kalpana@gmail.com','90111'),(1,'srinadh','10','suresh','devi','8977690734','hno:5-203,kr nagar, mancheryal,Telangana-504203',
---'21-08-2002','01-06-2006','male','srinadh@gmail.com','100111'),(5,'yamini','8','kamal','vimala','9955544499','plot no:12-5-50,anakapally,vizag-500085',
---'01-01-2007','16-06-2012','female','yamini@gmail.com','50111');
 
 -- *********** SUBJECTS TABLES **********************************
 
@@ -396,9 +390,9 @@ CREATE TABLE weekdays(
 	INSERT INTO weekdays(day) VALUES ('MONDAY'),
 									 ('TUESEDAY'),
 									 ('WEDNESDAY'),
-									 ('THURSEDAY'),
+									 ('THURSDAY'),
 									 ('FRIDAY'),
-									 ('SATERDAY'),
+									 ('SATURDAY'),
 									 ('SUNDAY');
 
 CREATE TABLE classroom_weekdays(
@@ -417,7 +411,6 @@ CREATE TABLE classroom_periods(
 	subjectid INT NOT NULL,
 	classroomid bigint(8) NOT NULL,
 	classroomweekdayid bigint(8) NOT NULL,
-	dateofassigning date NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY(classroomweekdayid) references weekdays(id),
 	FOREIGN KEY(classroomid) references classrooms(id)
