@@ -20,13 +20,17 @@ public class StudentTransferObject {
 	private String syllabustype;
 	private String admissionnumber;
 	private long houseid;
+	private long parentid;
 	private long id;
 	private String housename;
 	private long gradeid;
 	private String role;
-	
-	
-	
+	public long getParentid() {
+		return parentid;
+	}
+	public void setParentid(long parentid) {
+		this.parentid = parentid;
+	}
 	public String getRole() {
 		return role;
 	}
