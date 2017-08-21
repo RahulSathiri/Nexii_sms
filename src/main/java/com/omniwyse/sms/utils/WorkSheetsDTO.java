@@ -17,13 +17,13 @@ public class WorkSheetsDTO {
 	private Date dateofassigned;
 	private Date duedate;
 	private Date worksheetduedate;
-	private long publishworksheet;
+	private String publishworksheet;
 	
-	public long getPublishworksheet() {
+	public String getPublishworksheet() {
 		return publishworksheet;
 	}
 
-	public void setPublishworksheet(long publishworksheet) {
+	public void setPublishworksheet(String publishworksheet) {
 		this.publishworksheet = publishworksheet;
 	}
 
