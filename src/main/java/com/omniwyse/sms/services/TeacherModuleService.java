@@ -88,8 +88,8 @@ public class TeacherModuleService {
 					.sql(" select classroom_periods.periodfrom, classroom_periods.periodto,"
 							+ "subjects.subjectname,classrooms.gradeid,classrooms.sectionname from classroom_periods "
 							+ " join subjects on classroom_periods.subjectid=subjects.id join classrooms on classrooms.id = classroom_periods.classroomid"
-							+ " where classroom_periods.classroomid =? and classroom_periods.subjectid = ? "
-							+ "and classroom_periods.dateofassigning = ?", sub.getClassid(), sub.getSubjectid(), date)
+							+ " where classroom_periods.classroomid =? and classroom_periods.subjectid = ? ",
+							sub.getClassid(), sub.getSubjectid())
 					.results(TeacherScheduleDTO.class);
 			int variable = 0;
 			for (TeacherScheduleDTO teacher : sublist) {
@@ -234,14 +234,13 @@ public class TeacherModuleService {
 			lesson.setLessonstartdate(data.getLessonstartdate());
 			lesson.setLessonname(data.getLessonname());
 			lesson.setStatus(data.getStatus());
-			lesson.setPublishtimeline("false");
 			if (data.getSubjectname() != null) {
 				lesson.setSubjectid(
 						db.where("subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId());
 			}
 			long flag = data.getPublish();
 			if (flag == 0) {
-				lesson.setPublishtimeline("true");
+				lesson.setPublishtimeline(true);
 				Notifications notifications = new Notifications();
 
 				notifications.setNotificationname(data.getLessonname());
@@ -372,10 +371,10 @@ public class TeacherModuleService {
 
 	}
 
-	public List<AssignmentDTO> AssignmentsList(long tenantId, TimelineDTO data) {
+	public List<AssignmentDTO> assignmentsList(long tenantId, TimelineDTO data) {
 
 		db = retrive.getDatabase(tenantId);
-		String query ="select subjects.subjectname, assignments.assignmentduedate, assignments.assignmentname, assignments.dateofassigned,"
+		String query = "select subjects.subjectname, assignments.assignmentduedate, assignments.assignmentname, assignments.dateofassigned,"
 				+ "assignments.publishassignment, assignments.tags, lessons.lessonname from assignments JOIN lessons ON"
 				+ " lessons.id = assignments.lessonsid JOIN subjects ON subjects.id = assignments.subjectid and ";
 		if (data.getSubjectname() != null) {
@@ -387,7 +386,7 @@ public class TeacherModuleService {
 		}
 	}
 
-	public List<WorkSheetsDTO> AssignedWorksheetsList(long tenantId, TimelineDTO data) {
+	public List<WorkSheetsDTO> assignedWorksheetsList(long tenantId, TimelineDTO data) {
 
 		db = retrive.getDatabase(tenantId);
 		String query = "select worksheets.worksheetname, subjects.subjectname, classroom_worksheets.dateofassigned, classroom_worksheets.worksheetduedate,"

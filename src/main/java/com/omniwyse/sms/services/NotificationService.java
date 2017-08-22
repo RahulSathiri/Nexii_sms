@@ -51,7 +51,7 @@ public class NotificationService {
 		long id = data.getId();
 		if (data.getActioncode().equals("Timeline")) {
 
-			rowEffected = db.sql("update lessons set publishtimeline = 1 where id = ?", id).execute().getRowsAffected();
+			rowEffected = db.sql("update lessons set publishtimeline = true where id = ?", id).execute().getRowsAffected();
 
 		} /*
 			 * else if (data.getActioncode().equals("Tests")) {
