@@ -29,7 +29,7 @@ public class NotificationService {
 		try {
 			notifications.setNotificationname(data.getNotificationname());
 			notifications.setDescription(data.getDescription());
-			int rows  = checkActioncode(tenantId, data);
+			int rows = checkActioncode(tenantId, data);
 			notifications.setActioncode(data.getActioncode());
 			notifications.setParentactionrequired(data.getParentactionrequired());
 			notifications.setPublishedby(data.getPublishedby());
@@ -51,7 +51,13 @@ public class NotificationService {
 		long id = data.getId();
 		if (data.getActioncode().equals("Timeline")) {
 
-			rowEffected = db.sql("update lessons set publishtimeline = true where id = ?", id).execute().getRowsAffected();
+			if (!isExistInNotifications(data)) {
+				rowEffected = db.sql("update lessons set publishtimeline = ? where id = ?", true, id).execute()
+						.getRowsAffected();
+			} else {
+				rowEffected = db.sql("update lessons set publishtimeline = ? where id = ?", false, id).execute()
+						.getRowsAffected();
+			}
 
 		} /*
 			 * else if (data.getActioncode().equals("Tests")) {
@@ -59,6 +65,17 @@ public class NotificationService {
 			 * db.update("").where("id = ?", id); }
 			 */
 		return rowEffected;
+	}
+
+	private boolean isExistInNotifications(NotificationsDTO data) {
+
+		String name = db.where("notificationname = ?", data.getNotificationname()).results(Notifications.class).get(0)
+				.getNotificationname();
+		if (name == null) {
+			return false;
+		}
+
+		return true;
 	}
 
 	public List<NotificationsDTO> listAllPublishednNotifications(long tenantid, NotificationsDTO data) {

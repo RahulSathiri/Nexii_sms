@@ -13,9 +13,9 @@ public class ClassroomWorksheets {
 	private long worksheetsid;
 	private Date dateofassigned;
 	private Date worksheetduedate;
-	private long subjectid;
+	private Long subjectid;
 	private long classroomid;
-	private long lessonsid;
+	private Long lessonsid;
 	private String publishworksheet;
 	
 	@Id
@@ -33,12 +33,7 @@ public class ClassroomWorksheets {
 	public void setPublishworksheet(String publishworksheet) {
 		this.publishworksheet = publishworksheet;
 	}
-	public long getLessonsid() {
-		return lessonsid;
-	}
-	public void setLessonsid(long lessonsid) {
-		this.lessonsid = lessonsid;
-	}
+	
 	public Date getDateofassigned() {
 		return dateofassigned;
 	}
@@ -46,7 +41,12 @@ public class ClassroomWorksheets {
 		this.dateofassigned = dateofassigned;
 	}
 	
-	
+	public Long getLessonsid() {
+		return lessonsid;
+	}
+	public void setLessonsid(Long lessonsid) {
+		this.lessonsid = lessonsid;
+	}
 	public long getWorksheetsid() {
 		return worksheetsid;
 	}
@@ -60,10 +60,10 @@ public class ClassroomWorksheets {
 	public void setWorksheetduedate(Date worksheetduedate) {
 		this.worksheetduedate = worksheetduedate;
 	}
-	public long getSubjectid() {
+	public Long getSubjectid() {
 		return subjectid;
 	}
-	public void setSubjectid(long subjectid) {
+	public void setSubjectid(Long subjectid) {
 		this.subjectid = subjectid;
 	}
 	public long getClassroomid() {
