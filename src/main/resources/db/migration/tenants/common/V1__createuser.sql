@@ -438,7 +438,7 @@ FOREIGN KEY(classroomid) REFERENCES classrooms(id));
 
 CREATE TABLE academicyears(
 id bigint(8) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-passingyear bigint(8) NOT NULL,
+passingyear bigint NOT NULL,
 academicyearstarting date NOT NULL,
 academicyearending date NOT NULL,
 active INT NOT NULL
