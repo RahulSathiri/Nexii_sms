@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,7 @@ public class ClassroomAttendenceController {
 	private Response response;
 
 	// attendance
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping(value = "/attendance", method = RequestMethod.POST, produces = "application/json")
 	public List<TeacherModuleDTO> listOfTeacherSubjects(@PathVariable("tenantId") long tenantId,
 			@RequestBody ClassSectionTransferObject moduleDTO) {
@@ -38,7 +40,7 @@ public class ClassroomAttendenceController {
 	}
 
 	// list of students for the classroom attendance
-
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping(value = "/listofstudentsofclassroom", method = RequestMethod.POST, produces = "application/json")
 	public ClassAttendenceTransferObject listStudentsofClassroom(@PathVariable("tenantId") long tenantId,
 			@RequestBody ClassAttendenceTransferObject classattendancetransferobject) {
@@ -46,7 +48,7 @@ public class ClassroomAttendenceController {
 		return service.studentsList(tenantId, classattendancetransferobject);
 	}
 	// attendance report
-
+	@PreAuthorize("hasAnyRole('ROLE_TEACHER')")
 	@RequestMapping(value = "/recordattendance", method = RequestMethod.POST, produces = "application/json")
 
 	public ResponseEntity<Response> getStudentsOfClassRoom(@PathVariable("tenantId") long tenantId,
@@ -76,23 +78,26 @@ public class ClassroomAttendenceController {
 
 	}
 //view attendance record
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/{id}/viewattendancedetails")
 	public List<ClassAttendenceTransferObject> getattendance(@PathVariable("tenantId") long tenantId,@PathVariable("id") long classroomid) {
 		String subjectname = null;
 		return service.getAttendance(tenantId,classroomid,subjectname);
 
 	}
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/{id}/{subjectname}/viewattendancedetails")
 	public List<ClassAttendenceTransferObject> getattendance(@PathVariable("tenantId") long tenantId,@PathVariable("id") long classroomid,@PathVariable("subjectname") String subjectname) {
 		return service.getAttendance(tenantId,classroomid,subjectname);
 
 	}
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/listdates")
 	public List<ClassroomAttendance> getdates(@PathVariable("tenantId") long tenantId) {
 		return service.getdates(tenantId);
 	}
 	//optional attendance
-
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping("/attendancemode")
 	public List<AttendanceMode> lisAttendancemodes(@PathVariable("tenantId") long tenantId) {
 		return service.listattendancemodes(tenantId);
@@ -100,6 +105,7 @@ public class ClassroomAttendenceController {
 	}
 
 	// optional attendance mode status
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/attendancemodestatus", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> setAttendanceModeStatus(@PathVariable("tenantId") long tenantId,
 			@RequestBody ClassAttendenceTransferObject classattendancetransferobject) {

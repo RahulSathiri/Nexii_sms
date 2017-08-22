@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +29,7 @@ public class HouseController {
 	public List<House> listHouses(@PathVariable("tenantId") long tenantId) {
 		return service.listHouses(tenantId);
 	}
-
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/addhousedetails", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> addHouseDetails(@PathVariable("tenantId") long tenantId,@RequestBody House house) {
 		int rowEffected = service.addHouseDetails(house,tenantId);
@@ -45,6 +46,7 @@ public class HouseController {
 		}
 
 	}
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/edithousedetails", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> editHouseDetails(@PathVariable("tenantId") long tenantId,@RequestBody House house) {
 		int rowEffected = service.editHouseDetails(house,tenantId);
@@ -61,6 +63,7 @@ public class HouseController {
 		}
 
 	}
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/deletehousedetails", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> deleteHouseDetails(@PathVariable("tenantId") long tenantId,@RequestBody House house) {
 		int rowEffected = service.deleteHouseDetails(house,tenantId);
@@ -77,6 +80,7 @@ public class HouseController {
 		}
 
 }
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/listnoofstudentsinhouse", method = RequestMethod.POST, produces = "application/json")
 	public List<HouseDTO> listnoOfStudentsInHouse(@PathVariable("tenantId") long tenantId,@RequestBody House house) {
 		return service.listnoOfStudentsInHouse(house,tenantId);

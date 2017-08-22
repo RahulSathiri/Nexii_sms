@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,7 @@ public class NoticeBoardController {
 	NoticeBoardService service;
 	@Autowired
 	private Response response;
-
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping("/postnotice")
 	public ResponseEntity<Response> postNotice(@PathVariable("tenantId") long tenantId, @RequestBody NoticeBoardTransferObject noticeboardTransferObject) {
 		int rowEffected = service.postNotice(tenantId, noticeboardTransferObject);
@@ -40,7 +41,7 @@ public class NoticeBoardController {
 		}
 
 	}
-
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping("/editnotice")
 	public ResponseEntity<Response> editNotice(@PathVariable("tenantId") long tenantId, @RequestBody NoticeBoard noticeboard) {
 		service.editNotice(tenantId, noticeboard);
@@ -49,7 +50,7 @@ public class NoticeBoardController {
 		response.setDescription("edited successfuly");
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
-
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping("/listnotice")
 	public List<NoticeBoardTransferObject> listNotice(@PathVariable("tenantId") long tenantId, @RequestBody NoticeBoard noticeboard) {
 		return service.listNotice(tenantId);

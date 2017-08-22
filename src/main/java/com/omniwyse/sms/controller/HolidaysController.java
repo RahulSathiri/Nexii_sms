@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,7 @@ public class HolidaysController {
 	@Autowired
 	private Response response;
 
-
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/postholiday", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> postHoliday(@PathVariable("tenantId") long tenantId,@RequestBody Holidays holiday) {
 
@@ -44,7 +45,7 @@ public class HolidaysController {
 
 	}
 
-
+@PreAuthorize("isAuthenticated()")
 	@RequestMapping("/holidays")
 	public List<Holidays> listOfHolidays(@PathVariable("tenantId") long tenantId) {
 
@@ -53,7 +54,7 @@ public class HolidaysController {
 
 	}
 
-
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
    	@RequestMapping("/editholiday")
 	public ResponseEntity<Response> editHoliday(@PathVariable("tenantId") long tenantId,@RequestBody Holidays holiday) {
 
@@ -64,7 +65,7 @@ public class HolidaysController {
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 
 	}
-
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")	
 	@RequestMapping("/deleteholiday")
 	public ResponseEntity<Response> deleteHoliday(@PathVariable("tenantId") long tenantId,@RequestBody Holidays holiday) {
 

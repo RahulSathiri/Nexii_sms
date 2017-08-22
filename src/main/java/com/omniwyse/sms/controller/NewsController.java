@@ -25,7 +25,7 @@ public class NewsController {
 	@Autowired
 	private Response response;
 
-    
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @RequestMapping(value = "/postnews", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<Response> postNews(@PathVariable("tenantId") long tenantId,@RequestBody NewsFeed news) {
 
@@ -54,7 +54,7 @@ public class NewsController {
 
 	}
 
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping("/editnews")
 	public ResponseEntity<Response> editNews(@PathVariable("tenantId") long tenantId,@RequestBody NewsFeed newsfeed) {
 
@@ -66,7 +66,7 @@ public class NewsController {
 
 	}
 
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
    	@RequestMapping("/deletenews")
 	public ResponseEntity<Response> deleteNews(@PathVariable("tenantId") long tenantId,@RequestBody NewsFeed newsfeed) {
 

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,7 @@ public class NotificationController {
 
 	@Autowired
 	private Response response;
-
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping("/publishnotification")
 	public ResponseEntity<Response> newNotification(@PathVariable("tenantid") long tenantId,
 			@RequestBody NotificationsDTO notifications) {
@@ -48,21 +49,22 @@ public class NotificationController {
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
-
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PARENT')")
 	@RequestMapping("/publishednotifications")
 	public List<NotificationsDTO> listPublishedNotifications(@PathVariable("tenantid") long tenantid,
 			@RequestBody NotificationsDTO data) {
 
 		return service.listAllPublishednNotifications(tenantid, data);
 	}
-
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping("/listsentnotifications")
 	public List<NotificationsDTO> listSentNotifications(@PathVariable("tenantid") long tenantid,
 			@RequestBody NotificationsDTO data) {
 
 		return service.listSentPublishednNotifications(tenantid, data);
 	}
-
+	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping("/sendnotification")
 	public ResponseEntity<Response> sendNotification(@PathVariable("tenantid") long tenantid,
 			@RequestBody NotificationsDTO data) {
