@@ -13,13 +13,16 @@ public class MessagesDetails {
 	private long parentmessageid;
 	private String sentflag;
 	private String sendername;
+	private String recievername;
 	private String fathername;
 	private String mothername;
+	private String studentname;
 	private String teachername;
 	private long classroomid;
 	private Timestamp messagedate;
 	private String dateofmessage=new String();
 	private List<MessagesDetails> replymessages;
+
 	public String getDateofmessage() {
 		return dateofmessage;
 	}
@@ -28,12 +31,28 @@ public class MessagesDetails {
 		return parentmessageid;
 	}
 
+	public String getRecievername() {
+		return recievername;
+	}
+
+	public void setRecievername(String recievername) {
+		this.recievername = recievername;
+	}
+
 	public void setParentmessageid(long parentmessageid) {
 		this.parentmessageid = parentmessageid;
 	}
 
 	public void setDateofmessage(String dateofmessage) {
 		this.dateofmessage = dateofmessage;
+	}
+
+	public String getStudentname() {
+		return studentname;
+	}
+
+	public void setStudentname(String studentname) {
+		this.studentname = studentname;
 	}
 
 	public String getSentflag() {
