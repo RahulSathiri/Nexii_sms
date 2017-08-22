@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 import com.dieselpoint.norm.Database;
 import com.omniwyse.sms.db.DatabaseRetrieval;
 import com.omniwyse.sms.models.Messages;
-import com.omniwyse.sms.models.Parents;
 import com.omniwyse.sms.models.Teachers;
 import com.omniwyse.sms.utils.MessagesDTO;
 import com.omniwyse.sms.utils.MessagesDetails;
+import com.omniwyse.sms.utils.StudentTransferObject;
 
 @Service
 public class MessagesService {
@@ -73,9 +73,9 @@ public class MessagesService {
 	public List<MessagesDetails> teacherSentMessages(MessagesDTO messagesDTO, long tenantId) {
 		db = retrive.getDatabase(tenantId);
 		List<MessagesDetails> messages = db.sql(
-				"select messages.id,messages.message,messages.classroomid,messages.messagedate,messages.senderid,messages.recieverid,messages.parentmessageid,students.name,parents.fathername,parents.mothername "
+				"select messages.id,messages.message,messages.classroomid,messages.messagedate,messages.senderid,messages.recieverid,students.name,parents.fathername,parents.mothername "
 						+ "from messages left join students on students.id=messages.recieverid left join parents on parents.id=students.parentid"
-						+ " where messages.sentflag='T' and messages.senderid=? and messages.classroomid=? and messages.rootmessageid=0 "
+						+ " where messages.sentflag='T' and messages.senderid=? and messages.classroomid=? and messages.rootmessageid=0 and messages.parentmessageid=0 "
 						+ "order by messages.messagedate desc ",
 				messagesDTO.getSenderid(), messagesDTO.getClassroomid()).results(MessagesDetails.class);
 
@@ -88,9 +88,9 @@ public class MessagesService {
 		db = retrive.getDatabase(tenantId);
 
 		List<MessagesDetails> messages = db.sql(
-				"select messages.id,messages.classroomid,messages.message,messages.messagedate,messages.parentmessageid,messages.recieverid,messages.senderid,teachers.teachername "
+				"select messages.id,messages.classroomid,messages.message,messages.messagedate,messages.recieverid,messages.senderid,teachers.teachername "
 						+ "from messages join teachers on teachers.id=messages.recieverid where messages.sentflag='P' and messages.senderid=? and messages.classroomid=? "
-						+ "and messages.rootmessageid=0 order by messages.messagedate desc",
+						+ "and messages.rootmessageid=0 and messages.parentmessageid=0 order by messages.messagedate desc",
 				messagesDTO.getSenderid(), messagesDTO.getClassroomid()).results(MessagesDetails.class);
 
 		return getReplyMessages(messages);
@@ -99,9 +99,9 @@ public class MessagesService {
 	public List<MessagesDetails> teacherRecievedMessages(MessagesDTO messagesDTO, long tenantId) {
 		db = retrive.getDatabase(tenantId);
 		List<MessagesDetails> messages = db.sql(
-				"select messages.id,messages.message,messages.messagedate,messages.parentmessageid,messages.classroomid,messages.senderid,messages.recieverid,students.name,parents.fathername,parents.mothername "
+				"select messages.id,messages.message,messages.messagedate,messages.classroomid,messages.senderid,messages.recieverid,students.name,parents.fathername,parents.mothername "
 						+ "from messages join students on students.id=messages.senderid join parents on parents.id=students.parentid where sentflag='p' and recieverid=? and classroomid=? "
-						+ "and messages.rootmessageid=0 order by messages.messagedate desc",
+						+ "and messages.rootmessageid=0 and messages.parentmessageid=0 order by messages.messagedate desc",
 				messagesDTO.getRecieverid(), messagesDTO.getClassroomid()).results(MessagesDetails.class);
 		return getReplyMessages(messages);
 	}
@@ -109,9 +109,9 @@ public class MessagesService {
 	public List<MessagesDetails> parentRecievedMessages(MessagesDTO messagesDTO, long tenantId) {
 		db = retrive.getDatabase(tenantId);
 		List<MessagesDetails> messages = db.sql(
-				"select messages.id,messages.message,messages.messagedate,messages.parentmessageid,messages.classroomid,messages.rootmessageid,messages.senderid,messages.recieverid,teachers.teachername "
+				"select messages.id,messages.message,messages.messagedate,messages.classroomid,messages.senderid,messages.recieverid,teachers.teachername "
 						+ "from messages join teachers on teachers.id=messages.senderid where ((sentflag='T' and recieverid=?) or (recieverid=-1 and classroomid=?)) "
-						+ "and messages.rootmessageid=0 order by messages.messagedate desc",
+						+ "and messages.rootmessageid=0 and messages.parentmessageid=0 order by messages.messagedate desc",
 				messagesDTO.getRecieverid(), messagesDTO.getClassroomid()).results(MessagesDetails.class);
 		return getReplyMessages(messages);
 	}
@@ -121,10 +121,25 @@ public class MessagesService {
 			if (replymessage.getSentflag().equals("T")) {
 				replymessage.setSendername(
 						db.where("id=?", replymessage.getSenderid()).results(Teachers.class).get(0).getTeachername());
+				List<StudentTransferObject> sendersnames=db.sql("select parents.fathername,students.name from parents join students on students.parentid=parents.id where students.id=?",
+						replymessage.getRecieverid()).results(StudentTransferObject.class);
+				if(!sendersnames.isEmpty())
+				{
+				replymessage.setFathername(sendersnames.get(0).getFathername());
+				replymessage.setRecievername(sendersnames.get(0).getName());
+				}
+				
 			} else
-				replymessage.setSendername(
-						db.sql("select parents.fathername from parents join students on students.parentid=parents.id where students.id=?",
-								replymessage.getSenderid()).results(Parents.class).get(0).getFathername());
+			{
+						List<StudentTransferObject> sendersnames=db.sql("select parents.fathername,students.name from parents join students on students.parentid=parents.id where students.id=?",
+								replymessage.getSenderid()).results(StudentTransferObject.class);
+						if(!sendersnames.isEmpty())
+						{
+						replymessage.setSendername(sendersnames.get(0).getName());
+						replymessage.setFathername(sendersnames.get(0).getFathername());
+						}
+						replymessage.setRecievername(db.where("id=?", replymessage.getRecieverid()).results(Teachers.class).get(0).getTeachername());
+			}
 		}
 		return replymessages;
 	}
@@ -141,5 +156,25 @@ public class MessagesService {
 		}
 		return messages;
 	}
+
+	public List<MessagesDetails> techerMessages(MessagesDTO messagesDTO, long tenantId) {
+		db = retrive.getDatabase(tenantId);
+		List<MessagesDetails> messages=
+		db.sql("select messages.id,messages.message,messages.messagedate,messages.classroomid,messages.senderid,messages.recieverid,messages.sentflag from messages "
+		+ "where ((sentflag='p' and recieverid=?) or (messages.sentflag='T' and messages.senderid=?))  and classroomid=? "
+		+"and messages.rootmessageid=0 and messages.parentmessageid=0 order by messages.messagedate desc",messagesDTO.getSenderid(),messagesDTO.getSenderid(),messagesDTO.getClassroomid()).results(MessagesDetails.class);
+		return getReplyMessages(getSenderName(messages));
+		
+	}
+
+	public List<MessagesDetails> parentMessages(MessagesDTO messagesDTO, long tenantId) {
+		db = retrive.getDatabase(tenantId);
+		List<MessagesDetails> messages=
+		db.sql("select messages.id,messages.message,messages.messagedate,messages.classroomid,messages.senderid,messages.recieverid,messages.sentflag " 
+		+"from messages where ((sentflag='T' and (recieverid=? or recieverid=-1)) or (messages.sentflag='P' and messages.senderid=?))  and classroomid=? "
+		+"and messages.rootmessageid=0 and messages.parentmessageid=0 order by messages.messagedate desc",messagesDTO.getSenderid(),messagesDTO.getSenderid(),messagesDTO.getClassroomid()).results(MessagesDetails.class);
+		return getReplyMessages(getSenderName(messages));
+	}
+	
 
 }
