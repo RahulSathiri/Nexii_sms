@@ -64,7 +64,6 @@ public class RecordsService {
 		classroomdetails.setSubjects(service.getListOfSubjects(gradeid,tenantId));
 		classroomdetails.setSubjectteachers(service.listOfSubjectsTeachers(classid,tenantId));
 		classroomdetails.setStudentsOfClassRoom(studentservice.getStudentsOfClassRoom(classid,tenantId));
-		classroomdetails.setStudentsoOfGrade(studentservice.getStudentsOfGrade(gradeid,tenantId));
 		return classroomdetails;
 	}
 
