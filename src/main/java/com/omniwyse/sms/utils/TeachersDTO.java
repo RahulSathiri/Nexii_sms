@@ -4,6 +4,7 @@ import java.sql.Date;
 
 public class TeachersDTO {
 	private String teachername;
+	private String middlename;
 	private String lname;
 	private String bloodgroup;
 	private String contactnumber;
@@ -18,6 +19,20 @@ public class TeachersDTO {
 	private long id;
 	private long noofperiods;
 	private String role;
+	private String maritalstatus;
+	
+	public String getMaritalstatus() {
+		return maritalstatus;
+	}
+	public void setMaritalstatus(String maritalstatus) {
+		this.maritalstatus = maritalstatus;
+	}
+	public String getMiddlename() {
+		return middlename;
+	}
+	public void setMiddlename(String middlename) {
+		this.middlename = middlename;
+	}
 	
 	public String getBloodgroup() {
 		return bloodgroup;
