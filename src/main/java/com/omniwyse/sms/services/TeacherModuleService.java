@@ -290,12 +290,12 @@ public class TeacherModuleService {
 		assignment.setAssignmentduedate(assignmentduedate);
 		assignment.setTags(assigning.getTags());
 		if (assigning.getSubjectname() != null) {
-			long subjectid = db.where("subjectname = ?", assigning.getSubjectname()).results(Subjects.class).get(0)
+			Long subjectid = db.where("subjectname = ?", assigning.getSubjectname()).results(Subjects.class).get(0)
 					.getId();
 			assignment.setSubjectid(subjectid);
 		}
 		if(assigning.getLessonname()!=null){
-		long lessonid = db.where("lessonname = ?", assigning.getLessonname()).results(Lessons.class).get(0).getId();
+		Long lessonid = db.where("lessonname = ?", assigning.getLessonname()).results(Lessons.class).get(0).getId();
 		assignment.setLessonsid(lessonid);
 		}
 
@@ -304,7 +304,7 @@ public class TeacherModuleService {
 
 	public int worksheets(long tenantId, WorkSheetsDTO data) {
 		db = retrive.getDatabase(tenantId);
-		long lessonid = 0;
+		Long lessonid = null;
 		ClassroomWorksheets worksheet = new ClassroomWorksheets();
 		if (data.getLessonname() != null) {
 			lessonid = db.where("lessonname = ?", data.getLessonname()).results(Lessons.class).get(0).getId();
@@ -319,7 +319,7 @@ public class TeacherModuleService {
 		worksheet.setDateofassigned(data.getDateofassigned());
 		worksheet.setWorksheetduedate(data.getDuedate());
 		if (data.getSubjectname() != null) {
-			long subjectid = db.where("subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId();
+			Long subjectid = db.where("subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId();
 			worksheet.setSubjectid(subjectid);
 		}
 
@@ -374,31 +374,37 @@ public class TeacherModuleService {
 	public List<AssignmentDTO> assignmentsList(long tenantId, TimelineDTO data) {
 
 		db = retrive.getDatabase(tenantId);
+		List<AssignmentDTO> list = null;
 		String query = "select subjects.subjectname, assignments.assignmentduedate, assignments.assignmentname, assignments.dateofassigned,"
-				+ "assignments.publishassignment, assignments.tags, lessons.lessonname from assignments JOIN lessons ON"
-				+ " lessons.id = assignments.lessonsid JOIN subjects ON subjects.id = assignments.subjectid and ";
+				+ "assignments.publishassignment, assignments.tags, lessons.lessonname from assignments LEFT JOIN lessons ON "
+				+ "lessons.id = assignments.lessonsid JOIN subjects  ON subjects.id = assignments.subjectid ";
 		if (data.getSubjectname() != null) {
 			long subjectId = db.where("subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId();
-			return db.sql(query + " assignments.classroomid = ? and assignments.subjectid = ?", data.getId(), subjectId)
+			list = db.sql(query + " where assignments.classroomid = ? and assignments.subjectid = ?", data.getId(), subjectId)
 					.results(AssignmentDTO.class);
+			return list;
 		} else {
-			return db.sql(query + " assignments.classroomid = ?", data.getId()).results(AssignmentDTO.class);
+			list = db.sql(query + " where assignments.classroomid = ? ", data.getId()).results(AssignmentDTO.class);
+			return list;
 		}
 	}
 
 	public List<WorkSheetsDTO> assignedWorksheetsList(long tenantId, TimelineDTO data) {
 
 		db = retrive.getDatabase(tenantId);
+		List<WorkSheetsDTO> list = null;
 		String query = "select worksheets.worksheetname, subjects.subjectname, classroom_worksheets.dateofassigned, classroom_worksheets.worksheetduedate,"
-				+ "classroom_worksheets.publishworksheet, lessons.lessonname from classroom_worksheets "
-				+ "JOIN subjects ON subjects.id = classroom_worksheets.subjectid JOIN lessons ON lessons.id = classroom_worksheets.lessonsid "
-				+ " JOIN worksheets ON worksheets.id = classroom_worksheets.worksheetsid and ";
+				+ " lessons.lessonname from classroom_worksheets "
+				+ "JOIN subjects ON subjects.id = classroom_worksheets.subjectid LEFT JOIN lessons ON lessons.id = classroom_worksheets.lessonsid "
+				+ " JOIN worksheets ON worksheets.id = classroom_worksheets.worksheetsid ";
 		if (data.getSubjectname() != null) {
-			long subjectId = db.where("subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId();
-			return db.sql(query + " classroom_worksheets.classroomid = ? and classroom_worksheets.subjectid = ?",
+			long subjectId = db.where(" subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId();
+			list = db.sql(query + " where classroom_worksheets.classroomid = ? and classroom_worksheets.subjectid = ?",
 					data.getId(), subjectId).results(WorkSheetsDTO.class);
+			return list;
 		} else {
-			return db.sql(query + " classroom_worksheets.classroomid = ?", data.getId()).results(WorkSheetsDTO.class);
+			list = db.sql(query + " where classroom_worksheets.classroomid = ? ", data.getId()).results(WorkSheetsDTO.class);
+			return list;
 		}
 	}
 
