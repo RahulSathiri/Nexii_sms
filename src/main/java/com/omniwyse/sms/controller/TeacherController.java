@@ -3,6 +3,7 @@ package com.omniwyse.sms.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ public class TeacherController {
 
 	private int rowEffected;
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/addteacher", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> addTeachers(@PathVariable("tenantId") long tenantId, @RequestBody TeachersDTO addTeacher) {
 
@@ -50,6 +52,7 @@ public class TeacherController {
 		}
 	}
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/updateteacher", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> updateTeachers(@PathVariable("tenantId") long tenantId, @RequestBody Teachers updateTeacher) {
 		rowEffected = service.updateTeacher(tenantId, updateTeacher);

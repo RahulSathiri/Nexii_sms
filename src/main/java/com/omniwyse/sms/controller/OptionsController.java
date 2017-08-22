@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ public class OptionsController {
 	@Autowired
 	private Response response;
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/addoption", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> addOption(@PathVariable("tenantId") long tenantId, @RequestBody Options option) {
 
@@ -41,6 +43,8 @@ public class OptionsController {
 
 		}
 	}
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/editoption", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> editOption(@PathVariable("tenantId") long tenantId, @RequestBody Options option) {
 		int rowEffected=service.editOption(option,tenantId);
@@ -57,6 +61,8 @@ public class OptionsController {
 
 		}
 }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/deleteoption", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> deleteOption(@PathVariable("tenantId") long tenantId, @RequestBody Options option) {
 		service.deleteOption(option,tenantId);
@@ -67,6 +73,8 @@ public class OptionsController {
 		
 		
 	}
+
+    @PreAuthorize("isAuhtenticates()")
 	@RequestMapping(value = "/listoptions")
 	public List<Options> deleteOption(@PathVariable("tenantId") long tenantId) {
 		return service.getOptions(tenantId);

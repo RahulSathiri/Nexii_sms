@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,12 +21,14 @@ import com.omniwyse.sms.utils.Response;
 @RestController
 @RequestMapping("/{tenantId}")
 public class SubjectTeacherClassController {
+
 	@Autowired
 	private SubjectTeacherClassService service;
 
 	@Autowired
 	private Response response;
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TESCHER')")
 	@RequestMapping("/listsubjectsofgrade")
 	public List<Subjects> listSubjectsOfGrade(@PathVariable("tenantId") long tenantId,@RequestBody ClassSectionTransferObject classtransferobject) {
 		long gradeid = classtransferobject.getGradeid();
@@ -33,6 +36,7 @@ public class SubjectTeacherClassController {
 
 	}
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@PostMapping
 	@RequestMapping("/assignteachertosubject")
 	@ResponseBody
@@ -57,7 +61,8 @@ public class SubjectTeacherClassController {
 		}
 	}
 
-	@RequestMapping("/{tenantId}/listingassignedteachers")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @RequestMapping("/listingassignedteachers")
 	public List<ClassSectionTransferObject> listOfSubjectsToTeachers(
 			@PathVariable("tenantId") long tenantId,@RequestBody ClassSectionTransferObject classtransferobject) {
 		long classid = classtransferobject.getId();
@@ -65,6 +70,7 @@ public class SubjectTeacherClassController {
 		return list;
 	}
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping("/editsubjectteacher")
 	public ResponseEntity<Response> updateSubjectTeachers(@PathVariable("tenantId") long tenantId, @RequestBody ClassSectionTransferObject classtransferobject) {
 		long classid = classtransferobject.getId();

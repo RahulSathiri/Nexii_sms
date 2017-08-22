@@ -15,7 +15,6 @@ public class TennantSpecificController {
 
     @RequestMapping(value = "/viewtenant", method = RequestMethod.POST, produces = "application/json")
     public List<ResultsTransferObject> viewTestResults(@RequestBody ResultsTransferObject resultstransferobject) {
-
         return null;
     }
 
