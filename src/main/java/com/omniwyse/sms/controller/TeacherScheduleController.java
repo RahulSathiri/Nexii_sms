@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ public class TeacherScheduleController {
 	@Autowired
 	private TeacherModuleService service;
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
 	@RequestMapping("/today")
 	public List<TeacherScheduleDTO> defaultSchedule(@PathVariable("tenantId") long tenantId, @RequestBody ClassSectionTransferObject dataObject) {
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -29,6 +31,7 @@ public class TeacherScheduleController {
 		return service.getSchedule(tenantId,dataObject, date);
 	}
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
 	@RequestMapping("/tomorrow")
 	public List<TeacherScheduleDTO> scheduleOfNextday(@PathVariable("tenantId") long tenantId, @RequestBody ClassSectionTransferObject dataobject) {
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");

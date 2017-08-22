@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,9 +25,11 @@ public class StudentsController {
 
 	@Autowired
 	private StudentsService service;
+
 	@Autowired
 	private Response response;
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/addstudent", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> addStudent(@PathVariable("tenantId") long tenantId,@RequestBody StudentTransferObject addStudent) {
 
@@ -56,6 +59,7 @@ public class StudentsController {
 		}
 	}
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/updatestudent", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> updateStudent(@PathVariable("tenantId") long tenantId,@RequestBody Students updateStudent) {
 
@@ -67,6 +71,7 @@ public class StudentsController {
 
 	}
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/addstudenttoclassroom", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> addstudenttoclassroom(@PathVariable("tenantId") long tenantId,@RequestBody Students addStudent) {
 		String admissionnumber = addStudent.getAdmissionnumber();
@@ -80,6 +85,7 @@ public class StudentsController {
 	}
 
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
 	@RequestMapping(value = "/liststudentsofclassroom", method = RequestMethod.POST, produces = "application/json")
 	public List<ClassRoomStudents> getStudentsOfClassRoom(@PathVariable("tenantId") long tenantId,@RequestBody StudentClassroom studentclassroom) {
 		long classid = studentclassroom.getId();

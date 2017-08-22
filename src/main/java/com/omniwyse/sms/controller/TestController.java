@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,9 +26,11 @@ public class TestController {
 
 	@Autowired
 	private TestService service;
+
 	@Autowired
 	private Response response;
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/addtesttype", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> addTestType(@PathVariable("tenantId") long tenantId,@RequestBody TestType testtype) {
 		int rowEffected = service.addTestType(tenantId, testtype);
@@ -45,24 +48,28 @@ public class TestController {
 		}
 	}
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping("/listtesttype")
 	public List<TestType> listTestType(@PathVariable("tenantId") long tenantId) {
 		return service.listtesttypes(tenantId);
 
 	}
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping("/listtestmode")
 	public List<Testmode> listTestmode(@PathVariable("tenantId") long tenantId) {
 		return service.listtestmodes(tenantId);
 
 	}
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping("/listalltests")
 	public List<TestTransferObject> listTests(@PathVariable("tenantId") long tenantId) {
 		return service.listAllTests(tenantId);
 
 	}
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/createtest", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> createTest(@PathVariable("tenantId") long tenantId,@RequestBody TestTransferObject testcreate) {
 		int rowEffected = service.createTest(tenantId, testcreate);
@@ -80,17 +87,18 @@ public class TestController {
 		}
 	}
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping(value = "/listtests", method = RequestMethod.POST, produces = "application/json")
 	public List<TestTransferObject> getListOfTests(@PathVariable("tenantId") long tenantId, @RequestBody TestTransferObject testcreate){
 		List<TestTransferObject> tests= service.getListOfTests(tenantId, testcreate);
-		if(tests.isEmpty())
-		{
-		return null;	
-		}
-		return tests; 
+        if (tests.isEmpty()) {
+            return null;
+        }
+        return tests;
 
 	}
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping(value = "/listtestsubjects", method = RequestMethod.POST, produces = "application/json")
 	public List<TestSubjectsDisplay> getListOfTestSubjects(@PathVariable("tenantId") long tenantId, @RequestBody TestSubjectsDisplay testsubjectsdisplay) {
 		return service.getListOfTestSubjects(tenantId, testsubjectsdisplay);
@@ -99,6 +107,7 @@ public class TestController {
 	
 	
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
     @RequestMapping(value = "/addoreditsyllabus", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> addSyllabus(@PathVariable("tenantId") long tenantId, @RequestBody TestSyllabus testsyllabus) {
         int rowEffected = service.addorEditSyllabus(tenantId, testsyllabus);

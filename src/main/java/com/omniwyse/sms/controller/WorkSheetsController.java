@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +27,7 @@ public class WorkSheetsController {
 	@Autowired
 	private Response response;
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@GetMapping
 	@RequestMapping("/listlevelsofdifficulty")
 	public List<WorkSheetsDTO> listDifficultyLevels(@PathVariable("tenantId") long tenantId){
@@ -33,6 +35,7 @@ public class WorkSheetsController {
 		return service.listDifficulty(tenantId);
 	}
 	
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/listischoolworksheets")
 	public List<WorkSheetsDTO> listingiSchoolWorkSheets(@PathVariable("tenantId") long tenantId, @RequestBody WorkSheetsDTO worksheets) {
 
@@ -41,6 +44,7 @@ public class WorkSheetsController {
 		return list;
 	}
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@PostMapping
 	@RequestMapping("/listmyworksheets")
 	public List<WorkSheetsDTO> listingAllWorkSheets(@PathVariable("tenantId") long tenantId, @RequestBody WorkSheetsDTO worksheets) {
@@ -50,6 +54,7 @@ public class WorkSheetsController {
 		return list;
 	}
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@GetMapping
 	@RequestMapping("/getlistmyworksheets")
 	public List<WorkSheetsDTO> listingAllWorkSheets(@PathVariable("tenantId") long tenantId){
@@ -59,6 +64,7 @@ public class WorkSheetsController {
 		return list;
 	}
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/uploadmyworksheet")
 	public ResponseEntity<Response> uploadWorkSheet(@PathVariable("tenantId") long tenantId, @RequestBody WorkSheetsDTO worksheets) {
 
@@ -79,6 +85,7 @@ public class WorkSheetsController {
 
 	}
 	
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/createmyworksheet")
 	public ResponseEntity<Response> createWorkSheet(@PathVariable("tenantId") long tenantId, @RequestBody WorkSheetsDTO worksheets) {
 
