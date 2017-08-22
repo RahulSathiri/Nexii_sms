@@ -9,8 +9,6 @@ public class MessagesDetails {
 	private long recieverid;
 	private String name;
 	private long id;
-	private long rootmessageid;
-	private long parentmessageid;
 	private String sentflag;
 	private String sendername;
 	private String recievername;
@@ -27,20 +25,13 @@ public class MessagesDetails {
 		return dateofmessage;
 	}
 
-	public long getParentmessageid() {
-		return parentmessageid;
-	}
-
+	
 	public String getRecievername() {
 		return recievername;
 	}
 
 	public void setRecievername(String recievername) {
 		this.recievername = recievername;
-	}
-
-	public void setParentmessageid(long parentmessageid) {
-		this.parentmessageid = parentmessageid;
 	}
 
 	public void setDateofmessage(String dateofmessage) {
@@ -77,14 +68,6 @@ public class MessagesDetails {
 
 	public void setClassroomid(long classroomid) {
 		this.classroomid = classroomid;
-	}
-
-	public long getRootmessageid() {
-		return rootmessageid;
-	}
-
-	public void setRootmessageid(long rootmessageid) {
-		this.rootmessageid = rootmessageid;
 	}
 
 	public List<MessagesDetails> getReplymessages() {

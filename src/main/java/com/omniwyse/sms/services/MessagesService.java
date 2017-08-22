@@ -160,8 +160,7 @@ public class MessagesService {
 	public List<MessagesDetails> techerMessages(MessagesDTO messagesDTO, long tenantId) {
 		db = retrive.getDatabase(tenantId);
 		List<MessagesDetails> messages=
-		db.sql("select messages.id,messages.message,messages.messagedate,messages.parentmessageid,messages.rootmessageid,messages.parentmessageid,"
-		+"messages.classroomid,messages.senderid,messages.recieverid,messages.sentflag from messages "
+		db.sql("select messages.id,messages.message,messages.messagedate,messages.classroomid,messages.senderid,messages.recieverid,messages.sentflag from messages "
 		+ "where ((sentflag='p' and recieverid=?) or (messages.sentflag='T' and messages.senderid=?))  and classroomid=? "
 		+"and messages.rootmessageid=0 and messages.parentmessageid=0 order by messages.messagedate desc",messagesDTO.getSenderid(),messagesDTO.getSenderid(),messagesDTO.getClassroomid()).results(MessagesDetails.class);
 		return getReplyMessages(getSenderName(messages));
@@ -171,8 +170,7 @@ public class MessagesService {
 	public List<MessagesDetails> parentMessages(MessagesDTO messagesDTO, long tenantId) {
 		db = retrive.getDatabase(tenantId);
 		List<MessagesDetails> messages=
-		db.sql("select messages.id,messages.message,messages.messagedate,messages.parentmessageid,messages.rootmessageid,messages.parentmessageid,"
-		+"messages.classroomid,messages.senderid,messages.recieverid,messages.sentflag " 
+		db.sql("select messages.id,messages.message,messages.messagedate,messages.classroomid,messages.senderid,messages.recieverid,messages.sentflag " 
 		+"from messages where ((sentflag='T' and (recieverid=? or recieverid=-1)) or (messages.sentflag='P' and messages.senderid=?))  and classroomid=? "
 		+"and messages.rootmessageid=0 and messages.parentmessageid=0 order by messages.messagedate desc",messagesDTO.getSenderid(),messagesDTO.getSenderid(),messagesDTO.getClassroomid()).results(MessagesDetails.class);
 		return getReplyMessages(getSenderName(messages));
