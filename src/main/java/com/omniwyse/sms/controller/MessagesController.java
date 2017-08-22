@@ -126,7 +126,8 @@ public class MessagesController {
 			@RequestBody MessagesDTO messagesDTO) {
 	return	service.parentSentMessages(messagesDTO,tenantId);
 	}
-	@PreAuthorize("hasAnyRole('ROLE_PARENT)")
+
+    @PreAuthorize("hasAnyRole('ROLE_PARENT')")
 	@RequestMapping("/parentrecievedsmessages")
 	public List<MessagesDetails> parentRecievedMessages(@PathVariable("tenantId") long tenantId,
 			@RequestBody MessagesDTO messagesDTO) {
