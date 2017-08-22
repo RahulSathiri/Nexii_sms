@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,7 @@ public class MessagesController {
 	@Autowired
 	private Response response;
 	@Autowired StudentsService studentservice;
-
+	@PreAuthorize("hasAnyRole('ROLE_TEACHER')")
 	@RequestMapping("/sendmessagetoparent")
 
 	public ResponseEntity<Response> sendMessageToParent(@PathVariable("tenantId") long tenantId,
@@ -54,7 +55,7 @@ public class MessagesController {
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
-
+	@PreAuthorize("hasAnyRole('ROLE_PARENT')")
 	@RequestMapping("/sendmessagetoteacher")
 
 	public ResponseEntity<Response> sendMessageToTeacher(@PathVariable("tenantId") long tenantId,
@@ -82,19 +83,21 @@ public class MessagesController {
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
+	@PreAuthorize("hasAnyRole('ROLE_TEACHER')")
 	@RequestMapping("/teachersentmessages")
 
 	public List<MessagesDetails> teacherSentMessages(@PathVariable("tenantId") long tenantId,
 			@RequestBody MessagesDTO messagesDTO) {
 	return	service.teacherSentMessages(messagesDTO,tenantId);
 	}
-
+	@PreAuthorize("hasAnyRole('ROLE_TEACHER')")
 	@RequestMapping("/teacherrecievedmessages")
 
 	public List<MessagesDetails> teacherRecievedMessages(@PathVariable("tenantId") long tenantId,
 			@RequestBody MessagesDTO messagesDTO) {
 	return	service.teacherRecievedMessages(messagesDTO,tenantId);
 	}
+	@PreAuthorize("hasAnyRole('ROLE_TEACHER')")
 	@RequestMapping("/replytoparentmessages")
 
 	public ResponseEntity<Response> replyToParentMessages(@PathVariable("tenantId") long tenantId,
@@ -116,21 +119,20 @@ public class MessagesController {
 	}
 	}
 
-	
+	@PreAuthorize("hasAnyRole('ROLE_PARENT')")
 	@RequestMapping("/parentsentmessages")
 
 	public List<MessagesDetails> parentSentMessages(@PathVariable("tenantId") long tenantId,
 			@RequestBody MessagesDTO messagesDTO) {
 	return	service.parentSentMessages(messagesDTO,tenantId);
 	}
+	@PreAuthorize("hasAnyRole('ROLE_PARENT)")
 	@RequestMapping("/parentrecievedsmessages")
-	
-
 	public List<MessagesDetails> parentRecievedMessages(@PathVariable("tenantId") long tenantId,
 			@RequestBody MessagesDTO messagesDTO) {
 	return	service.parentRecievedMessages(messagesDTO,tenantId);
 	}
-	
+	@PreAuthorize("hasAnyRole('ROLE_PARENT')")
 	@RequestMapping("/replytoteachermessages")
 
 	public ResponseEntity<Response> replyToTeacherMessages(@PathVariable("tenantId") long tenantId,
@@ -151,6 +153,7 @@ public class MessagesController {
 	return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);	
 	}
 	}
+	@PreAuthorize("hasAnyRole('ROLE_TEACHER')")
 	@RequestMapping("/{classroomid}/classroomstudents")
 
 	public List<ClassRoomStudents> replyToTeacherMessages(@PathVariable("tenantId") long tenantId,@PathVariable("classroomid") long classroomid) {

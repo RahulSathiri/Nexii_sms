@@ -25,7 +25,7 @@ public class EventsController {
 	@Autowired
 	private Response response;
 
-    @PreAuthorize("hasAnyRole('ROLE_SUPERADMIN','ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @RequestMapping(value = "/postevent", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<Response> postEvent(@PathVariable("tenantId") long tenantId, @RequestBody Events events) {
 
@@ -45,7 +45,7 @@ public class EventsController {
 
 	}
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping("/events")
     public List<Events> listOfEvents(@PathVariable("tenantId") long tenantId) {
 
@@ -54,7 +54,7 @@ public class EventsController {
 
 	}
 
-    @PreAuthorize("hasAnyRole('ROLE_SUPERADMIN','ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping("/editevent")
 	public ResponseEntity<Response> editEvent(@PathVariable("tenantId") long tenantId,@RequestBody Events event) {
 		service.editEvent(event,tenantId);
@@ -64,7 +64,7 @@ public class EventsController {
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 
-    @PreAuthorize("hasAnyRole('ROLE_SUPERADMIN','ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping("/deleteevent")
 	public ResponseEntity<Response> listOfEvents(@PathVariable("tenantId") long tenantId,@RequestBody Events event) {
 		int rowEffected=service.deleteEvent(event,tenantId);
