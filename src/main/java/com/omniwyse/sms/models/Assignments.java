@@ -17,12 +17,12 @@ public class Assignments {
 	private long subjectid;
 	private long lessonsid;
 	private String tags;
-	private String publishassignment;
+	private boolean publishassignment;
 	
-	public String getPublishassignment() {
+	public boolean isPublishassignment() {
 		return publishassignment;
 	}
-	public void setPublishassignment(String publishassignment) {
+	public void setPublishassignment(boolean publishassignment) {
 		this.publishassignment = publishassignment;
 	}
 	public String getTags() {

@@ -16,7 +16,7 @@ public class Lessons {
 	private long classroomid;
 	private Date lessonstartdate;
 	private String status;
-	private String publishtimeline;
+	private boolean publishtimeline;
 	
 	@Id
 	@GeneratedValue
@@ -27,10 +27,10 @@ public class Lessons {
 		this.id = id;
 	}
 	
-	public String getPublishtimeline() {
+	public boolean isPublishtimeline() {
 		return publishtimeline;
 	}
-	public void setPublishtimeline(String publishtimeline) {
+	public void setPublishtimeline(boolean publishtimeline) {
 		this.publishtimeline = publishtimeline;
 	}
 	public String getStatus() {

@@ -21,14 +21,14 @@ public class TimelineDTO {
 	private Date datefrom;
 	private Date dateto;
 	private long publish;
-	private String publishtimeline;
+	private boolean publishtimeline;
 	private Date notificationdate;
 	
-	public String getPublishtimeline() {
+	public boolean isPublishtimeline() {
 		return publishtimeline;
 	}
 
-	public void setPublishtimeline(String publishtimeline) {
+	public void setPublishtimeline(boolean publishtimeline) {
 		this.publishtimeline = publishtimeline;
 	}
 
