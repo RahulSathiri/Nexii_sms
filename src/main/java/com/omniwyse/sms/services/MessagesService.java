@@ -36,9 +36,13 @@ public class MessagesService {
 				message.setClassroomid(messagesDTO.getClassroomid());
 				if (messagesDTO.getId() != 0) {
 					message.setRecieverid(messagesDTO.getRecieverid());
-					message.setParentmessageid(messagesDTO.getId());
-					message.setRootmessageid(messagesDTO.getRootmessageid());
-					
+					if (messagesDTO.getRootmessageid() == 0) {
+						message.setParentmessageid(messagesDTO.getId());
+						message.setRootmessageid(messagesDTO.getId());
+					} else {
+						message.setParentmessageid(messagesDTO.getId());
+						message.setRootmessageid(messagesDTO.getRootmessageid());
+					}
 					return db.insert(message).getRowsAffected();
 
 				} else {
@@ -127,12 +131,12 @@ public class MessagesService {
 
 	public List<MessagesDetails> getReplyMessages(List<MessagesDetails> messages) {
 		for (MessagesDetails message : messages) {
-			
-				List<MessagesDetails>	replymessages = db
-						.sql("select messages.id,messages.message,messages.senderid,messages.sentflag,messages.classroomid,messages.recieverid,messages.messagedate from messages  where parentmessageid=? order by messagedate asc", message.getId())
-						.results(MessagesDetails.class);
 
-			
+			List<MessagesDetails> replymessages = db
+					.sql("select messages.id,messages.message,messages.senderid,messages.sentflag,messages.classroomid,messages.recieverid,messages.messagedate from messages  where parentmessageid=? order by messagedate asc",
+							message.getId())
+					.results(MessagesDetails.class);
+
 			message.setReplymessages(getSenderName(replymessages));
 		}
 		return messages;
