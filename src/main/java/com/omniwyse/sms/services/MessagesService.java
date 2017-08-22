@@ -133,8 +133,11 @@ public class MessagesService {
 			{
 						List<StudentTransferObject> sendersnames=db.sql("select parents.fathername,students.name from parents join students on students.parentid=parents.id where students.id=?",
 								replymessage.getSenderid()).results(StudentTransferObject.class);
+						if(!sendersnames.isEmpty())
+						{
 						replymessage.setSendername(sendersnames.get(0).getName());
 						replymessage.setFathername(sendersnames.get(0).getFathername());
+						}
 						replymessage.setRecievername(db.where("id=?", replymessage.getRecieverid()).results(Teachers.class).get(0).getTeachername());
 			}
 		}
