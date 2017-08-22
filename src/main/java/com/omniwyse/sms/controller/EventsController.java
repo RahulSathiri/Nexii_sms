@@ -17,7 +17,7 @@ import com.omniwyse.sms.services.EventsService;
 import com.omniwyse.sms.utils.Response;
 
 @RestController
-@RequestMapping("/{tenantId}")
+@RequestMapping(value = "/{tenantId}")
 public class EventsController {
 	@Autowired
 	private EventsService service;
@@ -26,7 +26,7 @@ public class EventsController {
 	private Response response;
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERADMIN','ROLE_ADMIN')")
-    @RequestMapping(value = "/{tenantId}/postevent", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/postevent", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<Response> postEvent(@PathVariable("tenantId") long tenantId, @RequestBody Events events) {
 
         int rowEffected = service.postEvent(events, tenantId);
@@ -46,7 +46,7 @@ public class EventsController {
 	}
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @RequestMapping("/{tenantId}/events")
+    @RequestMapping("/events")
     public List<Events> listOfEvents(@PathVariable("tenantId") long tenantId) {
 
         List<Events> list = service.listEvents(tenantId);

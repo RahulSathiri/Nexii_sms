@@ -28,15 +28,20 @@ public class Lessons {
 		this.id = id;
 	}
 	
-<<<<<<< HEAD
-=======
-	public String getPublishtimeline() {
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getPublishtimeline() {
 		return publishtimeline;
 	}
 	public void setPublishtimeline(String publishtimeline) {
 		this.publishtimeline = publishtimeline;
 	}
->>>>>>> justin
 	public String getStatus() {
 		return status;
 	}
