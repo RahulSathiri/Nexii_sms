@@ -59,6 +59,11 @@ public class StudentsService {
 			students.setEmailid(addStudent.getEmailid());
 			students.setGender(addStudent.getGender());
 			students.setName(addStudent.getName());
+			students.setMiddlename(addStudent.getMiddlename());
+			students.setLastname(addStudent.getLastname());
+			students.setBloodgroup(addStudent.getBloodgroup());
+			students.setHeight(addStudent.getHeight());
+			students.setWeight(addStudent.getWeight());
 			students.setParentid(parentid);
 			gradeid = db.where("gradename=? and syllabustype=?", gradename, syllabustype).results(Grades.class).get(0)
 					.getId();

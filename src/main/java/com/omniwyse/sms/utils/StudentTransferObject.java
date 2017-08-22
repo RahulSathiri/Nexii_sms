@@ -25,6 +25,42 @@ public class StudentTransferObject {
 	private String housename;
 	private long gradeid;
 	private String role;
+	private String middlename;
+	private String lastname;
+	private String bloodgroup;
+	private String height;
+	private String weight;
+	
+	public String getMiddlename() {
+		return middlename;
+	}
+	public void setMiddlename(String middlename) {
+		this.middlename = middlename;
+	}
+	public String getLastname() {
+		return lastname;
+	}
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+	public String getBloodgroup() {
+		return bloodgroup;
+	}
+	public void setBloodgroup(String bloodgroup) {
+		this.bloodgroup = bloodgroup;
+	}
+	public String getHeight() {
+		return height;
+	}
+	public void setHeight(String height) {
+		this.height = height;
+	}
+	public String getWeight() {
+		return weight;
+	}
+	public void setWeight(String weight) {
+		this.weight = weight;
+	}
 	public long getParentid() {
 		return parentid;
 	}
