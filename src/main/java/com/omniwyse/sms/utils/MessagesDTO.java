@@ -7,6 +7,7 @@ public class MessagesDTO {
 	private long senderid;
 	private long recieverid;
 	private long parentmessageid;
+	private long rootmessageid;
 	private long classroomid;
 	private ArrayList<Long> recievers;
 	private String typeofmessage;
@@ -18,6 +19,12 @@ public class MessagesDTO {
 	}
 	private String message;
 	
+	public long getRootmessageid() {
+		return rootmessageid;
+	}
+	public void setRootmessageid(long rootmessageid) {
+		this.rootmessageid = rootmessageid;
+	}
 	public long getId() {
 		return id;
 	}
