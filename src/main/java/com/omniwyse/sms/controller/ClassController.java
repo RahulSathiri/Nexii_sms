@@ -78,7 +78,7 @@ public class ClassController {
 		}
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN',ROLE_TEACHER)")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/classrooms/year")
 	public List<ClassSectionTransferObject> getClassRoomaByYear(@PathVariable("tenantId") long tenantId, @RequestBody ClassRoom classroom) {
 		long academicyear = classroom.getAcademicyear();
@@ -135,7 +135,8 @@ public class ClassController {
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN',ROLE_TEACHER)")
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/classrooms/yearandsyllabustype")
 	public List<ClassSectionTransferObject> listSubjectTeac(@PathVariable("tenantId") long tenantId, 
 			@RequestBody ClassSectionTransferObject classtransferobject) {
