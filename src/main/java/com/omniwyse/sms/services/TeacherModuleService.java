@@ -395,7 +395,7 @@ public class TeacherModuleService {
 		List<AssignmentDTO> list = null;
 		String query = "select subjects.subjectname, assignments.assignmentduedate, assignments.assignmentname, assignments.dateofassigned,"
 				+ "assignments.publishassignment, assignments.tags, lessons.lessonname from assignments LEFT JOIN lessons ON "
-				+ "lessons.id = assignments.lessonsid JOIN subjects  ON subjects.id = assignments.subjectid ";
+				+ "lessons.id = assignments.lessonsid LEFT JOIN subjects  ON subjects.id = assignments.subjectid ";
 		if (data.getSubjectname() != null) {
 			long subjectId = db.where("subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId();
 			list = db.sql(query + " where assignments.classroomid = ? and assignments.subjectid = ?", data.getId(), subjectId)
@@ -411,9 +411,9 @@ public class TeacherModuleService {
 
 		db = retrive.getDatabase(tenantId);
 		List<WorkSheetsDTO> list = null;
-		String query = "select worksheets.worksheetname, subjects.subjectname, classroom_worksheets.dateofassigned, classroom_worksheets.worksheetduedate,"
+		String query = "select worksheets.worksheetname,subjects.subjectname, classroom_worksheets.dateofassigned, classroom_worksheets.worksheetduedate,"
 				+ " lessons.lessonname from classroom_worksheets "
-				+ "JOIN subjects ON subjects.id = classroom_worksheets.subjectid LEFT JOIN lessons ON lessons.id = classroom_worksheets.lessonsid "
+				+ "LEFT JOIN subjects ON subjects.id = classroom_worksheets.subjectid LEFT JOIN lessons ON lessons.id = classroom_worksheets.lessonsid "
 				+ " JOIN worksheets ON worksheets.id = classroom_worksheets.worksheetsid ";
 		if (data.getSubjectname() != null) {
 			long subjectId = db.where(" subjectname = ?", data.getSubjectname()).results(Subjects.class).get(0).getId();

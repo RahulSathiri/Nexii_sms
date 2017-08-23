@@ -30,12 +30,15 @@ public class NotificationService {
 			notifications.setNotificationname(data.getNotificationname());
 			notifications.setDescription(data.getDescription());
 			int rows = checkActioncode(tenantId, data);
+			if(rows!=0)
+			{
 			notifications.setActioncode(data.getActioncode());
 			notifications.setParentactionrequired(data.getParentactionrequired());
 			notifications.setPublishedby(data.getPublishedby());
 			notifications.setNotificationdate(data.getNotificationdate());
 			rowEffected = db.transaction(transaction).insert(notifications).getRowsAffected();
 			transaction.commit();
+			}
 
 		} catch (Exception e) {
 			transaction.rollback();
@@ -50,32 +53,35 @@ public class NotificationService {
 		int rowEffected = 0;
 		long id = data.getId();
 		if (data.getActioncode().equals("Timeline")) {
-
-			if (!isExistInNotifications(data)) {
-				rowEffected = db.sql("update lessons set publishtimeline = ? where id = ?", true, id).execute()
-						.getRowsAffected();
-			} else {
+			long notificationid=isExistInNotifications(data);
+			if(notificationid!=0){
 				rowEffected = db.sql("update lessons set publishtimeline = ? where id = ?", false, id).execute()
 						.getRowsAffected();
+				db.sql("delete from notifications where id=?",notificationid).execute();
+				return 0;
+			} else {
+				 db.sql("update lessons set publishtimeline = ? where id = ?",true, id).execute()
+						.getRowsAffected();
+				
 			}
+		}
 
-		} /*
+		/*
 			 * else if (data.getActioncode().equals("Tests")) {
 			 * 
 			 * db.update("").where("id = ?", id); }
 			 */
-		return rowEffected;
+		return 1;
 	}
 
-	private boolean isExistInNotifications(NotificationsDTO data) {
+	private long isExistInNotifications(NotificationsDTO data) {
 
-		String name = db.where("notificationname = ?", data.getNotificationname()).results(Notifications.class).get(0)
-				.getNotificationname();
-		if (name == null) {
-			return false;
+		List<Notifications> notification=db.where("notificationname = ?", data.getNotificationname()).results(Notifications.class);
+		if (!notification.isEmpty()) {
+			return notification.get(0).getId();
 		}
 
-		return true;
+		return 0;
 	}
 
 	public List<NotificationsDTO> listAllPublishednNotifications(long tenantid, NotificationsDTO data) {
