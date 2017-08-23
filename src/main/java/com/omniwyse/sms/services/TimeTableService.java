@@ -96,12 +96,11 @@ public class TimeTableService {
 		return flag;
 	}
 
-	public List<TableView> getClassPeriods(long tenantId,Long id) {
+	public List<TableView> getClassPeriods(long tenantId, Long id) {
 		db = retrive.getDatabase(tenantId);
-		return db
-				.sql("select wd.day,sbj.subjectname, cp.periodfrom, cp.periodto, cp.dateofassigning from classroom_periods cp join subjects sbj on sbj.id = cp.subjectid join weekdays wd on wd.id = cp.classroomweekdayid where classroomid=?",
-						id)
-				.results(TableView.class);
+		return db.sql("select wd.day,sbj.subjectname, cp.periodfrom, cp.periodto, cp.dateofassigning from "
+				+ "classroom_periods cp join subjects sbj on sbj.id = cp.subjectid join weekdays wd"
+				+ " on wd.id = cp.classroomweekdayid where classroomid=?", id).results(TableView.class);
 	}
 
 	public List<WeekDays> getAllDays(long tenantId) {
