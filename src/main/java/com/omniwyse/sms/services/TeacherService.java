@@ -28,7 +28,9 @@ public class TeacherService {
 		if (isValidTeacher(email)) {
 			Teachers teachers=new Teachers();
 			teachers.setTeachername(addTeacher.getTeachername());
+			teachers.setMiddlename(addTeacher.getMiddlename());
 			teachers.setLname(addTeacher.getLname());
+			teachers.setBloodgroup(addTeacher.getBloodgroup());
 			teachers.setDateofbirth(addTeacher.getDateofbirth());
 			teachers.setDateofjoining(addTeacher.getDateofjoining());
 			teachers.setContactnumber(addTeacher.getContactnumber());
@@ -39,6 +41,7 @@ public class TeacherService {
 			teachers.setSubjects(addTeacher.getSubjects());
 			teachers.setEmailid(addTeacher.getEmailid());
 			teachers.setNoofperiods(addTeacher.getNoofperiods());
+			teachers.setMaritalstatus(addTeacher.getMaritalstatus());
 			
 			Transaction transaction = db.startTransaction();
 			try {

@@ -136,7 +136,7 @@ public class TestService {
         syllabus = syllabus + testsyllabus.getSyllabus();
         testSyllabus2.setSyllabus(syllabus);
 
-		return db.update(testsyllabus).getRowsAffected();
+		return db.update(testSyllabus2).getRowsAffected();
 	}
 
 	

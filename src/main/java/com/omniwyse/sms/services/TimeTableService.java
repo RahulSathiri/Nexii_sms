@@ -41,7 +41,6 @@ public class TimeTableService {
 				clsprds.setPeriodto(timetable.getPeriodto());
 				clsprds.setClassroomweekdayid(timetable.getDayid());
 				clsprds.setClassroomid(timetable.getId());
-				clsprds.setDateofassigning(timetable.getDateofassigning());
 				clsprds.setSubjectid(
 						db.where("subjectname =?", timetable.getSubjectname()).results(Subjects.class).get(0).getId());
 				num = db.transaction(transact).insert(clsprds).getRowsAffected();
@@ -98,9 +97,11 @@ public class TimeTableService {
 
 	public List<TableView> getClassPeriods(long tenantId, Long id) {
 		db = retrive.getDatabase(tenantId);
+
 		return db.sql("select wd.day,sbj.subjectname, cp.periodfrom, cp.periodto, cp.dateofassigning from "
 				+ "classroom_periods cp join subjects sbj on sbj.id = cp.subjectid join weekdays wd"
 				+ " on wd.id = cp.classroomweekdayid where classroomid=?", id).results(TableView.class);
+
 	}
 
 	public List<WeekDays> getAllDays(long tenantId) {

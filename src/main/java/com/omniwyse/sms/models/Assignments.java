@@ -14,16 +14,15 @@ public class Assignments {
 	private Date dateofassigned;
 	private Date assignmentduedate;
 	private long classroomid;
-	private long subjectid;
-	private long lessonsid;
+	private Long subjectid;
+	private Long lessonsid;
 	private String tags;
-	private String publishassignment;
-
+	private boolean publishassignment;
 	
-	public String getPublishassignment() {
+	public boolean isPublishassignment() {
 		return publishassignment;
 	}
-	public void setPublishassignment(String publishassignment) {
+	public void setPublishassignment(boolean publishassignment) {
 		this.publishassignment = publishassignment;
 	}
 	public String getTags() {
@@ -32,6 +31,11 @@ public class Assignments {
 	public void setTags(String tags) {
 		this.tags = tags;
 	}
+	
+	public String getAssignmentname() {
+		return assignmentname;
+	}
+	
 	@Id
 	@GeneratedValue
 	public long getId() {
@@ -40,15 +44,11 @@ public class Assignments {
 	public void setId(long id) {
 		this.id = id;
 	}
-	
-	public long getLessonsid() {
+	public Long getLessonsid() {
 		return lessonsid;
 	}
-	public void setLessonsid(long lessonsid) {
+	public void setLessonsid(Long lessonsid) {
 		this.lessonsid = lessonsid;
-	}
-	public String getAssignmentname() {
-		return assignmentname;
 	}
 	public void setAssignmentname(String assignmentname) {
 		this.assignmentname = assignmentname;
@@ -71,12 +71,11 @@ public class Assignments {
 	public void setClassroomid(long classroomid) {
 		this.classroomid = classroomid;
 	}
-	public long getSubjectid() {
+	public Long getSubjectid() {
 		return subjectid;
 	}
-	public void setSubjectid(long subjectid) {
+	public void setSubjectid(Long subjectid) {
 		this.subjectid = subjectid;
 	}
-	
 	
 }
