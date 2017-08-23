@@ -136,7 +136,7 @@ public class ClassController {
 		}
 	}
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping("/classrooms/yearandsyllabustype")
 	public List<ClassSectionTransferObject> listSubjectTeac(@PathVariable("tenantId") long tenantId, 
 			@RequestBody ClassSectionTransferObject classtransferobject) {
