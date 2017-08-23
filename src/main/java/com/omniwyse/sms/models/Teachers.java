@@ -10,7 +10,9 @@ import javax.persistence.Table;
 public class Teachers {
 
 	private String teachername;
+	private String middlename;
 	private String lname;
+	private String bloodgroup;
 	private String contactnumber;
 	private String emailid, address;
 	private String qualification;
@@ -19,7 +21,31 @@ public class Teachers {
 	private Date  dateofbirth;
 	private Date dateofjoining;
 	private String gender;
+	private String maritalstatus;
+	
+	public String getMaritalstatus() {
+		return maritalstatus;
+	}
 
+	public void setMaritalstatus(String maritalstatus) {
+		this.maritalstatus = maritalstatus;
+	}
+
+	public String getMiddlename() {
+		return middlename;
+	}
+
+	public void setMiddlename(String middlename) {
+		this.middlename = middlename;
+	}
+
+	public String getBloodgroup() {
+		return bloodgroup;
+	}
+
+	public void setBloodgroup(String bloodgroup) {
+		this.bloodgroup = bloodgroup;
+	}
 
 	public String getContactnumber() {
 		return contactnumber;

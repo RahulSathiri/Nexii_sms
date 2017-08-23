@@ -1,3 +1,4 @@
+
 package com.omniwyse.sms.controller;
 
 import java.util.List;
@@ -25,11 +26,10 @@ public class StudentsController {
 
 	@Autowired
 	private StudentsService service;
-
 	@Autowired
 	private Response response;
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/addstudent", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> addStudent(@PathVariable("tenantId") long tenantId,@RequestBody StudentTransferObject addStudent) {
 
@@ -59,7 +59,7 @@ public class StudentsController {
 		}
 	}
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/updatestudent", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> updateStudent(@PathVariable("tenantId") long tenantId,@RequestBody Students updateStudent) {
 
@@ -70,8 +70,8 @@ public class StudentsController {
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 
 	}
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/addstudenttoclassroom", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> addstudenttoclassroom(@PathVariable("tenantId") long tenantId,@RequestBody Students addStudent) {
 		String admissionnumber = addStudent.getAdmissionnumber();
@@ -84,12 +84,18 @@ public class StudentsController {
 
 	}
 
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
 	@RequestMapping(value = "/liststudentsofclassroom", method = RequestMethod.POST, produces = "application/json")
 	public List<ClassRoomStudents> getStudentsOfClassRoom(@PathVariable("tenantId") long tenantId,@RequestBody StudentClassroom studentclassroom) {
 		long classid = studentclassroom.getId();
 		return service.getStudentsOfClassRoom(classid,tenantId);
+
+	}
+
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+	@RequestMapping(value = "/{classroomid}/studentsofgrade")
+	public List<Students> getStudentsOfGrade(@PathVariable("tenantId") long tenantId,@PathVariable("classroomid") long classroomid) {
+		return service.getStudentsList(classroomid,tenantId);
 
 	}
 

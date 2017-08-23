@@ -1,6 +1,5 @@
 package com.omniwyse.sms.utils;
 
-import java.sql.Date;
 import java.sql.Time;
 
 public class TableView {
@@ -9,16 +8,7 @@ public class TableView {
 	private String day;
 	private Time periodfrom;
 	private Time periodto;
-	private Date dateofassigning;
 	
-	public Date getDateofassigning() {
-		return dateofassigning;
-	}
-
-	public void setDateofassigning(Date dateofassigning) {
-		this.dateofassigning = dateofassigning;
-	}
-
 	public String getSubjectname() {
 		return subjectname;
 	}
