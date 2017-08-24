@@ -166,4 +166,17 @@ public class MessagesController {
 		students.addAll(studentservice.getStudentsOfClassRoom(classroomid,tenantId));
 		return students;
 }
+	@RequestMapping("/teachermessages")
+
+	public List<MessagesDetails> teacherMessages(@PathVariable("tenantId") long tenantId,
+			@RequestBody MessagesDTO messagesDTO) {
+		return	service.techerMessages(messagesDTO,tenantId);
+	}
+	
+	@RequestMapping("/parentmessages")
+
+	public List<MessagesDetails> parentMessages(@PathVariable("tenantId") long tenantId,
+			@RequestBody MessagesDTO messagesDTO) {
+		return	service.parentMessages(messagesDTO,tenantId);
+	}
 }

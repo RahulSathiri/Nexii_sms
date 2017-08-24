@@ -206,5 +206,20 @@ public class TeacherModuleController {
 		return service.lessonsList(tenantId, data);
 	}
 	
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+	@RequestMapping("/assignedassignmentslist")
+	public List<AssignmentDTO> listOfAssignedAssignments(@PathVariable("tenantId") long tenantId,
+			@RequestBody TimelineDTO data) {
+
+		return service.assignmentsList(tenantId, data);
+	}
 	
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+	@RequestMapping("/assignedworksheetslist")
+	public List<WorkSheetsDTO> listOfAssignedWorksheets(@PathVariable("tenantId") long tenantId,
+			@RequestBody TimelineDTO data) {
+
+		return service.assignedWorksheetsList(tenantId, data);
+	}
 }
+

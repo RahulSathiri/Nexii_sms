@@ -36,7 +36,7 @@ public class RecordsService {
 	public List<StudentTransferObject> getAllStudents(long tenantId) {
 		db = retrive.getDatabase(tenantId);
 		List<StudentTransferObject> students = db
-				.sql("select grades.gradename,houses.housename,students.houseid,students.gradeid,"
+				.sql("select grades.gradename,houses.housename,students.houseid,students.gradeid,students.parentid,"
 						+ "grades.syllabustype,students.name,parents.fathername,students.dateofbirth,students.dateofjoining,students.id,"
 						+ "students.gender,parents.contactnumber,parents.mothername,students.admissionnumber,students.emailid,"
 						+ "students.address,students.id from students left join grades on students.gradeid=grades.id "
@@ -64,7 +64,6 @@ public class RecordsService {
 		classroomdetails.setSubjects(service.getListOfSubjects(gradeid,tenantId));
 		classroomdetails.setSubjectteachers(service.listOfSubjectsTeachers(classid,tenantId));
 		classroomdetails.setStudentsOfClassRoom(studentservice.getStudentsOfClassRoom(classid,tenantId));
-		classroomdetails.setStudentsoOfGrade(studentservice.getStudentsOfGrade(gradeid,tenantId));
 		return classroomdetails;
 	}
 
