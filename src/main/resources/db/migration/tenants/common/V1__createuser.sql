@@ -416,7 +416,6 @@ CREATE TABLE classroom_periods(
 	subjectid INT NOT NULL,
 	classroomid bigint(8) NOT NULL,
 	classroomweekdayid bigint(8) NOT NULL,
-	dateofassigning date NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY(classroomweekdayid) references weekdays(id),
 	FOREIGN KEY(classroomid) references classrooms(id)

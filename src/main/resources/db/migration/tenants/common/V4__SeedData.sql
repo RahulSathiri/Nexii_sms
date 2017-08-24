@@ -84,4 +84,3 @@ INSERT INTO classroom_attendance (classroomid,studentid, dateofattendance, atten
  				(1,'2017-06-26', '2017-06-28', 2, 1, 2),
  				(2, '2017-06-28', '2017-06-30', 2, 2, 4);
  
->>>>>>> branch 'justin' of https://github.com/areddyraja/sms-api.git
