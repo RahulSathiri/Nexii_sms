@@ -14,6 +14,7 @@ import com.dieselpoint.norm.Database;
 import com.omniwyse.sms.db.DBFactory;
 import com.omniwyse.sms.db.DatabaseRetrieval;
 import com.omniwyse.sms.models.Clients;
+import com.omniwyse.sms.models.Parents;
 import com.omniwyse.sms.models.Teachers;
 import com.omniwyse.sms.models.Tenants;
 import com.omniwyse.sms.models.UserCredentials;
@@ -39,8 +40,17 @@ public class LoginService {
     public UserCredentials getUser(Clients clients, long tenantId) {
         db = retrive.getDatabase(tenantId);
         UserCredentials user = db.where("mail=? and password=?", clients.getEmailid(), clients.getPassword()).results(UserCredentials.class).get(0);
-        long teacherId = db.where("emailid = ?", clients.getEmailid()).results(Teachers.class).get(0).getId();
-        user.setId(teacherId);
+        List<Teachers> teacherlist = db.where("emailid = ?", clients.getEmailid()).results(Teachers.class);
+        List<Parents> parentslist = db.where("emailid = ?", clients.getEmailid()).results(Parents.class);
+        if (!teacherlist.isEmpty()) {
+            for (Teachers teacher : teacherlist) {
+                user.setId(teacher.getId());
+            }
+        } else if (!parentslist.isEmpty()) {
+            for (Parents parent : parentslist) {
+                user.setId(parent.getId());
+            }
+        }
         return user;
     }
 

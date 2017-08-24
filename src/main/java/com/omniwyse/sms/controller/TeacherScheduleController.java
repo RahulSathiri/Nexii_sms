@@ -22,7 +22,7 @@ public class TeacherScheduleController {
 	@Autowired
 	private TeacherModuleService service;
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/today")
 	public List<TeacherScheduleDTO> defaultSchedule(@PathVariable("tenantId") long tenantId, @RequestBody ClassSectionTransferObject dataObject) {
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -31,7 +31,7 @@ public class TeacherScheduleController {
 		return service.getSchedule(tenantId,dataObject, date);
 	}
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/tomorrow")
 	public List<TeacherScheduleDTO> scheduleOfNextday(@PathVariable("tenantId") long tenantId, @RequestBody ClassSectionTransferObject dataobject) {
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");

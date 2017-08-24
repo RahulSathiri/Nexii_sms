@@ -61,7 +61,7 @@ public class SubjectTeacherClassController {
 		}
 	}
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
     @RequestMapping("/listingassignedteachers")
 	public List<ClassSectionTransferObject> listOfSubjectsToTeachers(
 			@PathVariable("tenantId") long tenantId,@RequestBody ClassSectionTransferObject classtransferobject) {
