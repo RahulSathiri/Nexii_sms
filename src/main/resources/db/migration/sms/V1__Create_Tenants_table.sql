@@ -18,7 +18,7 @@ CREATE TABLE schools(
 INSERT INTO schools(code, sname,dateofestablishment, timezone, dbname, statusid,url)
 			VALUES("oakridge","Oakridge High School","2017-06-15","Asia/Calcutta","oakridge",1,"oakridge.omniwyse.co"),
 				  ("DPS","Delhi Public High School","2017-06-15","Asia/Calcutta","dps",1,"dps.omniwyse.co");
-				  
+				   
 CREATE TABLE clients(
   id bigint(8) NOT NULL AUTO_INCREMENT,
   schoolid bigint(8) NOT NULL,
