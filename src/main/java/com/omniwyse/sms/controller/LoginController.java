@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.omniwyse.sms.models.Clients;
+import com.omniwyse.sms.models.UserCredentials;
 import com.omniwyse.sms.services.LoginService;
 import com.omniwyse.sms.utils.LoginResponse;
 
@@ -29,11 +30,11 @@ public class LoginController {
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/userlogin", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<LoginResponse> userLogin(@PathVariable("tenantId") long tenantId, @RequestBody Clients clients) {
-        response.setUserId(service.getUserId(clients, tenantId));
+        UserCredentials user = service.getUser(clients, tenantId);
+        response.setUserId(user.getId());
+        response.setUsername(user.getMail());
         response.setStatus(200);
         response.setDescription("success");
         return new ResponseEntity<LoginResponse>(response, HttpStatus.OK);
-
 	}
-
 }

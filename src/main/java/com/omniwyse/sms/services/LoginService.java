@@ -35,18 +35,15 @@ public class LoginService {
     @Autowired
     private LoginResponse response;
 
-    public long getUserId(Clients clients, long tenantId) {
+    public UserCredentials getUser(Clients clients, long tenantId) {
         db = retrive.getDatabase(tenantId);
-        long userid = db.where("mail=? and password=?", clients.getEmailid(), clients.getPassword()).results(UserCredentials.class).get(0).getId();
-        return userid;
+        UserCredentials user = db.where("mail=? and password=?", clients.getEmailid(), clients.getPassword()).results(UserCredentials.class).get(0);
+        return user;
     }
 
     public ResponseEntity<LoginResponse> userLogin(UserCredentials clients, long tenantId) {
-        // emailid = clients.getMail();
-        // password = clients.getPassword();
         db = retrive.getDatabase(tenantId);
-        List<UserCredentials> userlist = db.where("mail=? and password=?", clients.getMail(), clients.getPassword())
-                .results(UserCredentials.class);
+        List<UserCredentials> userlist = db.where("mail=? and password=?", clients.getMail(), clients.getPassword()).results(UserCredentials.class);
 
         if (userlist.isEmpty()) {
             response.setStatus(400);

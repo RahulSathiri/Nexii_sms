@@ -74,7 +74,7 @@ public class TeacherModuleController {
 		return service.getClassRoomOfTeacherAssignedCRT(tenantId,moduleDTO);
 	}
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER','ROLE_PARENT')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
 	@RequestMapping("/myclassroomtests/{id}")
 	public List<TestTransferObject> getListOfClassroomTests(@PathVariable("tenantId") long tenantId, @PathVariable ("id") long id){
 		
