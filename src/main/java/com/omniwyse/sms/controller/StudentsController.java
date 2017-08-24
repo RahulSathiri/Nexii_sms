@@ -94,7 +94,6 @@ public class StudentsController {
 
 	}
 
-}
 
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping(value = "/{classroomid}/studentsofgrade")
