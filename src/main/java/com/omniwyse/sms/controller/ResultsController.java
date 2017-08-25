@@ -34,13 +34,13 @@ public class ResultsController {
 		return service.viewResults(resultstransferobject,tenantId);
 	}
 
-    @PreAuthorize("hasAnyRole('ROLE_TEACHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping(value = "/entermarks", method = RequestMethod.POST, produces = "application/json")
 	public List<ResultsTransferObject> testresults(@PathVariable("tenantId") long tenantId,@RequestBody ResultsTransferObject resultstransferobject) {
 		return service.enterMarks(resultstransferobject,tenantId);
 	}
 	
-    @PreAuthorize("hasAnyRole('ROLE_TEACHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping(value = "/addmarks", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> addMarks(@PathVariable("tenantId") long tenantId,@RequestBody List<ResultsTransferObject> resultstransferobject) {
         int val = service.addMarks(resultstransferobject, tenantId);
