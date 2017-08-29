@@ -70,8 +70,9 @@ public class StudentsController {
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 
 	}
-	
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/addstudenttoclassroom", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Response> addstudenttoclassroom(@PathVariable("tenantId") long tenantId,@RequestBody Students addStudent) {
 		String admissionnumber = addStudent.getAdmissionnumber();
@@ -84,7 +85,8 @@ public class StudentsController {
 
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping(value = "/liststudentsofclassroom", method = RequestMethod.POST, produces = "application/json")
 	public List<ClassRoomStudents> getStudentsOfClassRoom(@PathVariable("tenantId") long tenantId,@RequestBody StudentClassroom studentclassroom) {
 		long classid = studentclassroom.getId();
@@ -92,7 +94,8 @@ public class StudentsController {
 
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping(value = "/{classroomid}/studentsofgrade")
 	public List<Students> getStudentsOfGrade(@PathVariable("tenantId") long tenantId,@PathVariable("classroomid") long classroomid) {
 		return service.getStudentsList(classroomid,tenantId);
@@ -100,3 +103,4 @@ public class StudentsController {
 	}
 
 }
+

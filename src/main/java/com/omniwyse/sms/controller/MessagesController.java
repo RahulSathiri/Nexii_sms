@@ -26,9 +26,9 @@ public class MessagesController {
 	@Autowired
 	private Response response;
 	@Autowired StudentsService studentservice;
+	
 	@PreAuthorize("hasAnyRole('ROLE_TEACHER')")
 	@RequestMapping("/sendmessagetoparent")
-
 	public ResponseEntity<Response> sendMessageToParent(@PathVariable("tenantId") long tenantId,
 			@RequestBody MessagesDTO messagesDTO) {
 		 String sentflag="T";
@@ -55,9 +55,9 @@ public class MessagesController {
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
+	
 	@PreAuthorize("hasAnyRole('ROLE_PARENT')")
 	@RequestMapping("/sendmessagetoteacher")
-
 	public ResponseEntity<Response> sendMessageToTeacher(@PathVariable("tenantId") long tenantId,
 			@RequestBody MessagesDTO messagesDTO) {
 		 String sentflag="P";
@@ -83,23 +83,23 @@ public class MessagesController {
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
+	
 	@PreAuthorize("hasAnyRole('ROLE_TEACHER')")
 	@RequestMapping("/teachersentmessages")
-
 	public List<MessagesDetails> teacherSentMessages(@PathVariable("tenantId") long tenantId,
 			@RequestBody MessagesDTO messagesDTO) {
 	return	service.teacherSentMessages(messagesDTO,tenantId);
 	}
+	
 	@PreAuthorize("hasAnyRole('ROLE_TEACHER')")
 	@RequestMapping("/teacherrecievedmessages")
-
 	public List<MessagesDetails> teacherRecievedMessages(@PathVariable("tenantId") long tenantId,
 			@RequestBody MessagesDTO messagesDTO) {
 	return	service.teacherRecievedMessages(messagesDTO,tenantId);
 	}
+	
 	@PreAuthorize("hasAnyRole('ROLE_TEACHER')")
 	@RequestMapping("/replytoparentmessages")
-
 	public ResponseEntity<Response> replyToParentMessages(@PathVariable("tenantId") long tenantId,
 			@RequestBody MessagesDTO messagesDTO) {
 	 String sentflag="T";
@@ -121,7 +121,6 @@ public class MessagesController {
 
 	@PreAuthorize("hasAnyRole('ROLE_PARENT')")
 	@RequestMapping("/parentsentmessages")
-
 	public List<MessagesDetails> parentSentMessages(@PathVariable("tenantId") long tenantId,
 			@RequestBody MessagesDTO messagesDTO) {
 	return	service.parentSentMessages(messagesDTO,tenantId);
@@ -133,10 +132,10 @@ public class MessagesController {
 			@RequestBody MessagesDTO messagesDTO) {
 	return	service.parentRecievedMessages(messagesDTO,tenantId);
 	}
-	@PreAuthorize("hasAnyRole('ROLE_PARENT')")
+	
+    @PreAuthorize("hasAnyRole('ROLE_PARENT')")
 	@RequestMapping("/replytoteachermessages")
-
-	public ResponseEntity<Response> replyToTeacherMessages(@PathVariable("tenantId") long tenantId,
+    public ResponseEntity<Response> replyToTeacherMessages(@PathVariable("tenantId") long tenantId,
 			@RequestBody MessagesDTO messagesDTO) {
 	 String sentflag="P";
 	int rowEffected=	service.sendMessage(messagesDTO,tenantId,sentflag);
@@ -154,29 +153,31 @@ public class MessagesController {
 	return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);	
 	}
 	}
+	
 	@PreAuthorize("hasAnyRole('ROLE_TEACHER')")
 	@RequestMapping("/{classroomid}/classroomstudents")
-
-	public List<ClassRoomStudents> replyToTeacherMessages(@PathVariable("tenantId") long tenantId,@PathVariable("classroomid") long classroomid) {
-		ClassRoomStudents classroomstudents=new ClassRoomStudents();
+	public List<ClassRoomStudents> replyToTeacherMessages(@PathVariable("tenantId") long tenantId,
+			@PathVariable("classroomid") long classroomid) {
+		ClassRoomStudents classroomstudents = new ClassRoomStudents();
 		classroomstudents.setName("All");
 		classroomstudents.setId(-1);
-		List<ClassRoomStudents> students=new ArrayList<ClassRoomStudents>();
+		List<ClassRoomStudents> students = new ArrayList<ClassRoomStudents>();
 		students.add(classroomstudents);
-		students.addAll(studentservice.getStudentsOfClassRoom(classroomid,tenantId));
+		students.addAll(studentservice.getStudentsOfClassRoom(classroomid, tenantId));
 		return students;
-}
+	}
+	
+	@PreAuthorize("hasAnyRole('ROLE_TEACHER')")
 	@RequestMapping("/teachermessages")
-
 	public List<MessagesDetails> teacherMessages(@PathVariable("tenantId") long tenantId,
 			@RequestBody MessagesDTO messagesDTO) {
 		return	service.techerMessages(messagesDTO,tenantId);
 	}
 	
+	@PreAuthorize("hasAnyRole('ROLE_PARENT')")
 	@RequestMapping("/parentmessages")
-
 	public List<MessagesDetails> parentMessages(@PathVariable("tenantId") long tenantId,
 			@RequestBody MessagesDTO messagesDTO) {
-		return	service.parentMessages(messagesDTO,tenantId);
+		return service.parentMessages(messagesDTO, tenantId);
 	}
 }

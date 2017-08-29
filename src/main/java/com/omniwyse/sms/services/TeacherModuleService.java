@@ -1,3 +1,4 @@
+
 package com.omniwyse.sms.services;
 
 import java.sql.Date;
@@ -74,7 +75,7 @@ public class TeacherModuleService {
 
 	}
 	@SuppressWarnings("deprecation")
-	public List<TeacherScheduleDTO> getSchedule(long tenantId, ClassSectionTransferObject dataObject, String date) {
+	public List<TeacherScheduleDTO> getSchedule(long tenantId, ClassSectionTransferObject dataObject, int dayId) {
 
 		db = retrive.getDatabase(tenantId);
 
@@ -83,13 +84,12 @@ public class TeacherModuleService {
 				.sql("select classid, subjectid from class_subject_teacher where teacherid = ?", dataObject.getId())
 				.results(SubjectTeacherClass.class);
 		for (SubjectTeacherClass sub : classub) {
-			List<TeacherScheduleDTO> sublist = db
-					.sql(" select classroom_periods.periodfrom, classroom_periods.periodto,"
-							+ "subjects.subjectname,classrooms.gradeid,classrooms.sectionname from classroom_periods "
-							+ " join subjects on classroom_periods.subjectid=subjects.id join classrooms on classrooms.id = classroom_periods.classroomid"
-							+ " where classroom_periods.classroomid =? and classroom_periods.subjectid = ? ",
-							sub.getClassid(), sub.getSubjectid())
-					.results(TeacherScheduleDTO.class);
+			List<TeacherScheduleDTO> sublist = db.sql(
+					" select classroom_periods.periodfrom, classroom_periods.periodto, subjects.subjectname,classrooms.gradeid,"
+							+ "classrooms.sectionname from classroom_periods join subjects on classroom_periods.subjectid=subjects.id"
+							+ " join classrooms on classrooms.id = classroom_periods.classroomid where classroom_periods.classroomid = ?"
+							+ " and classroom_periods.subjectid = ? and classroom_periods.classroomweekdayid = ?",
+					sub.getClassid(), sub.getSubjectid(), dayId).results(TeacherScheduleDTO.class);
 			int variable = 0;
 			for (TeacherScheduleDTO teacher : sublist) {
 				list.add(sublist.get(variable));
@@ -393,7 +393,7 @@ public class TeacherModuleService {
 
 		db = retrive.getDatabase(tenantId);
 		List<AssignmentDTO> list = null;
-		String query = "select subjects.subjectname, assignments.assignmentduedate, assignments.assignmentname, assignments.dateofassigned,"
+		String query = "select subjects.subjectname,assignments.id,assignments.assignmentduedate, assignments.assignmentname, assignments.dateofassigned,"
 				+ "assignments.publishassignment, assignments.tags, lessons.lessonname from assignments LEFT JOIN lessons ON "
 				+ "lessons.id = assignments.lessonsid LEFT JOIN subjects  ON subjects.id = assignments.subjectid ";
 		if (data.getSubjectname() != null) {
@@ -411,7 +411,7 @@ public class TeacherModuleService {
 
 		db = retrive.getDatabase(tenantId);
 		List<WorkSheetsDTO> list = null;
-		String query = "select worksheets.worksheetname,subjects.subjectname, classroom_worksheets.dateofassigned, classroom_worksheets.worksheetduedate,"
+		String query = "select worksheets.worksheetname,classroom_worksheets.id,subjects.subjectname, classroom_worksheets.dateofassigned, classroom_worksheets.worksheetduedate,"
 				+ " lessons.lessonname from classroom_worksheets "
 				+ "LEFT JOIN subjects ON subjects.id = classroom_worksheets.subjectid LEFT JOIN lessons ON lessons.id = classroom_worksheets.lessonsid "
 				+ " JOIN worksheets ON worksheets.id = classroom_worksheets.worksheetsid ";
@@ -425,5 +425,5 @@ public class TeacherModuleService {
 			return list;
 		}
 	}
-
 }
+

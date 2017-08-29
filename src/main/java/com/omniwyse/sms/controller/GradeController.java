@@ -53,20 +53,22 @@ public class GradeController {
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
-	@PreAuthorize("isAuthenticated()")
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping("/listgrades")
 	public List<Grades> listOfAllGrades(@PathVariable("tenantId") long tenantId) {
 
 		return service.listAllGrades(tenantId);
 	}
 	
-	@PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping("/listdistinctgrades")
 	public List<Grades> listOfDistinctGrades(@PathVariable("tenantId") long tenantId) {
 
 		return service.listDistinctGrades(tenantId);
 	}
-	@PreAuthorize("isAuthenticated()")
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping("/listgradesofsyllabustype")
 	public List<Grades> listGradesOfSyllabusType(@PathVariable("tenantId") long tenantId, @RequestBody ClassSectionTransferObject classtransferobject) {
 		String syllabustype = classtransferobject.getSyllabustype();

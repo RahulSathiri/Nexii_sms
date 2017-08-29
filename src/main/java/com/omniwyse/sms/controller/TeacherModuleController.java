@@ -36,13 +36,13 @@ public class TeacherModuleController {
 	@Autowired
 	private Response response;
 	
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/mysubjects")
 	public List<TeacherModuleDTO> listOfTeacherAssignedSubjects(@PathVariable("tenantId") long tenantId, @RequestBody ClassSectionTransferObject moduleDTO) {
 		return service.listAllSubjectsAlongWithClassRooms(tenantId,moduleDTO);
 	}
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/mysubjects/{id}/{subjectname}")
 	public ClassRoomDetails listStudentsAndTests(@PathVariable("tenantId") long tenantId, @PathVariable ("id") long id, @PathVariable ("subjectname") String subjectname){
 		
@@ -50,7 +50,7 @@ public class TeacherModuleController {
 		
 	}
 	
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/mysubjectsstudents/{id}/{subjectname}")
 	public ClassRoomDetails listStudents(@PathVariable("tenantId") long tenantId, @PathVariable ("id") long id, @PathVariable ("subjectname") String subjectname){
 		
@@ -58,7 +58,7 @@ public class TeacherModuleController {
 		
 	}
 	
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER','ROLE_PARENT')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER','ROLE_PARENT')")
 	@RequestMapping("/subjectstests/{id}/{subjectname}")
 	public List<TestTransferObject> getListOfTests(@PathVariable("tenantId") long tenantId, @PathVariable ("id") long id, @PathVariable ("subjectname") String subjectname) {
 		List<TestTransferObject> tests= service.getListOfsubjectTests(tenantId,id,subjectname);
@@ -66,7 +66,7 @@ public class TeacherModuleController {
 
 	}
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/myclassroom")
 	public List<ClassSectionTransferObject> listClassRoomAssignedAsClassRoomTeacher(@PathVariable("tenantId") long tenantId, 
 			@RequestBody ClassSectionTransferObject moduleDTO) {
@@ -74,28 +74,28 @@ public class TeacherModuleController {
 		return service.getClassRoomOfTeacherAssignedCRT(tenantId,moduleDTO);
 	}
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER','ROLE_PARENT')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/myclassroomtests/{id}")
 	public List<TestTransferObject> getListOfClassroomTests(@PathVariable("tenantId") long tenantId, @PathVariable ("id") long id){
 		
 		return service.getListOfClassroomTests(tenantId,id);
 	}
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/teacherprofile")
 	public Teachers showTeacherProfile(@PathVariable("tenantId") long tenantId, @RequestBody ClassSectionTransferObject teacher) {
 
 		return service.showTeacherProfile(tenantId,teacher);
 	}
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER','ROLE_PARENT')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER','ROLE_PARENT')")
 	@RequestMapping("/timeline")
 	public List<TimelineDTO> timelineView(@PathVariable("tenantId") long tenantId, @RequestBody TimelineDTO data){
 		
 		return service.viewTimeline(tenantId, data);
 	}
 	
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/addlesson")
 	public ResponseEntity<Response> addLessonToSubject(@PathVariable("tenantId") long tenantId,
 			@RequestBody TimelineDTO data) {
@@ -119,14 +119,14 @@ public class TeacherModuleController {
 		}
 	}
 	
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER','ROLE_PARENT')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER','ROLE_PARENT')")
 	@RequestMapping("/teacherschedule/listofworksheets")
 	public List<WorkSheetsDTO> listOFWorksheets(@PathVariable("tenantId") long tenantId, @RequestBody WorkSheetsDTO data){
 		
 		return service.listWorkSheetsbasedOn(tenantId, data);
 	}
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/assignassignment")
 	public ResponseEntity<Response> assignmentAssigning(@PathVariable("tenantId") long tenantId, @RequestBody AssignmentDTO assigning) {
 
@@ -144,7 +144,7 @@ public class TeacherModuleController {
 		}
 	}
 	
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/deleteassignment")
 	public ResponseEntity<Response> deleteAssignedAssignment(@PathVariable("tenantId") long tenantId, @RequestBody Assignments data) {
 		int rowEffected=service.deleteAssignedAssignment(data,tenantId);
@@ -162,7 +162,7 @@ public class TeacherModuleController {
 
 	}
 	
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/assignworksheet")
 	public ResponseEntity<Response> worksheetAssigning(@PathVariable("tenantId") long tenantId, @RequestBody WorkSheetsDTO data) {
 
@@ -180,7 +180,7 @@ public class TeacherModuleController {
 		}
 	}
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/deleteworksheet")
 	public ResponseEntity<Response> deleteAssignedWorksheet(@PathVariable("tenantId") long tenantId, @RequestBody ClassroomWorksheets data) {
 		int rowEffected=service.deleteAssignedWorksheet(data,tenantId);
@@ -199,14 +199,14 @@ public class TeacherModuleController {
 	}
 
 	
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/lessonslist")
 	public List<Lessons> listOfLessons(@PathVariable("tenantId") long tenantId, @RequestBody TimelineDTO data){
 		
 		return service.lessonsList(tenantId, data);
 	}
 	
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/assignedassignmentslist")
 	public List<AssignmentDTO> listOfAssignedAssignments(@PathVariable("tenantId") long tenantId,
 			@RequestBody TimelineDTO data) {
@@ -214,7 +214,7 @@ public class TeacherModuleController {
 		return service.assignmentsList(tenantId, data);
 	}
 	
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/assignedworksheetslist")
 	public List<WorkSheetsDTO> listOfAssignedWorksheets(@PathVariable("tenantId") long tenantId,
 			@RequestBody TimelineDTO data) {
