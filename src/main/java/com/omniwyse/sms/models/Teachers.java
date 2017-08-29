@@ -9,6 +9,8 @@ import javax.persistence.Table;
 @Table(name = "teachers")
 public class Teachers {
 
+    private long id;
+    private long noofperiods;
 	private String teachername;
 	private String middlename;
 	private String lname;
@@ -118,9 +120,6 @@ public class Teachers {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-
-	private long id;
-	private long noofperiods;
 
 	public long getNoofperiods() {
 		return noofperiods;
