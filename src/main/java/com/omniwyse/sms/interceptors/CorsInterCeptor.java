@@ -16,7 +16,7 @@ public class CorsInterCeptor implements HandlerInterceptor {
         if (!response.containsHeader("Access-Control-Allow-Origin")) {
             response.addHeader("Access-Control-Allow-Origin", "*");
             response.addHeader("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH");
-            response.addHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept, tenant, caller");
+            response.addHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept, tenant, caller,schoolname");
             response.addHeader("Access-Control-Request-Headers", "Authorization, Content-Type, Accept, tenant, caller");
             response.addHeader("Access-Control-Max-Age", "86400");
         }

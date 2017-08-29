@@ -20,34 +20,34 @@ public class StudentsDateOfBirthController {
 	@Autowired
 	StudentsDateOfBirthService studentsDateOfBirthService;
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/birthday/classteacher")
 	public List<DateOfBirthDTO> getClassStudentsBirthDay(@PathVariable("tenantId") long tenantId,@RequestBody DateOfBirthDTO dateOfBirthDTO) {
 		return studentsDateOfBirthService.getClassStudentsBirthDay(dateOfBirthDTO,tenantId);
 
 	}
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/birthday/classsubjectteacher")
 	public List<DateOfBirthDTO> getClassSubjectsStudentsBirthDay(@PathVariable("tenantId") long tenantId,@RequestBody DateOfBirthDTO dateOfBirthDTO) {
 		return studentsDateOfBirthService.getClassSubjectsStudentsBirthDay(dateOfBirthDTO,tenantId);
 	}
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/birthday/students")
 	public List<DateOfBirthDTO> getStudentsBirthDays(@PathVariable("tenantId") long tenantId) {
 		return studentsDateOfBirthService.getStudentsBirthDays(tenantId);
 
 	}
 	
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/birthday/myclassstudentstoday")
 	public List<DateOfBirthDTO> getBirthDaysOfMyClassStudents(@PathVariable("tenantId") long tenantId,@RequestBody ClassRoom classRoom) {
 		return studentsDateOfBirthService.getBirthDaysOfMyClassStudents(classRoom,tenantId);
 
 	}
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/birthday/myclassstudentstomorrow")
 	public List<DateOfBirthDTO> getTomorrowBirthDaysOfMyClassStudents(@PathVariable("tenantId") long tenantId,@RequestBody ClassRoom classRoom) {
 		return studentsDateOfBirthService.getTomorrowBirthDaysOfMyClassStudents(classRoom,tenantId);
