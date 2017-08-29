@@ -174,7 +174,7 @@ public class MessagesController {
 		return	service.techerMessages(messagesDTO,tenantId);
 	}
 	
-	@PreAuthorize("hasAnyRole('ROLE_TEACHER')")
+	@PreAuthorize("hasAnyRole('ROLE_PARENT')")
 	@RequestMapping("/parentmessages")
 	public List<MessagesDetails> parentMessages(@PathVariable("tenantId") long tenantId,
 			@RequestBody MessagesDTO messagesDTO) {
