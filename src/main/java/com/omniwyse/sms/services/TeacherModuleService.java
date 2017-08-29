@@ -75,7 +75,7 @@ public class TeacherModuleService {
 
 	}
 	@SuppressWarnings("deprecation")
-	public List<TeacherScheduleDTO> getSchedule(long tenantId, ClassSectionTransferObject dataObject, String date) {
+	public List<TeacherScheduleDTO> getSchedule(long tenantId, ClassSectionTransferObject dataObject, int dayId) {
 
 		db = retrive.getDatabase(tenantId);
 
@@ -84,13 +84,12 @@ public class TeacherModuleService {
 				.sql("select classid, subjectid from class_subject_teacher where teacherid = ?", dataObject.getId())
 				.results(SubjectTeacherClass.class);
 		for (SubjectTeacherClass sub : classub) {
-			List<TeacherScheduleDTO> sublist = db
-					.sql(" select classroom_periods.periodfrom, classroom_periods.periodto,"
-							+ "subjects.subjectname,classrooms.gradeid,classrooms.sectionname from classroom_periods "
-							+ " join subjects on classroom_periods.subjectid=subjects.id join classrooms on classrooms.id = classroom_periods.classroomid"
-							+ " where classroom_periods.classroomid =? and classroom_periods.subjectid = ? ",
-							sub.getClassid(), sub.getSubjectid())
-					.results(TeacherScheduleDTO.class);
+			List<TeacherScheduleDTO> sublist = db.sql(
+					" select classroom_periods.periodfrom, classroom_periods.periodto, subjects.subjectname,classrooms.gradeid,"
+							+ "classrooms.sectionname from classroom_periods join subjects on classroom_periods.subjectid=subjects.id"
+							+ " join classrooms on classrooms.id = classroom_periods.classroomid where classroom_periods.classroomid = ?"
+							+ " and classroom_periods.subjectid = ? and classroom_periods.classroomweekdayid = ?",
+					sub.getClassid(), sub.getSubjectid(), dayId).results(TeacherScheduleDTO.class);
 			int variable = 0;
 			for (TeacherScheduleDTO teacher : sublist) {
 				list.add(sublist.get(variable));
