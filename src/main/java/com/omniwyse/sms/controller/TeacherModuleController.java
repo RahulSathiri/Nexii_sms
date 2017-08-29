@@ -206,7 +206,7 @@ public class TeacherModuleController {
 		return service.lessonsList(tenantId, data);
 	}
 	
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/assignedassignmentslist")
 	public List<AssignmentDTO> listOfAssignedAssignments(@PathVariable("tenantId") long tenantId,
 			@RequestBody TimelineDTO data) {
@@ -214,7 +214,7 @@ public class TeacherModuleController {
 		return service.assignmentsList(tenantId, data);
 	}
 	
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TECHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/assignedworksheetslist")
 	public List<WorkSheetsDTO> listOfAssignedWorksheets(@PathVariable("tenantId") long tenantId,
 			@RequestBody TimelineDTO data) {
