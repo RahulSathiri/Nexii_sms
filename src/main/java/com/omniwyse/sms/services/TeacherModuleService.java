@@ -393,7 +393,7 @@ public class TeacherModuleService {
 
 		db = retrive.getDatabase(tenantId);
 		List<AssignmentDTO> list = null;
-		String query = "select subjects.subjectname, assignments.assignmentduedate, assignments.assignmentname, assignments.dateofassigned,"
+		String query = "select subjects.subjectname,assignments.id,assignments.assignmentduedate, assignments.assignmentname, assignments.dateofassigned,"
 				+ "assignments.publishassignment, assignments.tags, lessons.lessonname from assignments LEFT JOIN lessons ON "
 				+ "lessons.id = assignments.lessonsid LEFT JOIN subjects  ON subjects.id = assignments.subjectid ";
 		if (data.getSubjectname() != null) {
@@ -411,7 +411,7 @@ public class TeacherModuleService {
 
 		db = retrive.getDatabase(tenantId);
 		List<WorkSheetsDTO> list = null;
-		String query = "select worksheets.worksheetname,subjects.subjectname, classroom_worksheets.dateofassigned, classroom_worksheets.worksheetduedate,"
+		String query = "select worksheets.worksheetname,classroom_worksheets.id,subjects.subjectname, classroom_worksheets.dateofassigned, classroom_worksheets.worksheetduedate,"
 				+ " lessons.lessonname from classroom_worksheets "
 				+ "LEFT JOIN subjects ON subjects.id = classroom_worksheets.subjectid LEFT JOIN lessons ON lessons.id = classroom_worksheets.lessonsid "
 				+ " JOIN worksheets ON worksheets.id = classroom_worksheets.worksheetsid ";
