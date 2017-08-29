@@ -7,6 +7,7 @@ public class LoginResponse {
 
     private long userId;
     private String username;
+    private String userrole;
     private long status;
     private String description;
 
@@ -24,6 +25,14 @@ public class LoginResponse {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getUserrole() {
+        return userrole;
+    }
+
+    public void setUserrole(String userrole) {
+        this.userrole = userrole;
     }
 
     public long getStatus() {
