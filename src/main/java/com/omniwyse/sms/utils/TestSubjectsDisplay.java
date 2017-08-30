@@ -4,6 +4,7 @@ public class TestSubjectsDisplay {
 	private long id;
 	private long testid;
 	private long maxmarks;
+	private long marks;
 	public long getMaxmarks() {
 		return maxmarks;
 	}
@@ -31,6 +32,12 @@ public class TestSubjectsDisplay {
 	}
 	public long getSubjectid() {
 		return subjectid;
+	}
+	public long getMarks() {
+		return marks;
+	}
+	public void setMarks(long marks) {
+		this.marks = marks;
 	}
 	public void setSubjectid(long subjectid) {
 		this.subjectid = subjectid;

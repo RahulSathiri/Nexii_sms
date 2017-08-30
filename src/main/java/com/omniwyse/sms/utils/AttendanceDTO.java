@@ -1,5 +1,6 @@
 package com.omniwyse.sms.utils;
 import java.sql.Date;
+import java.util.List;
 
 public class AttendanceDTO {
 
@@ -8,6 +9,8 @@ public class AttendanceDTO {
 	private long day;
 	private Date dateofattendance;
 	private long attendancestatus;
+	private String subjectname;
+	private List<AttendanceDTO> subjectattendance;
 
 	public long getId() {
 		return id;
@@ -19,6 +22,22 @@ public class AttendanceDTO {
 
 	public String getShowdate() {
 		return showdate;
+	}
+
+	public String getSubjectname() {
+		return subjectname;
+	}
+
+	public void setSubjectname(String subjectname) {
+		this.subjectname = subjectname;
+	}
+
+	public List<AttendanceDTO> getSubjectattendance() {
+		return subjectattendance;
+	}
+
+	public void setSubjectattendance(List<AttendanceDTO> subjectattendance) {
+		this.subjectattendance = subjectattendance;
 	}
 
 	public void setShowdate(String showdate) {
