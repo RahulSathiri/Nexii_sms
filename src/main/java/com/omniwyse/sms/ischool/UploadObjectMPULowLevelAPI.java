@@ -1,4 +1,4 @@
-package com.omniwyse.sms.config;
+package com.omniwyse.sms.ischool;
 
 import java.io.File;
 import java.util.ArrayList;

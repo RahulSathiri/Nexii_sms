@@ -1,12 +1,13 @@
-package com.omniwyse.sms.config;
+package com.omniwyse.sms.ischool;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
@@ -20,15 +21,14 @@ import com.omniwyse.sms.ischool.IschoolLevelsOfDifficulty;
 import com.omniwyse.sms.ischool.IschoolSubjects;
 import com.omniwyse.sms.ischool.IschoolWorksheets;
 
-@EnableAutoConfiguration
-@Configuration
+@Service
 public class ListObjects {
 
 	private Database db;
-	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ListObjects.class);
 	@Autowired
 	private DBFactory database;
-	
+
 	public void listObjects(String bucket_name) {
 
 		db = database.getSchoolDb();
@@ -36,34 +36,49 @@ public class ListObjects {
 		final AmazonS3 s3 = AmazonS3ClientBuilder.defaultClient();
 		ObjectListing ol = s3.listObjects(bucket_name);
 		List<S3ObjectSummary> objects = ol.getObjectSummaries();
-		List<IschoolGrades> grades = db.sql("select * from ischool_grades").results(IschoolGrades.class);
-		List<IschoolSubjects> subjects = db.sql("select * from ischool_subjects").results(IschoolSubjects.class);
-		List<IschoolLevelsOfDifficulty> level = db.sql("select * from ischool_degreeofdifficulty").results(IschoolLevelsOfDifficulty.class);
-		
+
 		Transaction transaction = db.startTransaction();
 		try {
 			IschoolWorksheets worksheetsLibrary = new IschoolWorksheets();
-			Map<Integer, String[]> hm = new HashMap<Integer, String[]>();
-			int temp = 0;
+			// Map<Integer, String[]> hm = new HashMap<Integer, String[]>();
+			// int temp = 0;
 			for (S3ObjectSummary os : objects) {
 				String[] str = os.getKey().split("/");
 				if (str.length == 4) {
-					temp++;
+					// temp++;
 					System.out.println("* " + os.getKey());
-					hm.put(temp, str);
+					// hm.put(temp, str);
+					Long gradeid = db.where("gradenumber = ?", Long.parseLong(str[0])).results(IschoolGrades.class)
+							.get(0).getId();
+					Long subjectid = db.where("subjectname = ?", str[1]).results(IschoolSubjects.class).get(0)
+							.getSubjectid();
+					Long degreeofdifficultyid = db.where("degreeofdifficulty = ?", str[2])
+							.results(IschoolLevelsOfDifficulty.class).get(0).getId();
 
+					worksheetsLibrary.setGradeid(gradeid);
+					worksheetsLibrary.setSubjectid(subjectid);
+					worksheetsLibrary.setDegreeofdifficultyid(degreeofdifficultyid);
+					worksheetsLibrary.setWorksheetpath("" + os.getKey());
+					worksheetsLibrary.setCreatedby("OMNIWYSE");
+					worksheetsLibrary.setTags(str[3].substring(0, str[3].lastIndexOf(".")));
+					worksheetsLibrary.setWorksheetname(str[3].substring(0, str[3].lastIndexOf(".")));
+					
+					db.transaction(transaction).insert(worksheetsLibrary);
 				} else {
 					continue;
 				}
 			}
-			for (int i = 0; i < hm.size(); i++) {
-
-			}
-			transaction.commit();
+			 transaction.commit();
 		} catch (Exception e) {
 			transaction.rollback();
 			System.out.println("Exception Occured");
 		}
 
+	}
+
+	public static void main(String[] args) {
+		ListObjects listObj = new ListObjects();
+		LOGGER.info("**** Updating iSchool Worksheets Library *****");
+		listObj.listObjects("ischool-sms");
 	}
 }
