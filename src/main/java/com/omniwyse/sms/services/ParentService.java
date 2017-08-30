@@ -33,16 +33,16 @@ public class ParentService {
 	public List<TestTransferObject> studentMarks(long studentid, long gradeid, long classid, long tenantId) {
 		db = retrieve.getDatabase(tenantId);
 		List<TestTransferObject> tests = db.sql(
-				"select test_type.testtype,test_mode.testmode,test_create.id,test_create.startdate,test_create.enddate,"
-						+ "test_create.maxmarks from test_create inner join test_mode on test_create.gradeid=? and "
-						+ "test_create.modeid=test_mode.id inner join test_type on test_create.testtypeid=test_type.id",
+				"select test_type.testtype,test_mode.testmode,test_create.id,test_create.startdate,test_create.enddate, "
+			+"test_create.maxmarks from test_create inner join test_mode on test_create.gradeid=? and test_create.modeid=test_mode.id inner join test_type on test_create.testtypeid=test_type.id", 
 				gradeid).results(TestTransferObject.class);
+		
 		for (TestTransferObject testTransferObject : tests) {
 			List<TestSubjectsDisplay> subjectmarks = db
-					.sql("select subjects.subjectname,student_testresult.marks,test_syllabus.maxmarks from "
+					.sql("select subjects.subjectname,student_testresult.marks,test_syllabus.maxmarks,test_syllabus.syllabus from "
 							+ "student_testresult join subjects on subjects.id=student_testresult.subjectid "
 							+ "join test_syllabus on test_syllabus.testid=student_testresult.testid "
-							+ "where student_testresult.studentid=? and student_testresult.testid=?student_testresult.classid=?",studentid,testTransferObject.getId(),classid)
+							+ "where student_testresult.studentid=? and student_testresult.testid=? and student_testresult.classid=?",studentid,testTransferObject.getId(),classid)
 					.results(TestSubjectsDisplay.class);
 			testTransferObject.setSubjects(subjectmarks);
 		}
