@@ -36,15 +36,6 @@ public class WorkSheetsController {
 	}
 	
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
-	@RequestMapping("/listischoolworksheets")
-	public List<WorkSheetsDTO> listingiSchoolWorkSheets(@PathVariable("tenantId") long tenantId, @RequestBody WorkSheetsDTO worksheets) {
-
-		List<WorkSheetsDTO> list = service.listingWorksheetsOfStdLib(tenantId, worksheets);
-
-		return list;
-	}
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@PostMapping
 	@RequestMapping("/listmyworksheets")
 	public List<WorkSheetsDTO> listingAllWorkSheets(@PathVariable("tenantId") long tenantId, @RequestBody WorkSheetsDTO worksheets) {

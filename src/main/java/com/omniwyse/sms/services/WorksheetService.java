@@ -19,18 +19,6 @@ public class WorksheetService {
 	private DatabaseRetrieval retrive;
 	private Database db;
 
-	public List<WorkSheetsDTO> listingWorksheetsOfStdLib(long tenantId, WorkSheetsDTO worksheets) {
-
-		db = retrive.getDatabase(tenantId);
-		List<WorkSheetsDTO> list = db
-				.sql("select worksheets.worksheetname, worksheets.createdby, worksheets.description,"
-						+ " worksheets.gradeid, worksheets.worksheetpath, subjects.subjectname, degreeofdifficulty.description"
-						+ " from worksheets JOIN subjects ON subjects.id = worksheets.subjectid"
-						+ " JOIN degreeofdifficulty ON degreeofdifficulty.id = worksheets.degreeofdifficultyid")
-				.results(WorkSheetsDTO.class);
-		return list;
-	}
-
 	public List<WorkSheetsDTO> listingWorksheetsOfTenant(long tenantId, WorkSheetsDTO worksheets) {
 
 		db = retrive.getDatabase(tenantId);
