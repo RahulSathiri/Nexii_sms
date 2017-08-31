@@ -54,7 +54,7 @@ public class RecordsController {
 
 	}
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/classroomdetails")
 	public ClassRoomDetails getClassRoomDetails(@PathVariable("tenantId") long tenantId,@RequestBody ClassRoom classroom) {
 		long id = classroom.getId();
@@ -70,7 +70,7 @@ public class RecordsController {
 
 	}
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
     @RequestMapping("/classroomsyllabustypes")
     public List<Grades> distinctSyllabusType(@PathVariable("tenantId") long tenantId) {
 
