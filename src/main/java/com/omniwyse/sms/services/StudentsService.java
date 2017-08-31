@@ -1,7 +1,6 @@
 package com.omniwyse.sms.services;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,76 +38,86 @@ public class StudentsService {
 
 		db = retrive.getDatabase(tenantId);
 		Transaction transaction = db.startTransaction();
-		Parents parent = new Parents();
-		parent.setMothername(addStudent.getMothername());
-		parent.setFathername(addStudent.getFathername());
-		parent.setEmailid(addStudent.getParentemailid());
-		parent.setContactnumber(addStudent.getContactnumber());
-		parent.setAddress(addStudent.getParentaddress());
-		try {
-			db.transaction(transaction).insert(parent);
+		if (addStudent.isAnotherchild() == true) {
+			List<Parents> records = db.where("emailid=?", addStudent.getParentemailid()).results(Parents.class);
+			if (!records.isEmpty()) {
+				long parentid = records.get(0).getId();
+				if (register(parentid, addStudent, db, transaction) == 0)
+					return 0;
+			} else
+				return -10;
 
-			long parentid = parent.getId();
-			students = new Students();
-			gradename = addStudent.getGradename();
-			syllabustype = addStudent.getSyllabustype();
-			students.setAddress(addStudent.getAddress());
-			students.setAdmissionnumber(addStudent.getAdmissionnumber());
-			students.setDateofbirth(addStudent.getDateofbirth());
-			students.setDateofjoining(addStudent.getDateofjoining());
-			students.setEmailid(addStudent.getEmailid());
-			students.setGender(addStudent.getGender());
-			students.setName(addStudent.getName());
-			students.setMiddlename(addStudent.getMiddlename());
-			students.setLastname(addStudent.getLastname());
-			students.setBloodgroup(addStudent.getBloodgroup());
-			students.setHeight(addStudent.getHeight());
-			students.setWeight(addStudent.getWeight());
-			students.setParentid(parentid);
-			gradeid = db.where("gradename=? and syllabustype=?", gradename, syllabustype).results(Grades.class).get(0)
-					.getId();
-			List<House> house = db.where("housename=?", addStudent.getHousename()).results(House.class);
-			if (!house.isEmpty()) {
-				students.setHouseid(house.get(0).getId());
-			}
-			students.setGradeid(gradeid);
-			admissionnumber = addStudent.getAdmissionnumber();
-
-			if (isValidStudent(admissionnumber)) {
-				db.transaction(transaction).insert(students);
-			} else {
-				return 0;
-			}
-
-			UserCredentials userCredentials = new UserCredentials();
-			List<UserCredentials> mail=db.where("mail=?",addStudent.getParentemailid()).results(UserCredentials.class);
-			if(mail.isEmpty())
-			{
-			userCredentials.setMail(addStudent.getParentemailid());
-			userCredentials.setPassword(addStudent.getPassword());
-			userCredentials.setStatusid(1);
-
-			db.transaction(transaction).insert(userCredentials);
-
-			UserRoleMaintain userRoleMaintain = new UserRoleMaintain();
-			userRoleMaintain.setUserid(userCredentials.getId());
-			long roleid = db.sql("select id from roles where role=?",addStudent.getRole()).results(UserRoles.class).get(0).getId();
-			userRoleMaintain.setRoleid(roleid);
-			db.transaction(transaction).insert(userRoleMaintain);
-			transaction.commit();
-			return 1;
-			}
-			else
-			{
-				return -5;
+		} else {
+			Parents parent = new Parents();
+			parent.setMothername(addStudent.getMothername());
+			parent.setFathername(addStudent.getFathername());
+			parent.setEmailid(addStudent.getParentemailid());
+			parent.setContactnumber(addStudent.getContactnumber());
+			parent.setAddress(addStudent.getParentaddress());
+			try {
+				db.transaction(transaction).insert(parent);
+				long parentid = parent.getId();
+				UserCredentials userCredentials = new UserCredentials();
+				List<UserCredentials> mail = db.where("mail=?", addStudent.getParentemailid())
+						.results(UserCredentials.class);
+				if (mail.isEmpty()) {
+					userCredentials.setMail(addStudent.getParentemailid());
+					userCredentials.setPassword(addStudent.getPassword());
+					userCredentials.setStatusid(1);
+					db.transaction(transaction).insert(userCredentials);
+					UserRoleMaintain userRoleMaintain = new UserRoleMaintain();
+					userRoleMaintain.setUserid(userCredentials.getId());
+					long roleid = db.sql("select id from roles where role=?", addStudent.getRole())
+							.results(UserRoles.class).get(0).getId();
+					userRoleMaintain.setRoleid(roleid);
+					db.transaction(transaction).insert(userRoleMaintain);
+					if (register(parentid, addStudent, db, transaction) == 0)
+						return 0;
+				} else {
+					return -5;
+				}
+			} catch (Throwable tw) {
+				tw.printStackTrace();
+				transaction.rollback();
+				return -1;
 			}
 
-		} catch (Throwable tw) {
-			tw.printStackTrace();
-			transaction.rollback();
-			return -1;
 		}
+		transaction.commit();
+		return 1;
+	}
 
+	public int register(long parentid, StudentTransferObject addStudent, Database db, Transaction transaction) {
+		students = new Students();
+		gradename = addStudent.getGradename();
+		syllabustype = addStudent.getSyllabustype();
+		students.setAddress(addStudent.getAddress());
+		students.setAdmissionnumber(addStudent.getAdmissionnumber());
+		students.setDateofbirth(addStudent.getDateofbirth());
+		students.setDateofjoining(addStudent.getDateofjoining());
+		students.setEmailid(addStudent.getEmailid());
+		students.setGender(addStudent.getGender());
+		students.setName(addStudent.getName());
+		students.setMiddlename(addStudent.getMiddlename());
+		students.setLastname(addStudent.getLastname());
+		students.setBloodgroup(addStudent.getBloodgroup());
+		students.setHeight(addStudent.getHeight());
+		students.setWeight(addStudent.getWeight());
+		students.setParentid(parentid);
+		gradeid = db.where("gradename=? and syllabustype=?", gradename, syllabustype).results(Grades.class).get(0)
+				.getId();
+		List<House> house = db.where("housename=?", addStudent.getHousename()).results(House.class);
+		if (!house.isEmpty()) {
+			students.setHouseid(house.get(0).getId());
+		}
+		students.setGradeid(gradeid);
+		admissionnumber = addStudent.getAdmissionnumber();
+
+		if (isValidStudent(admissionnumber)) {
+			return db.transaction(transaction).insert(students).getRowsAffected();
+		} else {
+			return 0;
+		}
 	}
 
 	private boolean isValidStudent(String admissionnumber) {
