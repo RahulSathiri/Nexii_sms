@@ -7,8 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.omniwyse.sms.ischool.ListObjects;
-
 
 @SpringBootApplication
 public class Application {
@@ -18,9 +16,6 @@ public class Application {
     public static void main(String ar[]) throws IOException {
         LOGGER.info("Starting sms API");
         SpringApplication.run(Application.class, ar);
-        ListObjects listObj = new ListObjects();
-		LOGGER.info("**** Updating iSchool Worksheets Library *****");
-		listObj.listObjects("ischool-sms");
     }
 
 }
