@@ -30,6 +30,7 @@ public class StudentTransferObject {
 	private String bloodgroup;
 	private String height;
 	private String weight;
+	private boolean anotherchild;
 	
 	public String getMiddlename() {
 		return middlename;
@@ -45,6 +46,12 @@ public class StudentTransferObject {
 	}
 	public String getBloodgroup() {
 		return bloodgroup;
+	}
+	public boolean isAnotherchild() {
+		return anotherchild;
+	}
+	public void setAnotherchild(boolean anotherchild) {
+		this.anotherchild = anotherchild;
 	}
 	public void setBloodgroup(String bloodgroup) {
 		this.bloodgroup = bloodgroup;
