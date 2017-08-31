@@ -132,9 +132,7 @@ public class TestService {
         long subjectid = testsyllabus.getSubjectid();
 
         TestSyllabus testSyllabus2 = db.where("testid=? and subjectid=?", testid, subjectid).results(TestSyllabus.class).get(0);
-        String syllabus = testSyllabus2.getSyllabus();
-        syllabus = syllabus + testsyllabus.getSyllabus();
-        testSyllabus2.setSyllabus(syllabus);
+        testSyllabus2.setSyllabus(testsyllabus.getSyllabus());
 
 		return db.update(testSyllabus2).getRowsAffected();
 	}
