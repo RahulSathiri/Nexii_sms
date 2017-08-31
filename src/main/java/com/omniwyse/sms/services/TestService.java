@@ -98,7 +98,7 @@ public class TestService {
 		db = retrieve.getDatabase(tenantId);
 		long gradeid = testtransferobject.getId();
 
-		List<TestTransferObject> testsdetails = db.sql("select test_type.id,test_type.testtype,test_mode.testmode,test_create.startdate,test_create.enddate,test_create.maxmarks from test_create"
+		List<TestTransferObject> testsdetails = db.sql("select test_create.id,test_type.testtype,test_mode.testmode,test_create.startdate,test_create.enddate,test_create.maxmarks from test_create"
 		        + " inner join test_mode on test_create.gradeid=? and  test_create.modeid=test_mode.id inner join test_type on test_create.testtypeid=test_type.id",gradeid).results(TestTransferObject.class);
 
 		long testid;
