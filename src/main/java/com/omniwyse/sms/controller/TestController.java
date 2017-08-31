@@ -87,7 +87,7 @@ public class TestController {
 		}
 	}
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER','ROLE_PARENT')")
 	@RequestMapping(value = "/listtests", method = RequestMethod.POST, produces = "application/json")
 	public List<TestTransferObject> getListOfTests(@PathVariable("tenantId") long tenantId, @RequestBody TestTransferObject testcreate){
 		List<TestTransferObject> tests= service.getListOfTests(tenantId, testcreate);

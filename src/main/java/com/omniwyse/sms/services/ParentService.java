@@ -9,10 +9,12 @@ import com.dieselpoint.norm.Database;
 import com.omniwyse.sms.db.DatabaseRetrieval;
 import com.omniwyse.sms.models.AttendanceMode;
 import com.omniwyse.sms.models.Notifications;
+import com.omniwyse.sms.models.Subjects;
 import com.omniwyse.sms.utils.AttendanceDTO;
+import com.omniwyse.sms.utils.MainResultsTransferObject;
 import com.omniwyse.sms.utils.ParentDTO;
-import com.omniwyse.sms.utils.TestSubjectsDisplay;
-import com.omniwyse.sms.utils.TestTransferObject;
+import com.omniwyse.sms.utils.ResultsTransferObject;
+import com.omniwyse.sms.utils.StudentSubjectMarks;
 
 @Service
 public class ParentService {
@@ -30,25 +32,7 @@ public class ParentService {
 				parentId).results(ParentDTO.class);
 	}
 
-	public List<TestTransferObject> studentMarks(long studentid, long gradeid, long classid, long tenantId) {
-		db = retrieve.getDatabase(tenantId);
-		List<TestTransferObject> tests = db.sql(
-				"select test_type.testtype,test_mode.testmode,test_create.id,test_create.startdate,test_create.enddate, "
-			+"test_create.maxmarks from test_create inner join test_mode on test_create.gradeid=? and test_create.modeid=test_mode.id inner join test_type on test_create.testtypeid=test_type.id", 
-				gradeid).results(TestTransferObject.class);
-		
-		for (TestTransferObject testTransferObject : tests) {
-			List<TestSubjectsDisplay> subjectmarks = db
-					.sql("select subjects.subjectname,student_testresult.marks,test_syllabus.maxmarks,test_syllabus.syllabus from "
-							+ "student_testresult join subjects on subjects.id=student_testresult.subjectid "
-							+ "join test_syllabus on test_syllabus.testid=student_testresult.testid "
-							+ "where student_testresult.studentid=? and student_testresult.testid=? and student_testresult.classid=?",studentid,testTransferObject.getId(),classid)
-					.results(TestSubjectsDisplay.class);
-			testTransferObject.setSubjects(subjectmarks);
-		}
-		return tests;
-	}
-
+	
 	
 	public List<Notifications> notifications(long tenantId) {
 		db = retrieve.getDatabase(tenantId);
@@ -73,5 +57,28 @@ public class ParentService {
 			return attendancedates;
 		}
 	}
+	
+	public MainResultsTransferObject studentsMarks(long studentid, long gradeid, long classid, long testcreateid,
+			long tenantId) {
+		 db = retrieve.getDatabase(tenantId);
+
+	       List<ResultsTransferObject> resulttransferlist = db.sql("select distinct cltrs.studentid as studentid,st.name,tt.testtype,cltrs.resultorgrade from classroom_testresult cltrs "
+	                        + "left join test_create tc on tc.testtypeid = cltrs.testid left join grade_subjects gs on gs.gradeid = tc.gradeid left join students st on cltrs.studentid=st.id"
+	                        + " left join test_syllabus ts on ts.subjectid = gs.subjectid left join test_type tt on tt.id = cltrs.testid where cltrs.testid=? and cltrs.studentid=? and gs.gradeid=?",
+	                        testcreateid,studentid,gradeid).results(ResultsTransferObject.class);
+
+	        for (ResultsTransferObject rto : resulttransferlist) {
+	            rto.setStudentsubjectmarks(db.sql("select sb.subjectname,str.marks from student_testresult str left join subjects sb on str.subjectid = sb.id"
+	                            + " where str.classid=? and str.testid=? and str.studentid=?", classid, testcreateid,studentid).results(StudentSubjectMarks.class));
+	        }
+
+	        List<Subjects> subjectlist = db.sql("select sb.subjectname from grade_subjects gs " + "left join subjects sb on sb.id = gs.subjectid where gs.gradeid=?", gradeid).results(Subjects.class);
+
+	        MainResultsTransferObject mainresults = new MainResultsTransferObject();
+	        mainresults.setResulttransfer(resulttransferlist);
+	        mainresults.setSubjects(subjectlist);
+	        return mainresults;
+	}
+
 
 }
