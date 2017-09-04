@@ -6,8 +6,15 @@ public class TeacherModuleDTO {
 	private String subjectname;
 	private long gradeid;
 	private String sectionname;
+	private long gradenumber;
 	
 	
+	public long getGradenumber() {
+		return gradenumber;
+	}
+	public void setGradenumber(long gradenumber) {
+		this.gradenumber = gradenumber;
+	}
 	public long getId() {
 		return id;
 	}
