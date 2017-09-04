@@ -150,7 +150,7 @@ public class ClassService {
 		return db
 				.sql("select classrooms.id,classrooms.academicyear,classrooms.gradeid,"
 						+ "grades.gradenumber,grades.gradename,classrooms.sectionname,grades.syllabustype,"
-						+ "teachers.teachername from classrooms inner join grades INNER JOIN teachers"
+						+ "classrooms.classteacherid,teachers.teachername from classrooms inner join grades INNER JOIN teachers"
 						+ " ON classrooms.classteacherid = teachers.id where classrooms.gradeid=grades.id")
 				.results(ClassSectionTransferObject.class);
 
