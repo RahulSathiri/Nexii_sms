@@ -10,6 +10,8 @@ public class ClassSectionTransferObject {
 	private String subjectname;
 	private long classteacherid;
 	private long academicyear;
+	private long gradenumber;
+	private String gradename;
 	public String getGradename() {
 		return gradename;
 	}
@@ -18,7 +20,7 @@ public class ClassSectionTransferObject {
 		this.gradename = gradename;
 	}
 
-	private String gradename;
+	
 	public long getGradenumber() {
 		return gradenumber;
 	}
@@ -28,7 +30,7 @@ public class ClassSectionTransferObject {
 	}
 
 	private long syllabusid;
-	private long gradenumber;
+	
 	public String getSubjectname() {
 		return subjectname;
 	}

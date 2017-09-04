@@ -48,9 +48,9 @@ public class TeacherModuleService {
 		db = retrive.getDatabase(tenantId);
 
 		List<TeacherModuleDTO> list = db.sql(
-				"select classrooms.id, subjects.subjectname, classrooms.gradeid, classrooms.sectionname from subjects "
+				"select classrooms.id, subjects.subjectname, classrooms.gradeid,classrooms.sectionname,grades.gradenumber from subjects "
 						+ "JOIN class_subject_teacher ON class_subject_teacher.subjectid = subjects.id JOIN classrooms"
-						+ " ON classrooms.id = class_subject_teacher.classid where class_subject_teacher.teacherid = ?",
+						+ " ON classrooms.id = class_subject_teacher.classid JOIN grades on grades.id=classrooms.gradeid where class_subject_teacher.teacherid = ?",
 				moduleDTO.getId()).results(TeacherModuleDTO.class);
 
 		return list;
@@ -61,7 +61,8 @@ public class TeacherModuleService {
 		db = retrive.getDatabase(tenantId);
 
 		List<ClassSectionTransferObject> list = db
-				.sql("select id, gradeid, sectionname from classrooms where classteacherid = ? ", moduleDTO.getId())
+				.sql("select classrooms.id,classrooms.gradeid,classrooms.sectionname,grades.gradenumber from classrooms " 
+         +"JOIN grades on grades.id=classrooms.gradeid where classteacherid =? ", moduleDTO.getId())
 				.results(ClassSectionTransferObject.class);
 
 		return list;
