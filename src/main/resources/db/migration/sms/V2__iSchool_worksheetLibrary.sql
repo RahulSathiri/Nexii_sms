@@ -27,7 +27,7 @@ CREATE TABLE ischool_subjects(
 INSERT INTO ischool_subjects(subjectname, subjectid) 
   values('Telugu',1),('Hindi',2),('English',3),('Physics',4),('Maths',5),('Biology',6),
 		('Chemistry',7),('Natural Science',8),('Social Studies',9),('History',10),
-		('Economics',11),('Geography',12),('Zoology',13),('Botany',14);
+		('Economics',11),('Geography',12),('Zoology',13),('Botany',14),('Science',15);
 
 --******************** WorkSheets  TABLES *********************************************
 
