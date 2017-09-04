@@ -175,6 +175,11 @@ public class MessagesService {
 		+"and messages.rootmessageid=0 and messages.parentmessageid=0 order by messages.messagedate desc",messagesDTO.getSenderid(),messagesDTO.getSenderid(),messagesDTO.getClassroomid()).results(MessagesDetails.class);
 		return getReplyMessages(getSenderName(messages));
 	}
+
+	public List<Teachers> classRoomTeacher(long tenantId, long classroomid) {
+		db = retrive.getDatabase(tenantId);
+		return db.sql("select teachers.teachername,teachers.id  from teachers join classrooms on classrooms.classteacherid=teachers.id where classrooms.id=?",classroomid).results(Teachers.class);
+	}
 	
 
 }

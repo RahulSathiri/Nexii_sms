@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.omniwyse.sms.models.Teachers;
 import com.omniwyse.sms.services.MessagesService;
 import com.omniwyse.sms.services.StudentsService;
 import com.omniwyse.sms.utils.ClassRoomStudents;
@@ -156,7 +157,7 @@ public class MessagesController {
 	
 	@PreAuthorize("hasAnyRole('ROLE_TEACHER')")
 	@RequestMapping("/{classroomid}/classroomstudents")
-	public List<ClassRoomStudents> replyToTeacherMessages(@PathVariable("tenantId") long tenantId,
+	public List<ClassRoomStudents> classRoomStudents(@PathVariable("tenantId") long tenantId,
 			@PathVariable("classroomid") long classroomid) {
 		ClassRoomStudents classroomstudents = new ClassRoomStudents();
 		classroomstudents.setName("All");
@@ -165,6 +166,13 @@ public class MessagesController {
 		students.add(classroomstudents);
 		students.addAll(studentservice.getStudentsOfClassRoom(classroomid, tenantId));
 		return students;
+	}
+	@PreAuthorize("hasAnyRole('ROLE_TEACHER','ROLE_PARENT','ROLE_ADMIN')")
+	@RequestMapping("/{classroomid}/classroomteacher")
+	public List<Teachers> classRoomTeachers(@PathVariable("tenantId") long tenantId,
+			@PathVariable("classroomid") long classroomid) {
+		return service.classRoomTeacher(tenantId,classroomid);
+		
 	}
 	
 	@PreAuthorize("hasAnyRole('ROLE_TEACHER')")
