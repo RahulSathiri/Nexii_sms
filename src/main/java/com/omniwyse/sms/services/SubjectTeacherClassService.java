@@ -65,7 +65,7 @@ public class SubjectTeacherClassService {
 		long subjectid = db.where("subjectname = ?", subjectname).results(Subjects.class).get(0).getId();
 		long id=db.where("subjectid=? and classid=?" , subjectid,classid).results(SubjectTeacherClass.class).get(0).getId();
 		long teacherid = db.where("teachername = ?", teachername).results(Teachers.class).get(0).getId();
-List<SubjectTeacherClass> records=db.where("subjectid=? and teacherid=?",subjectid,teacherid ).results(SubjectTeacherClass.class);
+List<SubjectTeacherClass> records=db.where("classid=? and subjectid=? and teacherid=?",classid,subjectid,teacherid).results(SubjectTeacherClass.class);
 if(records.isEmpty()){
 		SubjectTeacherClass stc = new SubjectTeacherClass();
 		stc.setId(id);
