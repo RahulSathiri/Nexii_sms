@@ -1,7 +1,5 @@
 package com.omniwyse.sms.services;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,19 +33,19 @@ public class LoginService {
         UserCredentials user = db.where("mail=? and password=?", clients.getEmailid(), clients.getPassword()).results(UserCredentials.class).get(0);
         long userroleid = db.where("userid=?", user.getId()).results(UserRoleMaintain.class).get(0).getRoleid();
         String role = db.where("id=?", userroleid).results(UserRoles.class).get(0).getRole();
-        List<Teachers> teacherlist = db.where("emailid = ?", clients.getEmailid()).results(Teachers.class);
-        List<Parents> parentslist = db.where("emailid = ?", clients.getEmailid()).results(Parents.class);
-       // List<StudentClassroom> studentslist = db.where("emailid = ?", clients.getEmailid()).results(StudentClassroom.class);
-        if (!teacherlist.isEmpty()) {
-            for (Teachers teacher : teacherlist) {
-                response.setUserId(teacher.getId());
-            }
-        } else if (!parentslist.isEmpty()) {
-            for (Parents parent : parentslist) {
-                response.setUserId(parent.getId());
-            }
-        } else {
-            response.setUserId(user.getId());
+
+        if (role.equalsIgnoreCase("ADMIN")) {
+
+        } else if (role.equalsIgnoreCase("TEACHER")) {
+
+            response.setUserId(db.where("emailid = ?", clients.getEmailid()).results(Teachers.class).get(0).getId());
+
+        } else if (role.equalsIgnoreCase("PARENT")) {
+
+            response.setUserId(db.where("emailid = ?", clients.getEmailid()).results(Parents.class).get(0).getId());
+
+        } else if (role.equalsIgnoreCase("STUDENT")) {
+
         }
         response.setUserrole(role);
         response.setUsername(user.getMail());
