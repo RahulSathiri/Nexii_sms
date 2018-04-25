@@ -51,7 +51,7 @@ public class StudentsController {
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);
 		}
 		else if(rowEffected==-5){
-			response.setStatus(400);
+		response.setStatus(400);
 			response.setMessage("not a registered emailid");
 			response.setDescription("not a registered emailid");
 			return new ResponseEntity<Response>(response, HttpStatus.BAD_REQUEST);

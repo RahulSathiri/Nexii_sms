@@ -38,8 +38,9 @@ public class RecordsService {
 		List<StudentTransferObject> students = db
 				.sql("select grades.gradename,houses.housename,students.houseid,students.gradeid,students.parentid,"
 						+ "grades.syllabustype,students.name,parents.fathername,students.dateofbirth,students.dateofjoining,students.id,"
-						+ "students.gender,parents.contactnumber,parents.mothername,students.admissionnumber,students.emailid,"
-						+ "students.address,students.id from students left join grades on students.gradeid=grades.id "
+						+ "students.gender,parents.contactnumber,parents.mothername,parents.address,students.admissionnumber,students.emailid,"
+						+ "students.address,students.id,students.middlename,students.lastname,students.bloodgroup,students.height,"
+						+ "students.weight from students left join grades on students.gradeid=grades.id "
 						+ "join parents on parents.id=students.parentid left join houses on houses.id=students.houseid")
 				.results(StudentTransferObject.class);
 		return students;
