@@ -15,24 +15,24 @@ public class NewsService {
     com.omniwyse.sms.db.DatabaseRetrieval retrieve;
 	private Database db;
 
-	public int postNews(NewsFeed news) {
-		db = retrieve.getDatabase(1);
+    public int postNews(long tenantId,NewsFeed news) {
+        db = retrieve.getDatabase(tenantId);
 		return db.insert(news).getRowsAffected();
 
 	}
 
-	public List<NewsFeed> listNews() {
-		db = retrieve.getDatabase(1);
+	public List<NewsFeed> listNews(long tenantId) {
+		db = retrieve.getDatabase(tenantId);
 		return db.sql("select * from newsfeed").results(NewsFeed.class);
 	}
 
-	public int deleteNews(NewsFeed newsfeed) {
-		db = retrieve.getDatabase(1);
+	public int deleteNews(NewsFeed newsfeed, long tenantId) {
+		db = retrieve.getDatabase(tenantId);
 		return db.delete(newsfeed).getRowsAffected();
 	}
 
-	public int editNews(NewsFeed newsfeed) {
-		db = retrieve.getDatabase(1);
+	public int editNews(NewsFeed newsfeed, long tenantId) {
+		db = retrieve.getDatabase(tenantId);
 		return db.update(newsfeed).getRowsAffected();
 
 	}

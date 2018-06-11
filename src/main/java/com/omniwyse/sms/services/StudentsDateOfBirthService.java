@@ -20,25 +20,25 @@ public class StudentsDateOfBirthService {
 	private DatabaseRetrieval retrive;
 	private Database db;
 
-	public List<DateOfBirthDTO> getClassStudentsBirthDay(DateOfBirthDTO dateOfBirthDTO) {
+	public List<DateOfBirthDTO> getClassStudentsBirthDay(DateOfBirthDTO dateOfBirthDTO,long tenantId) {
 		long teacherid = dateOfBirthDTO.getTeacherid();
 		Date dateNow = new Date();
 		SimpleDateFormat dateformatJava = new SimpleDateFormat("dd-MM-yyyy");
 		String date_to_string = dateformatJava.format(dateNow);
 		date_to_string = "%" + date_to_string.substring(3, 5) + "-" + date_to_string.substring(0, 2);
 
-		return this.getBirthdays(date_to_string, teacherid);
+		return this.getBirthdays(date_to_string, teacherid,tenantId);
 
 	}
 
-	public List<DateOfBirthDTO> getClassSubjectsStudentsBirthDay(DateOfBirthDTO dateOfBirthDTO) {
+	public List<DateOfBirthDTO> getClassSubjectsStudentsBirthDay(DateOfBirthDTO dateOfBirthDTO,long tenantId) {
 		long teacherid = dateOfBirthDTO.getTeacherid();
 		Date dateNow = new Date();
 		SimpleDateFormat dateformatJava = new SimpleDateFormat("dd-MM-yyyy");
 		String date_to_string = dateformatJava.format(dateNow);
 		date_to_string = "%" + date_to_string.substring(3, 5) + "-" + date_to_string.substring(0, 2);
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		return db.sql(
 				"select distinct students.name,classrooms.sectionname,grades.gradename from students "
 						+ "join classroom_students on classroom_students.studentid=students.id "
@@ -50,14 +50,14 @@ public class StudentsDateOfBirthService {
 
 	}
 
-	public List<DateOfBirthDTO> getStudentsBirthDays() {
+	public List<DateOfBirthDTO> getStudentsBirthDays(long tenantId) {
 
 		Date dateNow = new Date();
 		SimpleDateFormat dateformatJava = new SimpleDateFormat("dd-MM-yyyy");
 		String date_to_string = dateformatJava.format(dateNow);
 		date_to_string = "%" + date_to_string.substring(3, 5) + "-" + date_to_string.substring(0, 2);
 
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		return db.sql(
 				"select distinct students.name,classrooms.sectionname,grades.gradename from students "
 						+ "join classroom_students on classroom_students.studentid=students.id  "
@@ -67,20 +67,20 @@ public class StudentsDateOfBirthService {
 
 	}
 
-	public List<DateOfBirthDTO> getBirthDaysOfMyClassStudents(ClassRoom classRoom) {
+	public List<DateOfBirthDTO> getBirthDaysOfMyClassStudents(ClassRoom classRoom,long tenantId) {
 		long gradeid = classRoom.getGradeid();
 		String sectionname = classRoom.getSectionname();
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		long teacherid = db.where("gradeid=? and sectionname=?", gradeid, sectionname).results(ClassRoom.class).get(0)
 				.getClassteacherid();
 		Date dateNow = new Date();
 		SimpleDateFormat dateformatJava = new SimpleDateFormat("dd-MM-yyyy");
 		String date_to_string = dateformatJava.format(dateNow);
 		date_to_string = "%" + date_to_string.substring(3, 5) + "-" + date_to_string.substring(0, 2);
-		return this.getBirthdays(date_to_string, teacherid);
+		return this.getBirthdays(date_to_string, teacherid,tenantId);
 	}
 
-	public List<DateOfBirthDTO> getTomorrowBirthDaysOfMyClassStudents(ClassRoom classRoom) {
+	public List<DateOfBirthDTO> getTomorrowBirthDaysOfMyClassStudents(ClassRoom classRoom,long tenantId) {
 
 		Date dt = new Date();
 		Calendar c = Calendar.getInstance();
@@ -89,16 +89,16 @@ public class StudentsDateOfBirthService {
 		dt = c.getTime();
 		SimpleDateFormat dateformatJava = new SimpleDateFormat("dd-MM-yyyy");
 		String date_to_string = dateformatJava.format(dt);
-		db = retrive.getDatabase(1);
+		db = retrive.getDatabase(tenantId);
 		long teacherid = db.where("gradeid=? and sectionname=?", classRoom.getGradeid(), classRoom.getSectionname())
 				.results(ClassRoom.class).get(0).getClassteacherid();
 		date_to_string = "%" + date_to_string.substring(3, 5) + "-" + date_to_string.substring(0, 2);
-		return this.getBirthdays(date_to_string, teacherid);
+		return this.getBirthdays(date_to_string, teacherid,tenantId);
 
 	}
 
-	public List<DateOfBirthDTO> getBirthdays(String date_to_string, long teacherid) {
-		db = retrive.getDatabase(1);
+	public List<DateOfBirthDTO> getBirthdays(String date_to_string, long teacherid,long tenantId) {
+		db = retrive.getDatabase(tenantId);
 		return db.sql(
 				"select distinct students.name,students.id,students.admissionnumber,classrooms.sectionname,grades.gradename from students "
 						+ "join classroom_students on classroom_students.studentid=students.id "

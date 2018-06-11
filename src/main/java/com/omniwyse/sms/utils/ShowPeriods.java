@@ -13,16 +13,8 @@ public class ShowPeriods {
 	private long subjectid;
 	private Long classroomid;
 	private Long classroomweekdayid;
-	private Date dateofassigning;
 	
-	@GetMapping
 	
-	public Date getDateofassigning() {
-		return dateofassigning;
-	}
-	public void setDateofassigning(Date dateofassigning) {
-		this.dateofassigning = dateofassigning;
-	}
 	public Long getClassroomid() {
 		return classroomid;
 	}

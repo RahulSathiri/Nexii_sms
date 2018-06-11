@@ -1,7 +1,5 @@
 package com.omniwyse.sms.services;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +15,9 @@ public class MainService {
 
     public Database db;
 
-    public Long getTenant(String user) {
+    public Tenants getTenant(String user) {
         db = database.getSchoolDb();
-        List<Tenants> tenants = db.where("url=?", user).results(Tenants.class);
-        for (Tenants currenttenant : tenants) {
-            return currenttenant.getId();
-        }
-        return 0l;
+        return db.where("url=?", user).results(Tenants.class).get(0);
     }
 
 }

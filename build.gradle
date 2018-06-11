@@ -14,7 +14,7 @@ apply plugin: "org.springframework.boot"
 
 jar {
 	baseName = 'sms-api'
-	version = '0.0.1-SNAPSHOT'
+	version = '0.0.2-SNAPSHOT'
 }
 
 repositories {
@@ -37,8 +37,9 @@ dependencies {
     compile "org.flywaydb:flyway-core:4.2.0"
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
     compile 'org.springframework.boot:spring-boot-starter-security:1.5.3.RELEASE'
+    compile 'org.springframework.security:spring-security-web:4.2.3.RELEASE'
     //compile "com.wix:wix-embedded-mysql:2.1.4"
-    
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.7.3'
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 

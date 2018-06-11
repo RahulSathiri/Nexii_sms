@@ -14,28 +14,27 @@ public class EventsService {
     private com.omniwyse.sms.db.DatabaseRetrieval retrive;
 	private Database db;
 
-	public int postEvent(Events event) {
+    public int postEvent(Events event, long tenantId) {
 
-		db = retrive.getDatabase(1);
+        db = retrive.getDatabase(tenantId);
 
 		return db.insert(event).getRowsAffected();
 	}
 
-	public List<Events> listEvents() {
+	public List<Events> listEvents(long tenantId) {
 
-		db = retrive.getDatabase(1);
-
+		db = retrive.getDatabase(tenantId);
 		return db.sql("select * from events").results(Events.class);
 	}
 
-	public int deleteEvent(Events event) {
-		db = retrive.getDatabase(1);
+	public int deleteEvent(Events event, long tenantId) {
+		db = retrive.getDatabase(tenantId);
 		return db.delete(event).getRowsAffected();
 
 	}
 
-	public int editEvent(Events event) {
-		db = retrive.getDatabase(1);
+	public int editEvent(Events event, long tenantId) {
+		db = retrive.getDatabase(tenantId);
 		return db.update(event).getRowsAffected();
 
 	}

@@ -1,5 +1,7 @@
 package com.omniwyse.sms.models;
 
+import java.sql.Date;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -7,8 +9,8 @@ import javax.persistence.Table;
 @Table(name = "holidays")
 public class Holidays {
 	private long id;
-	private String fromdate;
-	private String todate;
+	private Date fromdate;
+	private Date todate;
 	private String occassion;
 
 	@Id
@@ -29,20 +31,20 @@ public class Holidays {
 		this.occassion = occassion;
 	}
 
-	public String getFromdate() {
+	public Date getFromdate() {
 		return fromdate;
 	}
 
-	public void setFromdate(String fromdate) {
+	public void setFromdate(Date fromdate) {
 		this.fromdate = fromdate;
 	}
 
-	public String getTodate() {
+	public Date getTodate() {
 		return todate;
 	}
 
-	public void setTodate(String todate) {
+	public void setTodate(Date todate) {
 		this.todate = todate;
 	}
 
-}
+	}

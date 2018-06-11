@@ -1,5 +1,7 @@
 package com.omniwyse.sms.models;
 
+import java.sql.Date;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -9,7 +11,7 @@ public class NewsFeed {
 	
 	private long id;
 	private String headline;
-	private String releasedate;
+	private Date releasedate;
 	private String description;
 
 	@Id
@@ -30,11 +32,12 @@ public class NewsFeed {
 		this.headline = headline;
 	}
 
-	public String getReleasedate() {
+	
+	public Date getReleasedate() {
 		return releasedate;
 	}
 
-	public void setReleasedate(String releasedate) {
+	public void setReleasedate(Date releasedate) {
 		this.releasedate = releasedate;
 	}
 

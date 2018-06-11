@@ -8,11 +8,13 @@ import javax.persistence.Table;
 
 @Table(name = "students")
 public class Students {
-
+	private long id;
 	private String name;
-	private String fathername;
-	private String mothername;
-	private String contactnumber;
+	private String middlename;
+	private String lastname;
+	private String bloodgroup;
+	private String height;
+	private String weight;
 	private String address;
 	private Date dateofbirth;
 	private Date dateofjoining;
@@ -20,7 +22,67 @@ public class Students {
 	private long gradeid;
 	private String admissionnumber;
 	private String emailid;
-	private long id;
+	private long houseid;
+	private long parentid;
+
+	public String getMiddlename() {
+		return middlename;
+	}
+
+	public void setMiddlename(String middlename) {
+		this.middlename = middlename;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public String getBloodgroup() {
+		return bloodgroup;
+	}
+
+	public void setBloodgroup(String bloodgroup) {
+		this.bloodgroup = bloodgroup;
+	}
+
+	public String getHeight() {
+		return height;
+	}
+
+	public void setHeight(String height) {
+		this.height = height;
+	}
+
+	public String getWeight() {
+		return weight;
+	}
+
+	public void setWeight(String weight) {
+		this.weight = weight;
+	}
+
+	public long getParentid() {
+		return parentid;
+	}
+
+	public void setParentid(long parentid) {
+		this.parentid = parentid;
+	}
+
+	public long getHouseid() {
+		return houseid;
+	}
+
+	public void setHouseid(long houseid) {
+		this.houseid = houseid;
+	}
+
+	
+
 	public Date getDateofbirth() {
 		return dateofbirth;
 	}
@@ -45,8 +107,6 @@ public class Students {
 		this.gradeid = gradeid;
 	}
 
-	
-
 	public String getEmailid() {
 		return emailid;
 	}
@@ -54,7 +114,6 @@ public class Students {
 	public void setEmailid(String emailid) {
 		this.emailid = emailid;
 	}
-
 
 	public String getAdmissionnumber() {
 		return admissionnumber;
@@ -72,35 +131,10 @@ public class Students {
 		this.name = name;
 	}
 
-	
 	@Id
 	@GeneratedValue
 	public long getId() {
 		return id;
-	}
-
-	public String getFathername() {
-		return fathername;
-	}
-
-	public void setFathername(String fathername) {
-		this.fathername = fathername;
-	}
-
-	public String getMothername() {
-		return mothername;
-	}
-
-	public void setMothername(String mothername) {
-		this.mothername = mothername;
-	}
-
-	public String getContactnumber() {
-		return contactnumber;
-	}
-
-	public void setContactnumber(String contactnumber) {
-		this.contactnumber = contactnumber;
 	}
 
 	public String getAddress() {
@@ -111,8 +145,6 @@ public class Students {
 		this.address = address;
 	}
 
-	
-
 	public String getGender() {
 		return gender;
 	}
@@ -120,8 +152,6 @@ public class Students {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-
-	
 
 	public void setId(long id) {
 		this.id = id;

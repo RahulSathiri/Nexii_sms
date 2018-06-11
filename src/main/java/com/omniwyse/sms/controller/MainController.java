@@ -1,5 +1,6 @@
 package com.omniwyse.sms.controller;
 
+import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.omniwyse.sms.models.Tenants;
 import com.omniwyse.sms.services.MainService;
 
 @RestController
@@ -17,8 +19,10 @@ public class MainController {
     @Autowired
     MainService mainservice;
 
+    @PermitAll
     @RequestMapping(value = "/tenant/for/{domain}")
-    public @ResponseBody Long getTenant(@PathVariable("domain") String domain, HttpServletRequest request, HttpServletResponse response) {
+    public @ResponseBody Tenants getTenant(@PathVariable("domain") String domain, HttpServletRequest request,
+            HttpServletResponse response) {
         // String url = null;
         // try {
         // url = new URL(request.getRequestURL().toString()).toString();

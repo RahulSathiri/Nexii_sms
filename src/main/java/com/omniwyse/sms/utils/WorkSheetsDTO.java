@@ -16,8 +16,36 @@ public class WorkSheetsDTO {
 	private String createdby;
 	private Date dateofassigned;
 	private Date duedate;
-	private String lessonname;
+	private Date worksheetduedate;
+	private boolean publishworksheet;
 	
+	public boolean isPublishworksheet() {
+		return publishworksheet;
+	}
+
+	public void setPublishworksheet(boolean publishworksheet) {
+		this.publishworksheet = publishworksheet;
+	}
+
+	public Date getWorksheetduedate() {
+		return worksheetduedate;
+	}
+
+	public void setWorksheetduedate(Date worksheetduedate) {
+		this.worksheetduedate = worksheetduedate;
+	}
+
+	private String lessonname;
+	private long worksheetid;
+	
+	public long getWorksheetid() {
+		return worksheetid;
+	}
+
+	public void setWorksheetid(long worksheetid) {
+		this.worksheetid = worksheetid;
+	}
+
 	public String getLessonname() {
 		return lessonname;
 	}

@@ -10,13 +10,14 @@ import javax.persistence.Table;
 public class Lessons {
 	
 	private long id;
+	private String lessondescription;
 	private String lessonname;
-	private String tags;
 	private long subjectid;
 	private long classroomid;
 	private Date lessonstartdate;
 	private String status;
-	
+	private boolean publishtimeline;
+
 	@Id
 	@GeneratedValue
 	public long getId() {
@@ -25,7 +26,13 @@ public class Lessons {
 	public void setId(long id) {
 		this.id = id;
 	}
-	
+    
+	public boolean isPublishtimeline() {
+		return publishtimeline;
+	}
+	public void setPublishtimeline(boolean publishtimeline) {
+		this.publishtimeline = publishtimeline;
+	}
 	public String getStatus() {
 		return status;
 	}
@@ -38,17 +45,18 @@ public class Lessons {
 	public void setLessonstartdate(Date lessonstartdate) {
 		this.lessonstartdate = lessonstartdate;
 	}
-	public String getTags() {
-		return tags;
-	}
-	public void setTags(String tags) {
-		this.tags = tags;
-	}
+
 	public String getLessonname() {
 		return lessonname;
 	}
 	public void setLessonname(String lessonname) {
 		this.lessonname = lessonname;
+	}
+	public String getLessondescription() {
+		return lessondescription;
+	}
+	public void setLessondescription(String lessondescription) {
+		this.lessondescription = lessondescription;
 	}
 	public long getSubjectid() {
 		return subjectid;

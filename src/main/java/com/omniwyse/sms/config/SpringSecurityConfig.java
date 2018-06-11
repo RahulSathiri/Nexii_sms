@@ -8,8 +8,11 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import com.omniwyse.sms.filter.MyAuthenticationFilter;
 import com.omniwyse.sms.utils.MyAccessDeniedHandler;
 
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -26,33 +29,20 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpsecurity) {
-//        try {
-//        httpsecurity.csrf().disable();
-//        httpsecurity.authorizeRequests()
-//            .antMatchers("/admin**").authenticated()
-//            .anyRequest().permitAll()
-//            .and()
-//            .formLogin().permitAll();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        //
-        // try {
-        // httpsecurity.authorizeRequests().antMatchers("/", "/home", "/about",
-        // "/superadmin").permitAll()
-        // .anyRequest().authenticated().antMatchers("**/admin/**").access("hasRole('ADMIN')")
-        // // hasAnyRole("SUPERADMIN").antMatchers("/admin/**")
-        // //
-        // .hasAnyRole("ADMIN").antMatchers("/teacher/**").hasAnyRole("TEACHER").antMatchers("/parent/**")
-        // //
-        // .hasAnyRole("PARENT").antMatchers("/student/**").hasAnyRole("STUDENT").anyRequest().authenticated()
-        // .and().formLogin().permitAll().and().logout().permitAll().and()
-        // .exceptionHandling().accessDeniedHandler(accesshandler).and().csrf();
-        // } catch (Exception e) {
-        // // TODO Auto-generated catch block
-        // e.printStackTrace();
-        // }
-        //
+        try {
+            httpsecurity.csrf().disable();
+            
+            httpsecurity.addFilterBefore(new MyAuthenticationFilter(), BasicAuthenticationFilter.class);
+
+            httpsecurity.authorizeRequests().antMatchers("/tenant/for/**").permitAll().anyRequest().fullyAuthenticated();
+
+            httpsecurity.httpBasic();
+            
+            httpsecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
     @Autowired

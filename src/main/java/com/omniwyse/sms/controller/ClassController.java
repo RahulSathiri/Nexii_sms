@@ -1,11 +1,12 @@
 package com.omniwyse.sms.controller;
 
-import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import com.omniwyse.sms.utils.ClassSectionTransferObject;
 import com.omniwyse.sms.utils.Response;
 
 @RestController
+@RequestMapping("/{tenantId}")
 public class ClassController {
 	@Autowired
 	private ClassService service;
@@ -27,10 +29,11 @@ public class ClassController {
 	private Response response;
 
 	@PostMapping
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping("/createclass")
-	public ResponseEntity<Response> creatingClass(@RequestBody ClassSectionTransferObject createclass) {
+	public ResponseEntity<Response> creatingClass(@PathVariable("tenantId") long tenantId, @RequestBody ClassSectionTransferObject createclass) {
 
-		int rowEffected = service.createClass(createclass);
+		int rowEffected = service.createClass(tenantId, createclass);
 
 		if (rowEffected > 0) {
 			response.setStatus(201);
@@ -56,10 +59,11 @@ public class ClassController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping("/updateclassteacher")
-	public ResponseEntity<Response> updateClassTeachers(@RequestBody ClassSectionTransferObject createclass) {
+	public ResponseEntity<Response> updateClassTeachers(@PathVariable("tenantId") long tenantId, @RequestBody ClassSectionTransferObject createclass) {
 
-		int rowEffected = service.updateClassTeacher(createclass);
+		int rowEffected = service.updateClassTeacher(tenantId, createclass);
 
 		if (rowEffected > 0) {
 			response.setStatus(200);
@@ -74,31 +78,32 @@ public class ClassController {
 		}
 	}
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/classrooms/year")
-	public List<ClassSectionTransferObject> getClassRoomaByYear(@RequestBody ClassRoom classroom) {
+	public List<ClassSectionTransferObject> getClassRoomaByYear(@PathVariable("tenantId") long tenantId, @RequestBody ClassRoom classroom) {
 		long academicyear = classroom.getAcademicyear();
-		return service.getClassRoomsByYear(academicyear);
+		return service.getClassRoomsByYear(tenantId, academicyear);
 
 	}
-
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_TEACHER')")
 	@RequestMapping("/classrooms")
-	public List<ClassSectionTransferObject> getClassRooms() {
+	public List<ClassSectionTransferObject> getClassRooms(@PathVariable("tenantId") long tenantId) {
 
-		return service.getClassRooms();
+		return service.getClassRooms(tenantId);
 
 	}
-
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping("/academicyear")
-	public List<AcademicYears> getacademicyear() throws ParseException {
+	public List<AcademicYears> getacademicyear(@PathVariable("tenantId") long tenantId) {
 
-		return service.getAcademicYears();
+		return service.getAcademicYears(tenantId);
 
 	}
-
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping("/addacademicyear")
-	public ResponseEntity<Response> addacademicyear(@RequestBody AcademicYearsDTO academicyears) {
+	public ResponseEntity<Response> addacademicyear(@PathVariable("tenantId") long tenantId, @RequestBody AcademicYearsDTO academicyears) {
 
-		int rowEffected = service.addAcademicYears(academicyears);
+		int rowEffected = service.addAcademicYears(tenantId, academicyears);
 
 		if (rowEffected > 0) {
 			response.setStatus(200);
@@ -113,11 +118,11 @@ public class ClassController {
 		}
 
 	}
-
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping("/updateacademicyear")
-	public ResponseEntity<Response> updateacademicyear(@RequestBody AcademicYears academicYears) {
+	public ResponseEntity<Response> updateacademicyear(@PathVariable("tenantId") long tenantId, @RequestBody AcademicYears academicYears) {
 
-		int rowseffected = service.updateAcademicYear(academicYears);
+		int rowseffected = service.updateAcademicYear(tenantId, academicYears);
 		if (rowseffected > 0) {
 			response.setStatus(200);
 			response.setMessage("updated success fully");
@@ -131,12 +136,13 @@ public class ClassController {
 		}
 	}
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@RequestMapping("/classrooms/yearandsyllabustype")
-	public List<ClassSectionTransferObject> listSubjectTeac(
+	public List<ClassSectionTransferObject> listSubjectTeac(@PathVariable("tenantId") long tenantId, 
 			@RequestBody ClassSectionTransferObject classtransferobject) {
 		long academicyear = classtransferobject.getAcademicyear();
 		String syllabustype = classtransferobject.getSyllabustype();
-		return service.getClassRoomsByYearAndSyllabustype(academicyear, syllabustype);
+		return service.getClassRoomsByYearAndSyllabustype(tenantId, academicyear, syllabustype);
 
 	}
 }

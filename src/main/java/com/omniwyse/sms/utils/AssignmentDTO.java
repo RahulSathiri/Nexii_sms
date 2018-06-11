@@ -8,10 +8,38 @@ public class AssignmentDTO {
 	private String assignmentname;
 	private Date dateofassigned;
 	private Date duedate;
+	private Date assignmentduedate;
+	private String tags;
+	private boolean publishassignment;
+	
+	public boolean isPublishassignment() {
+		return publishassignment;
+	}
+	public void setPublishassignment(boolean publishassignment) {
+		this.publishassignment = publishassignment;
+	}
+	public String getTags() {
+		return tags;
+	}
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
+	public Date getAssignmentduedate() {
+		return assignmentduedate;
+	}
+	public void setAssignmentduedate(Date assignmentduedate) {
+		this.assignmentduedate = assignmentduedate;
+	}
 	private String subjectname;
 	private long id;
+	private long assignedid;
 	
-	
+	public long getAssignedid() {
+		return assignedid;
+	}
+	public void setAssignedid(long assignedid) {
+		this.assignedid = assignedid;
+	}
 	public String getLessonname() {
 		return lessonname;
 	}

@@ -1,20 +1,93 @@
 package com.omniwyse.sms.utils;
 
 import java.sql.Date;
+import java.util.List;
 
 public class TimelineDTO {
 
 	private long id;
 	private String assignmentname;
 	private String worksheetname;
-	private String lessonname;
+	private String lessondescription;
 	private String subjectname;
 	private String tags;
 	private Date lessonstartdate;
 	private String status;
 	private Date assignmentduedate;
 	private Date worksheetduedate;
+	private String lessonname;
+	private List<WorkSheetsDTO> worksheets;
+	private List<AssignmentDTO> assignments;
+	private Date datefrom;
+	private Date dateto;
+	private long publish;
+	private boolean publishtimeline;
+	private Date notificationdate;
 	
+	public boolean isPublishtimeline() {
+		return publishtimeline;
+	}
+
+	public void setPublishtimeline(boolean publishtimeline) {
+		this.publishtimeline = publishtimeline;
+	}
+
+	public Date getNotificationdate() {
+		return notificationdate;
+	}
+
+	public void setNotificationdate(Date notificationdate) {
+		this.notificationdate = notificationdate;
+	}
+
+	public long getPublish() {
+		return publish;
+	}
+
+	public void setPublish(long publish) {
+		this.publish = publish;
+	}
+
+	public Date getDatefrom() {
+		return datefrom;
+	}
+
+	public void setDatefrom(Date datefrom) {
+		this.datefrom = datefrom;
+	}
+
+	public Date getDateto() {
+		return dateto;
+	}
+
+	public void setDateto(Date dateto) {
+		this.dateto = dateto;
+	}
+
+	public String getLessonname() {
+		return lessonname;
+	}
+
+	public void setLessonname(String lessonname) {
+		this.lessonname = lessonname;
+	}
+
+	public List<WorkSheetsDTO> getWorksheets() {
+		return worksheets;
+	}
+
+	public void setWorksheets(List<WorkSheetsDTO> worksheets) {
+		this.worksheets = worksheets;
+	}
+
+	public List<AssignmentDTO> getAssignments() {
+		return assignments;
+	}
+
+	public void setAssignments(List<AssignmentDTO> assignments) {
+		this.assignments = assignments;
+	}
+
 	public Date getAssignmentduedate() {
 		return assignmentduedate;
 	}
@@ -55,12 +128,12 @@ public class TimelineDTO {
 		this.tags = tags;
 	}
 
-	public String getLessonname() {
-		return lessonname;
+	public String getLessondescription() {
+		return lessondescription;
 	}
 
-	public void setLessonname(String lessonname) {
-		this.lessonname = lessonname;
+	public void setLessondescription(String lessondescription) {
+		this.lessondescription = lessondescription;
 	}
 
 	public String getSubjectname() {

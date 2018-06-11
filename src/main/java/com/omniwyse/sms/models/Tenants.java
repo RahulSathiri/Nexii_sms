@@ -1,6 +1,5 @@
 package com.omniwyse.sms.models;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.persistence.GeneratedValue;
@@ -13,8 +12,8 @@ public class Tenants {
 	private Long id;
 	private int statusid = 1;
 
-	private Timestamp createdOn;
-	private Timestamp modifiedOn;
+    private Date createdOn;
+    private Date modifiedOn;
 	private String sname;
     private String code;
 	private String dbname;
@@ -22,21 +21,21 @@ public class Tenants {
     private Date dateofestablishment;
     private String url;
 
-	public Timestamp getCreatedOn() {
-		return createdOn;
-	}
+    public Date getCreatedOn() {
+        return createdOn;
+    }
 
-	public void setCreatedOn(Timestamp createdOn) {
-		this.createdOn = createdOn;
-	}
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
 
-	public Timestamp getModifiedOn() {
-		return modifiedOn;
-	}
+    public Date getModifiedOn() {
+        return modifiedOn;
+    }
 
-	public void setModifiedOn(Timestamp modifiedOn) {
-		this.modifiedOn = modifiedOn;
-	}
+    public void setModifiedOn(Date modifiedOn) {
+        this.modifiedOn = modifiedOn;
+    }
 
     public Date getDateofestablishment() {
         return dateofestablishment;

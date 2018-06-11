@@ -1,5 +1,7 @@
 package com.omniwyse.sms.models;
 
+import java.sql.Date;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -8,16 +10,42 @@ import javax.persistence.Table;
 public class Teachers {
 
 	private String teachername;
+	private String middlename;
 	private String lname;
+	private String bloodgroup;
 	private String contactnumber;
 	private String emailid, address;
 	private String qualification;
 	private String about;
 	private String subjects;
-	private String dateofbirth;
-	private String dateofjoining;
+	private Date  dateofbirth;
+	private Date dateofjoining;
 	private String gender;
+	private String maritalstatus;
+	
+	public String getMaritalstatus() {
+		return maritalstatus;
+	}
 
+	public void setMaritalstatus(String maritalstatus) {
+		this.maritalstatus = maritalstatus;
+	}
+
+	public String getMiddlename() {
+		return middlename;
+	}
+
+	public void setMiddlename(String middlename) {
+		this.middlename = middlename;
+	}
+
+	public String getBloodgroup() {
+		return bloodgroup;
+	}
+
+	public void setBloodgroup(String bloodgroup) {
+		this.bloodgroup = bloodgroup;
+	}
 
 	public String getContactnumber() {
 		return contactnumber;
@@ -67,19 +95,19 @@ public class Teachers {
 		this.subjects = subjects;
 	}
 
-	public String getDateofbirth() {
+	public Date getDateofbirth() {
 		return dateofbirth;
 	}
 
-	public void setDateofbirth(String dateofbirth) {
+	public void setDateofbirth(Date dateofbirth) {
 		this.dateofbirth = dateofbirth;
 	}
 
-	public String getDateofjoining() {
+	public Date getDateofjoining() {
 		return dateofjoining;
 	}
 
-	public void setDateofjoining(String dateofjoining) {
+	public void setDateofjoining(Date dateofjoining) {
 		this.dateofjoining = dateofjoining;
 	}
 
